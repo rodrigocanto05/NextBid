@@ -15,13 +15,13 @@
 
 ---
 
-## 💡 1. Introdução
+## 💡 3. Introdução
 
 O comércio eletrónico tem assumido um papel cada vez mais relevante na economia digital, permitindo que consumidores e vendedores realizem transações de forma rápida, acessível e global. Entre os diversos modelos de comércio online, as plataformas de leilões destacam-se por promoverem um sistema dinâmico de compra e venda, no qual o valor final dos produtos é determinado através da competição entre licitadores.
 
 Apesar da existência de diversas plataformas de leilões no mercado, muitas apresentam funcionalidades relativamente tradicionais, centradas apenas na realização de transações comerciais. Neste contexto, surge a oportunidade de desenvolver soluções que integrem elementos inovadores, como mecanismos de gamificação e funcionalidades baseadas em geolocalização, capazes de aumentar o envolvimento dos utilizadores e enriquecer a experiência de utilização.
 
-O projeto NextBid tem como objetivo o desenvolvimento de uma plataforma web de leilões online que combina o modelo tradicional de licitação com funcionalidades interativas e geográficas. A plataforma permitirá a criação e gestão de leilões, a realização de licitações em tempo real e a visualização da localização dos produtos através de um mapa interativo, complementando estas funcionalidades com elementos de gamificação, como roleta de prémios e jogos adicionais.
+O projeto NextBid tem como objetivo o desenvolvimento de uma plataforma web de leilões online que combina o modelo tradicional de licitação com funcionalidades interativas e geográficas. A plataforma permitirá a criação e gestão de leilões, a realização de licitações em tempo real e a visualização da localização dos produtos através de um mapa interativo, complementando estas funcionalidades com elementos de gamificação, como a caça ao tesouro.
 
 Desta forma, o projeto procura desenvolver uma solução tecnológica que não apenas suporte a gestão eficiente de leilões online, mas que também promova uma experiência de utilização mais interativa, dinâmica e centrada no utilizador.
 
@@ -197,7 +197,6 @@ Este plano de 13 semanas permite um desenvolvimento progressivo e estruturado do
 |---|---|
 | Venda de produtos variados | Não possui mecânicas de gamificação como roleta ou caça ao tesouro |
 | Permite contacto entre comprador e vendedor | Entrega tradicional, sem geolocalização para jogos interativos |
-| Plataforma popular na América Latina | Não tem desempate por sorteio em lances empatados |
 
 ---
 
@@ -320,7 +319,7 @@ Análise de Outliers: Identificar licitações fraudulentas (bots) através de d
 
 ## 🏁 12. Conclusão
 
-O projeto **NextBid** propõe o desenvolvimento de uma plataforma web de leilões online que combina mecanismos tradicionais de licitação com recursos de gamificação e geolocalização. Isso cria uma experiência interativa, competitiva e centrada no usuário. A plataforma pretende se destacar das soluções existentes no mercado ao integrar algoritmos de licitação em tempo real, sistemas de autenticação segura, mapas interativos e jogos como roleta e moeda ao ar. A arquitetura definida, que utiliza PHP, um banco de dados relacional e dados em formato JSON, garante uma estrutura modular e escalável adequada ao contexto acadêmico do projeto. A divisão do desenvolvimento em fases semanais permite uma evolução gradual e controlada. Isso assegura que cada componente, desde a gestão de usuários até a integração do SIG com Leaflet.js, seja implementado, testado e otimizado de forma organizada. Do ponto de vista acadêmico, o projeto está diretamente relacionado às unidades curriculares de Programação Web, Algoritmos e Estruturas de Dados, Sistemas de Informação Geográfica, Estatística e Interfaces e Usabilidade. Ele aplica conceitos teóricos em um cenário prático e comercial. Essa integração de diferentes áreas demonstra a capacidade de criar e desenvolver uma solução tecnológica completa, funcional e que atende aos objetivos do curso.
+O projeto **NextBid** propõe o desenvolvimento de uma plataforma web de leilões online que combina mecanismos tradicionais de licitação com recursos de gamificação e geolocalização. Isso cria uma experiência interativa, competitiva e centrada no usuário. A plataforma pretende se destacar das soluções existentes no mercado ao integrar algoritmos de licitação em tempo real, sistemas de autenticação segura, mapas interativos e jogos como a caça ao tesouro. A arquitetura definida, que utiliza PHP, um banco de dados relacional e dados em formato JSON, garante uma estrutura modular e escalável adequada ao contexto acadêmico do projeto. A divisão do desenvolvimento em fases semanais permite uma evolução gradual e controlada. Isso assegura que cada componente, desde a gestão de usuários até a integração do SIG com Leaflet.js, seja implementado, testado e otimizado de forma organizada. Do ponto de vista acadêmico, o projeto está diretamente relacionado às unidades curriculares de Programação Web, Algoritmos e Estruturas de Dados, Sistemas de Informação Geográfica, Estatística e Interfaces e Usabilidade. Ele aplica conceitos teóricos em um cenário prático e comercial. Essa integração de diferentes áreas demonstra a capacidade de criar e desenvolver uma solução tecnológica completa, funcional e que atende aos objetivos do curso.
 
 ---
 
