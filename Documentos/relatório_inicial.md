@@ -188,7 +188,7 @@ Este plano de 13 semanas permite um desenvolvimento progressivo e estruturado do
 |---|---|
 | Plataforma de leilões online | Não possui roleta diária ou caça ao tesouro |
 | Permite vender qualquer produto | Não utiliza geolocalização para entrega presencial |
-| Sistema de lances competitivos | Não resolve empates por sorteio |
+| Sistema de lances competitivos | Não possui outro tipo de gamificação (Caça ao tesouro) |
 
 ---
 
@@ -206,7 +206,6 @@ Este plano de 13 semanas permite um desenvolvimento progressivo e estruturado do
 |---|---|
 | Sistema de leilões por lances | Não integra caça ao tesouro ou geolocalização |
 | Produtos variados | Não oferece roleta diária ou prémios surpresa |
-| Incentiva participação frequente | Empates não resolvidos por sorteio, lances continuam até final definido |
 
 ---
 
@@ -215,7 +214,6 @@ Este plano de 13 semanas permite um desenvolvimento progressivo e estruturado do
 |---|---|
 | Combina compras online com elementos locais | Menor variedade de produtos leiloados |
 | Alguns usam geolocalização para entregas | Não possui caça ao tesouro ou roleta diária |
-| Interação entre vendedor e comprador | Não tem desempates decididos por sorteio |
 
 ---
 
@@ -306,20 +304,17 @@ Análise de Outliers: Identificar licitações fraudulentas (bots) através de d
 ## 5. Frontend
 ### 5.1 - Layout HTML/CSS 
 
-## 6. Módulo Casino
-### 6.1 - Algoritmos de Slots e Roleta
-### 6.2 - Flip Coin e outros possíveis métodos
 
-## 7. Integração
-### 7.1 - Consumo de dados via Fetch e Lógica 
+## 6. Integração
+### 6.1 - Consumo de dados via Fetch e Lógica 
 
-## 8. Módulo SIG (Geosocial)
-### 8.1 - Integração com Leaflet.js
-### 8.2 - Geocodificação de endereços de vendedores
+## 7. Módulo SIG (Geosocial)
+### 7.1 - Integração com Leaflet.js
+### 7.2 - Geocodificação de endereços de vendedores
 
-## 9. Segurança e Testes
-### 9.1 - Sanitização de inputs e prevenção de XSS/SQLi
-### 9.2 - Testes unitários de lógica de saldo
+## 8. Segurança e Testes
+### 8.1 - Sanitização de inputs e prevenção de XSS/SQLi
+### 8.2 - Testes unitários de lógica de saldo
 
 ---
 
