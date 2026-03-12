@@ -1,91 +1,117 @@
-Base de dados NextBib - V1
+-- Tables
 
-
-
-# 1. CATEGORIAS 
-create table categories (
-    cat_id      int not null auto_increment,
-    cat_name    varchar(80) not null,
-    primary key (cat_id)
-);
-
-# 2. UTILIZADORES 
 create table users (
     usr_id         int not null auto_increment,
+    usr_name       varchar(80) not null,              # user name
+    usr_email      varchar(120) not null,             # user email
+    usr_password   varchar(200) not null,
     usr_gender     char(1) not null,
     usr_age        int not null,
-    usr_name       varchar(80) not null,
-    usr_email      varchar(120) not null,
-    usr_password   varchar(200) not null,
     usr_photo      varchar(255),
     usr_bio        text,
-    usr_xp         int default 0,                     # Acresce consoante a gamificação
+    usr_xp         int not null default 0,            # user xp
+    usr_role       enum('seller','buyer') not null default 'buyer',
     usr_created_at datetime not null default current_timestamp,
     primary key (usr_id),
     unique key uq_users_email (usr_email)
 );
 
-# 3. PRODUTOS 
 create table products (
     prd_id           int not null auto_increment,
     prd_name         varchar(120) not null,
     prd_description  text not null,
-    cat_id           int not null,                       # FK para colocar as categorias
-    prd_condition    enum('new', 'used') not null,
+    prd_cat_id       int not null,                    # FK to categories
+    prd_usr_id       int not null,                    # FK to users (seller)
+    prd_condition    enum('new','used') not null,
     prd_start_price  decimal(10,2) not null,
     prd_location     varchar(120),
     prd_latitude     decimal(10,7),
     prd_longitude    decimal(10,7),
-    prd_status       enum('active','sold','expired') default 'active',
-    prd_ends_at      datetime not null,                  # Fim do leilão
-    prd_created_at   datetime not null default current_timestamp, 
-    usr_id           int not null,                       # Pessoa que está a vender o artigo
-
-    primary key (prd_id),
-    constraint fk_products_category foreign key (cat_id) references categories(cat_id),
-    constraint fk_products_user foreign key (usr_id) references users(usr_id)
+    prd_status       enum('active','ended','sold','expired') default 'active',
+    prd_ends_at      datetime not null,
+    prd_created_at   datetime not null default current_timestamp,
+    primary key (prd_id)
 );
 
-# 4. GALERIA 
 create table product_images (
-    img_id      int not null auto_increment,
-    img_path    varchar(255) not null,
-    prd_id      int not null,
-    primary key (img_id),
-    constraint fk_images_product foreign key (prd_id) references products(prd_id)
+    img_id         int not null auto_increment,
+    img_prd_id     int not null,                      # FK to products
+    img_path       varchar(255) not null,
+    primary key (img_id)
 );
 
-# 5. LICITAÇÕES 
+create table categories (
+    cat_id      int not null auto_increment,
+    cat_name    varchar(80) not null,
+    primary key (cat_id),
+    unique key uq_categories_name (cat_name)
+);
+
 create table bids (
-    bid_id          int not null auto_increment, 
-    bid_amount      decimal(10,2) not null, # Dinheiro Licitado
+    bid_id          int not null auto_increment,
+    bid_prd_id      int not null,                     # FK to products
+    bid_usr_id      int not null,                     # FK to users
+    bid_amount      decimal(10,2) not null,
     bid_created_at  datetime not null default current_timestamp,
-    usr_id          int not null,
-    prd_id          int not null,
-    primary key (bid_id),
-    constraint fk_bid_user foreign key (usr_id) references users(usr_id), # FK para saber a pessoa que licitou
-    constraint fk_bid_product foreign key (prd_id) references products(prd_id)
+    primary key (bid_id)
 );
 
-# 6. GAMIFICAÇÃO 
 create table gamification (
     gme_id           int not null auto_increment,
     gme_name         varchar(120) not null,
     gme_description  text,
-    gme_xp_reward    int not null,                       # Recompensa em XP
+    gme_xp_reward    int not null,                    # xp reward
     gme_latitude     decimal(10,7) not null,
     gme_longitude    decimal(10,7) not null,
-    gme_radius       int default 30,
+    gme_radius       int not null default 30,
     gme_status       enum('active','expired') default 'active',
+    gme_created_at   datetime not null default current_timestamp,
     primary key (gme_id)
 );
 
 create table gamification_claims (
     gcl_id           int not null auto_increment,
-    gme_id           int not null,
-    usr_id           int not null,
+    gcl_gme_id       int not null,                    # FK to gamification
+    gcl_usr_id       int not null,                    # FK to users
     gcl_claimed_at   datetime not null default current_timestamp,
     primary key (gcl_id),
-    constraint fk_claim_gamification foreign key (gme_id) references gamification(gme_id),
-    constraint fk_claim_user foreign key (usr_id) references users(usr_id)
+    unique key uq_gamification_user (gcl_gme_id, gcl_usr_id)
 );
+
+-- Foreign Keys
+
+
+alter table products
+add constraint products_fk_user
+foreign key (prd_usr_id) references users(usr_id)
+ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+alter table product_images
+add constraint product_images_fk_product
+foreign key (img_prd_id) references products(prd_id)
+ON DELETE CASCADE ON UPDATE NO ACTION;
+
+alter table products
+add constraint products_fk_category
+foreign key (prd_cat_id) references categories(cat_id)
+ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+alter table bids
+add constraint bids_fk_product
+foreign key (bid_prd_id) references products(prd_id)
+ON DELETE CASCADE ON UPDATE NO ACTION;
+
+alter table bids
+add constraint bids_fk_user
+foreign key (bid_usr_id) references users(usr_id)
+ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+alter table gamification_claims
+add constraint gamification_claims_fk_gamification
+foreign key (gcl_gme_id) references gamification(gme_id)
+ON DELETE CASCADE ON UPDATE NO ACTION;
+
+alter table gamification_claims
+add constraint gamification_claims_fk_user
+foreign key (gcl_usr_id) references users(usr_id)
+ON DELETE CASCADE ON UPDATE NO ACTION;
