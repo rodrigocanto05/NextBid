@@ -9,10 +9,11 @@ class BidManager
         $this->pdo = $pdo;
     }
 
-    public function placeBid(int $userId, int $productId, float $amount): array{
+    public function placeBid(int $userId, int $productId, float $amount): array {
         try {
             $this->pdo->beginTransaction();
-            $stmt = $this->pdo->prepare("SELECT prd_start_price, usr_id, prd_status FROM products WHERE prd_id = ?");
+
+            $stmt = $this->pdo->prepare("SELECT prd_start_price, usr_id, prd_status FROM products WHERE prd_id = ? FOR UPDATE");
             $stmt->execute([$productId]);
             $product = $stmt->fetch();
 
@@ -22,6 +23,7 @@ class BidManager
             }
 
             if ($product['usr_id'] == $userId) {
+                $this->pdo->rollBack();
                 return ['status' => 'error', 'message' => 'Não podes licitar no teu próprio leilão.'];
             }
 
@@ -39,30 +41,34 @@ class BidManager
             $stmt->execute([$amount, $userId, $productId]);
 
             $xpGanho = rand(5, 15);
-            $this->pdo->prepare("UPDATE users SET usr_xp = user_xp + ? WHERE usr_id = ?")->execute([$xpGanho, $userId]);
+            $this->pdo->prepare("UPDATE users SET usr_xp = usr_xp + ? WHERE usr_id = ?")->execute([$xpGanho, $userId]);
 
             $stmt = $this->pdo->prepare("INSERT INTO xp_logs (usr_id, xpl_amount, xpl_reason) VALUES (?, ?, ?)");
             $stmt->execute([$userId, $xpGanho, "Licitação no produto #$productId"]);
 
             $this->pdo->commit();
-            return ['status' => 'success', 'message' => 'Licitação aceite!', ' XP' => $xpGanho];
+
+            $stmt = $this->pdo->prepare("SELECT usr_id FROM bids WHERE prd_id = ? AND usr_id != ? ORDER BY bid_amount DESC LIMIT 1");
+            $stmt->execute([$productId, $userId]);
+            $previousBidder = $stmt->fetchColumn();
+
+            if ($previousBidder) {
+                require_once 'NotificationManager.php';
+
+
+                $notif = new NotificationManager($this->pdo);
+
+                $notif->create($previousBidder, "Alguém cobriu a tua oferta no produto #$productId! Licita já novamente.");
+            }
+
+            return ['status' => 'success', 'message' => 'Licitação aceite!', 'xp_ganho' => $xpGanho];
 
         } catch (Exception $e) {
-            $this->pdo->rollBack();
-            return ['status' => 'error', 'message' => $e->getMessage()];
+            if ($this->pdo->inTransaction()) {
+                $this->pdo->rollBack();
+            }
+            return ['status' => 'error', 'message' => 'Erro ao processar: ' . $e->getMessage()];
         }
-
-        $stmt = $this->pdo->prepare("SELECT usr_id FROM bids WHERE prd_id = ? AND usr_id != ORDER BY bid_amount DESC LIMIT 1");
-        $stmt->execute([$productId, $userId]);
-        $previousBidder = $stmt->fetchColumn();
-
-        if ($previousBidder) {
-            require_once 'NotificationManager.php';
-            $notif = new NotificationManager($this->pdo);
-            $notif->create($previousBidder, "Algúem cobriu a tua oferta no produto #$productId! Licita já novamente para não perderes!")
-        }
-        return ['status' => 'error', 'message'=> 'Erro Mítico'];
-        //Esta merda obriga-me a por aqui um return por causa do array
     }
 }
 

@@ -8,8 +8,7 @@ class UserManager
     {
         $this->pdo = $pdo;
     }
-
-    public function register(string $name, string $email, string $password, string $gender, int $age, string $bio, int $xp)
+    public function register(string $name, string $email, string $password, string $gender, int $age, string $bio, int $xp): bool
     {
         $hash = password_hash($password, PASSWORD_BCRYPT);
         $role = 'user';
@@ -30,8 +29,7 @@ class UserManager
             'role'     => $role
         ]);
     }
-
-    public function login(string $email, string $password)
+    public function login(string $email, string $password): array
     {
         $sql = "SELECT * FROM users WHERE usr_email = :email";
         $stmt = $this->pdo->prepare($sql);
@@ -51,18 +49,18 @@ class UserManager
                         'xp'   => $user['usr_xp']
                     ]
                 ];
-            } catch (\Exception $e) {
+            } catch (Exception) {
                 return ['status' => 'error', 'message' => 'Erro ao gerar Token'];
             }
         }
 
-        return ['status' => 'error', 'message' => 'Credenciais inválidas'];
+        return ['status' => 'error', 'message' => 'Credenciais inválidas. Tente novamente.'];
     }
 
     public function getUserProfile(int $userId): array|bool
     {
         $sql = "SELECT usr_id, usr_name, usr_email, usr_xp, usr_photo, usr_bio, usr_age 
-                FROM users WHERE usr_id = :id";
+            FROM users WHERE usr_id = :id";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['id' => $userId]);
         $user = $stmt->fetch();
