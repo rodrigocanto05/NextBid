@@ -6,7 +6,7 @@ require_once '../../includes/AuctionManager.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
-    exit(json_encode(['status' => 'error', 'message' => 'Método POST exigido']));
+    exit(json_encode(['status' => 'error', 'message' => 'Não autorizado']));
 }
 
 $userId = (int)($_POST['userId'] ?? 0);
@@ -33,11 +33,11 @@ $data = [
     'name'        => $_POST['name'],
     'description' => $_POST['description'],
     'condition'   => $_POST['condition'],
-    'price'       => $_POST['startPrice'],
+    'price'       => (float)$_POST['startPrice'],
     'location'    => $_POST['location'],
-    'lat'         => $_POST['latitude'],
-    'long'        => $_POST['longitude'],
-    'category'    => $_POST['categoryId'],
+    'lat'         => (float)$_POST['latitude'],
+    'long'        => (float)$_POST['longitude'],
+    'category'    => (int)$_POST['categoryId'],
     'ends'        => $_POST['ends_at']
 ];
 

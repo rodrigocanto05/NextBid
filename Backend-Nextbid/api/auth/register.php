@@ -6,17 +6,16 @@ require_once '../../includes/UserManager.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
-    exit(json_encode(['status' => 'error', 'message' => 'Método não permitido.']));
+    exit(json_encode(['status' => 'error', 'message' => 'Método não auto.']));
 }
 
 $userMgr = new UserManager($pdo);
 $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_SPECIAL_CHARS);
 $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
 $password = $_POST['password'] ?? '';
-$gender = $_POST['gender'] ?? 'O';
+$gender = $_POST['gender'] ?? 'Não especificado';
 $age = (int)($_POST['age'] ?? 0);
 $bio = filter_input(INPUT_POST, 'bio', FILTER_SANITIZE_SPECIAL_CHARS) ?? '';
-
 $xpInicial = rand(10, 50);
 
 if (!$name || !$email || strlen($password) < 8) {
@@ -30,7 +29,7 @@ try {
     if ($success) {
         echo json_encode([
             'status' => 'success',
-            'message' => 'Utilizador registado! Ganhaste ' . $xpInicial . ' XP de bónus.'
+            'message' => 'Bem vindo a NextBid! Ganhaste ' . $xpInicial . ' XP de bónus.'
         ]);
     } else {
         echo json_encode(['status' => 'error', 'message' => 'Falha ao registar.']);
