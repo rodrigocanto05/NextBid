@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourcePerFileMappings">
+    <file url="file://$PROJECT_DIR$/includes/AuctionManager.php" value="5e87446e-2800-400c-b91b-62d5c4646ca9" />
+    <file url="file://$PROJECT_DIR$/includes/GamificationManager.php" value="5e87446e-2800-400c-b91b-62d5c4646ca9" />
+    <file url="file://$PROJECT_DIR$/includes/NotificationManager.php" value="5e87446e-2800-400c-b91b-62d5c4646ca9" />
+    <file url="file://$PROJECT_DIR$/includes/functions.php" value="5e87446e-2800-400c-b91b-62d5c4646ca9" />
+    <file url="file://$PROJECT_DIR$/tests/populate.php" value="5e87446e-2800-400c-b91b-62d5c4646ca9" />
+  </component>
+</project>
