@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+<<<<<<< HEAD
     <data-source source="LOCAL" name="@localhost" uuid="5e87446e-2800-400c-b91b-62d5c4646ca9">
+=======
+    <data-source source="LOCAL" name="NextBid" uuid="8f205643-3fec-43f2-858e-861c2b5bfeb6">
+>>>>>>> 228bab97ae7d3bfc3cab73a3603de287bb42ab3a
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>

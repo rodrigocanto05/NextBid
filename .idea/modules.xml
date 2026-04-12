@@ -2,7 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+<<<<<<< HEAD
       <module fileurl="file://$PROJECT_DIR$/.idea/Backend-Nextbid.iml" filepath="$PROJECT_DIR$/.idea/Backend-Nextbid.iml" />
+=======
+      <module fileurl="file://$PROJECT_DIR$/.idea/NextBid.iml" filepath="$PROJECT_DIR$/.idea/NextBid.iml" />
+>>>>>>> 228bab97ae7d3bfc3cab73a3603de287bb42ab3a
     </modules>
   </component>
 </project>
