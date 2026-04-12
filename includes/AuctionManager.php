@@ -41,13 +41,16 @@ class AuctionManager {
 
     public function getActiveAuctions(?float $userLat = null, ?float $userLng = null, int $raio = 50): array {
         $geoQuery = "";
-        $params = ["raio" => $raio];
+        $params = [];
 
         if ($userLat !== null && $userLng !== null) {
             $geoQuery = ", (6371 * acos(cos(radians(:lat)) * cos(radians(prd_latitude)) * cos(radians(prd_longitude) - radians(:lng)) + sin(radians(:lat)) * sin(radians(prd_latitude)))) AS distance";
             $params["lat"] = $userLat;
             $params["lng"] = $userLng;
+            $params["raio"] = $raio;
         }
+
+        $having = ($userLat !== null && $userLng !== null) ? "HAVING distance <= :raio" : "";
 
         $sql = "SELECT p.*, c.cat_name, MIN(i.img_path) as main_image $geoQuery
                 FROM product p
@@ -55,7 +58,7 @@ class AuctionManager {
                 LEFT JOIN product_image i ON p.prd_id = i.img_prd_id
                 WHERE p.prd_status = 'active' 
                 GROUP BY p.prd_id
-                HAVING (distance IS NULL OR distance <= :raio)
+                $having
                 ORDER BY p.prd_id DESC";
 
         $stmt = $this->pdo->prepare($sql);
