@@ -4,11 +4,11 @@ create table userss (
     usr_email      varchar(120) not null,
     usr_password   varchar(200) not null,
     usr_gender     char(1) not null,
-    usr_age        int not null,
+    usr_birthdate  date not null,
     usr_photo      varchar(255),
     usr_bio        text,
     usr_xp         int not null default 0,
-    usr_role       enum('admin','normaluser') default 'normaluser',
+    usr_role       enum('admin','normaluser') not null default 'normaluser',
     usr_created_at datetime not null default current_timestamp,
     primary key (usr_id),
     unique key uq_userss_email (usr_email)
@@ -32,16 +32,17 @@ create table product (
     prd_location     varchar(120),
     prd_latitude     decimal(10,7),
     prd_longitude    decimal(10,7),
-    prd_status       enum('active','ended','sold','expired') default 'active',
+    prd_status       enum('active','ended','sold','expired') not null default 'active',
     prd_ends_at      datetime not null,
     prd_created_at   datetime not null default current_timestamp,
     primary key (prd_id)
 );
 
 create table product_image (
-    img_id       int not null auto_increment,
-    img_prd_id   int not null,
-    img_path     varchar(255) not null,
+    img_id          int not null auto_increment,
+    img_prd_id      int not null,
+    img_path        varchar(255) not null,
+    img_is_primary  boolean not null default false,
     primary key (img_id)
 );
 
@@ -52,50 +53,80 @@ create table bid (
     bid_amount      decimal(10,2) not null,
     bid_created_at  datetime not null default current_timestamp,
     primary key (bid_id),
-    index idx_bids_prd_id (bid_prd_id)
+    index idx_bids_prd_id (bid_prd_id),
+    index idx_bid_usr_id (bid_usr_id)
 );
 
 create table gamification (
-    gme_id             int not null auto_increment,
-    gme_name           varchar(120) not null,
-    gme_description    text,
-    gme_xp_reward      int not null,
-    gme_prd_id         int not null,                         # FK to product (reward)
-    gme_latitude       decimal(10,7) not null,
-    gme_longitude      decimal(10,7) not null,
-    gme_radius         int not null default 30,
-    gme_status         enum('scheduled','active','claimed','expired') default 'scheduled',
-    gme_starts_at      datetime not null,
-    gme_ends_at        datetime not null,
-    gme_winner_usr_id  int,                                  # FK to userss (winner)
-    gme_created_at     datetime not null default current_timestamp,
-    primary key (gme_id)
+    gme_id                 int not null auto_increment,
+    gme_name               varchar(120) not null,
+    gme_description        text,
+    gme_xp_reward          int not null default 0,
+    gme_prd_id             int not null,
+    gme_latitude           decimal(10,7) not null,
+    gme_longitude          decimal(10,7) not null,
+    gme_radius             int not null default 30,
+    gme_verification_code  varchar(10),
+    gme_status             enum('scheduled','active','claimed','expired') not null default 'scheduled',
+    gme_starts_at          datetime not null,
+    gme_reveal_at          datetime,
+    gme_ends_at            datetime not null,
+    gme_winner_usr_id      int,
+    gme_created_at         datetime not null default current_timestamp,
+    primary key (gme_id),
+    index idx_gamification_status (gme_status)
 );
 
 create table gamification_claim (
     gcl_id           int not null auto_increment,
-    gcl_gme_id       int not null,                           # FK to gamification
-    gcl_usr_id       int not null,                           # FK to userss
+    gcl_gme_id       int not null,
+    gcl_usr_id       int not null,
     gcl_claimed_at   datetime not null default current_timestamp,
-    gcl_status       enum('valid','invalid','winner') default 'valid',
+    gcl_status       enum('valid','invalid','winner') not null default 'valid',
     primary key (gcl_id),
     unique key uq_gamification_user (gcl_gme_id, gcl_usr_id)
 );
+
+create table xp_logs (
+    xpl_id          int not null auto_increment,
+    xpl_usr_id      int not null,
+    xpl_amount      int not null,
+    xpl_reason      varchar(255) not null,
+    xpl_created_at  datetime not null default current_timestamp,
+    primary key (xpl_id),
+    index idx_xp_logs_usr_id (xpl_usr_id)
+);
+
+create table notifications (
+    not_id           int not null auto_increment,
+    not_usr_id       int not null,
+    not_type         varchar(50),
+    not_message      text not null,
+    not_read         boolean not null default false,
+    not_created_at   datetime not null default current_timestamp,
+    primary key (not_id),
+    index idx_notifications_usr_id (not_usr_id)
+);
+
+create index idx_product_usr_id on product(prd_usr_id);
+create index idx_product_cat_id on product(prd_cat_id);
+create index idx_product_status on product(prd_status);
+create index idx_product_ends_at on product(prd_ends_at);
 
 alter table product
 add constraint product_fk_users
 foreign key (prd_usr_id) references userss(usr_id)
 on delete no action on update no action;
 
-alter table product_image
-add constraint product_image_fk_product
-foreign key (img_prd_id) references product(prd_id)
-on delete cascade on update no action;
-
 alter table product
 add constraint product_fk_category
 foreign key (prd_cat_id) references categorie(cat_id)
 on delete no action on update no action;
+
+alter table product_image
+add constraint product_image_fk_product
+foreign key (img_prd_id) references product(prd_id)
+on delete cascade on update no action;
 
 alter table bid
 add constraint bid_fk_product
@@ -125,4 +156,14 @@ on delete cascade on update no action;
 alter table gamification_claim
 add constraint gamification_claim_fk_user
 foreign key (gcl_usr_id) references userss(usr_id)
+on delete cascade on update no action;
+
+alter table xp_logs
+add constraint xp_logs_fk_user
+foreign key (xpl_usr_id) references userss(usr_id)
+on delete cascade on update no action;
+
+alter table notifications
+add constraint notifications_fk_user
+foreign key (not_usr_id) references userss(usr_id)
 on delete cascade on update no action;
