@@ -11,38 +11,38 @@ insert into categorie (cat_name) values ('Livros');              # cat_id = 8
 
 #users
 
-insert into userss (usr_name, usr_email, usr_password, usr_gender, usr_age, usr_photo, usr_bio, usr_xp, usr_role, usr_created_at)
-values ('Rodrigo Canto', 'rodrigocanto@hotmail.com', 'canto', 'M', 20, 'rodrigo_canto.jpg', 'Estudante e fã de tecnologia.', 120, 'admin', str_to_date('2025.10.20','%Y.%m.%d'));        # usr_id = 1
+insert into userss (usr_name, usr_email, usr_password, usr_gender, usr_birthdate, usr_photo, usr_bio, usr_xp, usr_role, usr_created_at)
+values ('Rodrigo Canto', 'rodrigocanto@hotmail.com', 'canto', 'M', str_to_date('2005.10.20','%Y.%m.%d'), 'rodrigo_canto.jpg', 'Estudante e fã de tecnologia.', 120, 'admin', str_to_date('2025.10.20','%Y.%m.%d'));        
 
-insert into userss (usr_name, usr_email, usr_password, usr_gender, usr_age, usr_photo, usr_bio, usr_xp, usr_role, usr_created_at)
-values ('Rodrigo Daibert', 'rodrigodaibert@hotmail.com', '1234', 'M', 20, 'rodrigo_daibert.jpg', 'Gosto de leilões e gaming.', 95, 'normaluser', str_to_date('2025.10.22','%Y.%m.%d'));       # usr_id = 2
+insert into userss (usr_name, usr_email, usr_password, usr_gender, usr_birthdate, usr_photo, usr_bio, usr_xp, usr_role, usr_created_at)
+values ('Rodrigo Daibert', 'rodrigodaibert@hotmail.com', '1234', 'M', str_to_date('2005.10.22','%Y.%m.%d'), 'rodrigo_daibert.jpg', 'Gosto de leilões e gaming.', 95, 'admin', str_to_date('2025.10.22','%Y.%m.%d'));       
 
-insert into userss (usr_name, usr_email, usr_password, usr_gender, usr_age, usr_photo, usr_bio, usr_xp, usr_role, usr_created_at)
-values ('Marco Fonseca', 'mf2006@gmail.com', 'hash1', 'M', 19, 'marco_fonseca.jpg', 'Colecionador e vendedor ocasional.', 180, 'normaluser', str_to_date('2025.10.24','%Y.%m.%d'));            # usr_id = 3
+insert into userss (usr_name, usr_email, usr_password, usr_gender, usr_birthdate, usr_photo, usr_bio, usr_xp, usr_role, usr_created_at)
+values ('Marco Fonseca', 'mf2006@gmail.com', 'hash1', 'M', str_to_date('2006.10.24','%Y.%m.%d'), 'marco_fonseca.jpg', 'Colecionador e vendedor ocasional.', 180, 'admin', str_to_date('2025.10.24','%Y.%m.%d'));            
 
-insert into userss (usr_name, usr_email, usr_password, usr_gender, usr_age, usr_photo, usr_bio, usr_xp, usr_role, usr_created_at)
-values ('Luis Quirim', 'luisquirim@gmail.com', 'hash1', 'M', 21, 'luis_quirim.jpg', 'Interesso-me por artigos para casa e carros.', 60, 'normaluser', str_to_date('2025.10.28','%Y.%m.%d'));    # usr_id = 4
+insert into userss (usr_name, usr_email, usr_password, usr_gender, usr_birthdate, usr_photo, usr_bio, usr_xp, usr_role, usr_created_at)
+values ('Luis Quirim', 'luisquirim@gmail.com', 'hash1', 'M', str_to_date('2004.10.28','%Y.%m.%d'), 'luis_quirim.jpg', 'Interesso-me por artigos para casa e carros.', 60, 'normaluser', str_to_date('2025.10.28','%Y.%m.%d'));    
 
-insert into userss (usr_name, usr_email, usr_password, usr_gender, usr_age, usr_photo, usr_bio, usr_xp, usr_role, usr_created_at)
-values ('Sandra Estrela', 'sandra@hotmail.com', 'hash1', 'F', 22, 'sandra_estrela.jpg', 'Adoro moda e decoração.', 140, 'normaluser', str_to_date('2025.10.30','%Y.%m.%d'));                 # usr_id = 5
+insert into userss (usr_name, usr_email, usr_password, usr_gender, usr_birthdate, usr_photo, usr_bio, usr_xp, usr_role, usr_created_at)
+values ('Sandra Estrela', 'sandra@hotmail.com', 'hash1', 'F', str_to_date('2003.10.30','%Y.%m.%d'), 'sandra_estrela.jpg', 'Adoro moda e decoração.', 140, 'normaluser', str_to_date('2025.10.30','%Y.%m.%d'));                 
 
-insert into userss (usr_name, usr_email, usr_password, usr_gender, usr_age, usr_photo, usr_bio, usr_xp, usr_role, usr_created_at)
-values ('Daniel Paulo', 'dexpaulo@hotmail.com', 'hash1', 'M', 20, 'daniel_paulo.jpg', 'Utilizador ativo na plataforma.', 75, 'normaluser', str_to_date('2025.11.01','%Y.%m.%d'));               # usr_id = 6
+insert into userss (usr_name, usr_email, usr_password, usr_gender, usr_birthdate, usr_photo, usr_bio, usr_xp, usr_role, usr_created_at)
+values ('Daniel Paulo', 'dexpaulo@hotmail.com', 'hash1', 'M', str_to_date('2005.11.01','%Y.%m.%d'), 'daniel_paulo.jpg', 'Utilizador ativo na plataforma.', 75, 'admin', str_to_date('2025.11.01','%Y.%m.%d'));               
 
-insert into userss (usr_name, usr_email, usr_password, usr_gender, usr_age, usr_photo, usr_bio, usr_xp, usr_role, usr_created_at)
-values ('Jocy Grangeiro', 'jocy12@gmail.com', 'hash1', 'F', 21, 'jocy_grangeiro.jpg', 'Gosto de oportunidades e prémios.', 110, 'normaluser', str_to_date('2025.11.04','%Y.%m.%d'));            # usr_id = 7
+insert into userss (usr_name, usr_email, usr_password, usr_gender, usr_birthdate, usr_photo, usr_bio, usr_xp, usr_role, usr_created_at)
+values ('Jocy Grangeiro', 'jocy12@gmail.com', 'hash1', 'F', str_to_date('2004.11.04','%Y.%m.%d'), 'jocy_grangeiro.jpg', 'Gosto de oportunidades e prémios.', 110, 'normaluser', str_to_date('2025.11.04','%Y.%m.%d'));            
 
-insert into userss (usr_name, usr_email, usr_password, usr_gender, usr_age, usr_photo, usr_bio, usr_xp, usr_role, usr_created_at)
-values ('Paulo Alberto', 'pauloencomendas@gmail.com', 'hash1', 'M', 24, 'paulo_alberto.jpg', 'Interessa-me eletrónica e desporto.', 90, 'normaluser', str_to_date('2025.11.09','%Y.%m.%d'));     # usr_id = 8
+insert into userss (usr_name, usr_email, usr_password, usr_gender, usr_birthdate, usr_photo, usr_bio, usr_xp, usr_role, usr_created_at)
+values ('Paulo Alberto', 'pauloencomendas@gmail.com', 'hash1', 'M', str_to_date('2001.11.09','%Y.%m.%d'), 'paulo_alberto.jpg', 'Interessa-me eletrónica e desporto.', 90, 'normaluser', str_to_date('2025.11.09','%Y.%m.%d'));     
 
-insert into userss (usr_name, usr_email, usr_password, usr_gender, usr_age, usr_photo, usr_bio, usr_xp, usr_role, usr_created_at)
-values ('Patricia Daibert', 'patriciadaibert@hotmail.com', 'hash1', 'F', 23, 'patricia_daibert.jpg', 'Procuro artigos de moda e casa.', 130, 'normaluser', str_to_date('2025.11.13','%Y.%m.%d')); # usr_id = 9
+insert into userss (usr_name, usr_email, usr_password, usr_gender, usr_birthdate, usr_photo, usr_bio, usr_xp, usr_role, usr_created_at)
+values ('Patricia Daibert', 'patriciadaibert@hotmail.com', 'hash1', 'F', str_to_date('2002.11.13','%Y.%m.%d'), 'patricia_daibert.jpg', 'Procuro artigos de moda e casa.', 130, 'normaluser', str_to_date('2025.11.13','%Y.%m.%d')); 
 
-insert into userss (usr_name, usr_email, usr_password, usr_gender, usr_age, usr_photo, usr_bio, usr_xp, usr_role, usr_created_at)
-values ('Martim Fonseca', 'mrmartim@hotmail.com', 'hash1', 'M', 19, 'martim_fonseca.jpg', 'Curioso por videojogos e gadgets.', 55, 'normaluser', str_to_date('2025.12.01','%Y.%m.%d'));          # usr_id = 10
+insert into userss (usr_name, usr_email, usr_password, usr_gender, usr_birthdate, usr_photo, usr_bio, usr_xp, usr_role, usr_created_at)
+values ('Martim Fonseca', 'mrmartim@hotmail.com', 'hash1', 'M', str_to_date('2006.12.01','%Y.%m.%d'), 'martim_fonseca.jpg', 'Curioso por videojogos e gadgets.', 55, 'normaluser', str_to_date('2025.12.01','%Y.%m.%d'));          
 
-insert into userss (usr_name, usr_email, usr_password, usr_gender, usr_age, usr_photo, usr_bio, usr_xp, usr_role, usr_created_at)
-values ('Tomas Lebre', 'tomaslebre@gmail.com', 'hash1', 'M', 20, 'tomas_lebre.jpg', 'Participante frequente em leilões.', 70, 'normaluser', str_to_date('2025.12.02','%Y.%m.%d'));               # usr_id = 11
+insert into userss (usr_name, usr_email, usr_password, usr_gender, usr_birthdate, usr_photo, usr_bio, usr_xp, usr_role, usr_created_at)
+values ('Tomas Lebre', 'tomaslebre@gmail.com', 'hash1', 'M', str_to_date('2005.12.02','%Y.%m.%d'), 'tomas_lebre.jpg', 'Participante frequente em leilões.', 70, 'normaluser', str_to_date('2025.12.02','%Y.%m.%d'));
 
 #products
 
@@ -72,41 +72,41 @@ values ('Jantes 18 Polegadas', 'Conjunto de 4 jantes em bom estado.', 7, 3, 'goo
 
 #product_images
 
-insert into product_image (img_prd_id, img_path)
-values (1, 'iphone13_1.jpg');   # img_id = 1
+insert into product_image (img_prd_id, img_path, img_is_primary)
+values (1, 'iphone13_1.jpg', true);
 
 insert into product_image (img_prd_id, img_path)
-values (1, 'iphone13_2.jpg');   # img_id = 2
+values (1, 'iphone13_2.jpg');
+
+insert into product_image (img_prd_id, img_path, img_is_primary)
+values (2, 'ps5_1.jpg', true);
 
 insert into product_image (img_prd_id, img_path)
-values (2, 'ps5_1.jpg');        # img_id = 3
+values (2, 'ps5_2.jpg');
+
+insert into product_image (img_prd_id, img_path, img_is_primary)
+values (3, 'casaco_pele_1.jpg', true);
+
+insert into product_image (img_prd_id, img_path, img_is_primary)
+values (4, 'bicicleta_btt_1.jpg', true);
 
 insert into product_image (img_prd_id, img_path)
-values (2, 'ps5_2.jpg');        # img_id = 4
+values (4, 'bicicleta_btt_2.jpg');
+
+insert into product_image (img_prd_id, img_path, img_is_primary)
+values (5, 'relogio_vintage_1.jpg', true);
+
+insert into product_image (img_prd_id, img_path, img_is_primary)
+values (6, 'mesa_jantar_1.jpg', true);
+
+insert into product_image (img_prd_id, img_path, img_is_primary)
+values (7, 'livro_java_1.jpg', true);
+
+insert into product_image (img_prd_id, img_path, img_is_primary)
+values (8, 'jantes_18_1.jpg', true);
 
 insert into product_image (img_prd_id, img_path)
-values (3, 'casaco_pele_1.jpg'); # img_id = 5
-
-insert into product_image (img_prd_id, img_path)
-values (4, 'bicicleta_btt_1.jpg'); # img_id = 6
-
-insert into product_image (img_prd_id, img_path)
-values (4, 'bicicleta_btt_2.jpg'); # img_id = 7
-
-insert into product_image (img_prd_id, img_path)
-values (5, 'relogio_vintage_1.jpg'); # img_id = 8
-
-insert into product_image (img_prd_id, img_path)
-values (6, 'mesa_jantar_1.jpg'); # img_id = 9
-
-insert into product_image (img_prd_id, img_path)
-values (7, 'livro_java_1.jpg'); # img_id = 10
-
-insert into product_image (img_prd_id, img_path)
-values (8, 'jantes_18_1.jpg');  # img_id = 11
-
-insert into product_image (img_prd_id, img_path)
-values (8, 'jantes_18_2.jpg');  # img_id = 12
+values (8, 'jantes_18_2.jpg');
 
 #bids
 
@@ -160,46 +160,151 @@ values (8, 8, 350.00, str_to_date('2025.12.16 13:30','%Y.%m.%d %H:%i'));  # bid_
 
 #gamification
 
-insert into gamification (gme_name, gme_description, gme_xp_reward, gme_prd_id, gme_latitude, gme_longitude, gme_radius, gme_status, gme_starts_at, gme_ends_at, gme_created_at)
-values ('Tesouro Lisboa Centro', 'Encontra o iPhone escondido no centro de Lisboa.', 50, 1, 38.7223000, -9.1393000, 30, 'active', str_to_date('2025.12.05 10:00','%Y.%m.%d %H:%i'), str_to_date('2025.12.05 18:00','%Y.%m.%d %H:%i'), str_to_date('2025.12.05','%Y.%m.%d'));   # gme_id = 1
+insert into gamification (gme_name, gme_description, gme_xp_reward, gme_prd_id, gme_latitude, gme_longitude, gme_radius, gme_verification_code, gme_status, gme_starts_at, gme_reveal_at, gme_ends_at, gme_created_at)
+values ('Tesouro Lisboa Centro', 'Encontra o iPhone escondido entre Lisboa e a margem sul.', 50, 1, 38.6890, -9.1770, 30, 'LX01', 'active',
+str_to_date('2025.12.05 10:00','%Y.%m.%d %H:%i'),
+str_to_date('2025.12.05 09:30','%Y.%m.%d %H:%i'),
+str_to_date('2025.12.05 18:00','%Y.%m.%d %H:%i'),
+str_to_date('2025.12.05','%Y.%m.%d'));
 
-insert into gamification (gme_name, gme_description, gme_xp_reward, gme_prd_id, gme_latitude, gme_longitude, gme_radius, gme_status, gme_starts_at, gme_ends_at, gme_created_at)
-values ('Tesouro Almada Fórum', 'Procura a PS5 escondida em Almada.', 40, 2, 38.6610000, -9.1580000, 25, 'active', str_to_date('2025.12.06 10:00','%Y.%m.%d %H:%i'), str_to_date('2025.12.06 18:00','%Y.%m.%d %H:%i'), str_to_date('2025.12.06','%Y.%m.%d'));      # gme_id = 2
+insert into gamification (gme_name, gme_description, gme_xp_reward, gme_prd_id, gme_latitude, gme_longitude, gme_radius, gme_verification_code, gme_status, gme_starts_at, gme_reveal_at, gme_ends_at, gme_created_at)
+values ('Tesouro Ponte Sul', 'Procura a PS5 escondida entre Lisboa e Almada.', 40, 2, 38.6890, -9.1770, 25, 'LX02', 'active',
+str_to_date('2025.12.06 10:00','%Y.%m.%d %H:%i'),
+str_to_date('2025.12.06 09:30','%Y.%m.%d %H:%i'),
+str_to_date('2025.12.06 18:00','%Y.%m.%d %H:%i'),
+str_to_date('2025.12.06','%Y.%m.%d'));
 
-insert into gamification (gme_name, gme_description, gme_xp_reward, gme_prd_id, gme_latitude, gme_longitude, gme_radius, gme_status, gme_starts_at, gme_ends_at, gme_created_at)
-values ('Tesouro Porto Baixa', 'Casaco escondido na baixa do Porto.', 60, 3, 41.1579000, -8.6291000, 35, 'active', str_to_date('2025.12.07 10:00','%Y.%m.%d %H:%i'), str_to_date('2025.12.07 18:00','%Y.%m.%d %H:%i'), str_to_date('2025.12.07','%Y.%m.%d'));      # gme_id = 3
+insert into gamification (gme_name, gme_description, gme_xp_reward, gme_prd_id, gme_latitude, gme_longitude, gme_radius, gme_verification_code, gme_status, gme_starts_at, gme_reveal_at, gme_ends_at, gme_created_at)
+values ('Tesouro Ponte Tejo', 'Casaco escondido na zona do Tejo.', 60, 3, 38.6890, -9.1770, 35, 'LX03', 'active',
+str_to_date('2025.12.07 10:00','%Y.%m.%d %H:%i'),
+str_to_date('2025.12.07 09:30','%Y.%m.%d %H:%i'),
+str_to_date('2025.12.07 18:00','%Y.%m.%d %H:%i'),
+str_to_date('2025.12.07','%Y.%m.%d'));
 
-insert into gamification (gme_name, gme_description, gme_xp_reward, gme_prd_id, gme_latitude, gme_longitude, gme_radius, gme_status, gme_starts_at, gme_ends_at, gme_created_at)
-values ('Tesouro Braga Centro', 'Bicicleta escondida em Braga.', 45, 4, 41.5454000, -8.4265000, 30, 'active', str_to_date('2025.12.08 10:00','%Y.%m.%d %H:%i'), str_to_date('2025.12.08 18:00','%Y.%m.%d %H:%i'), str_to_date('2025.12.08','%Y.%m.%d'));            # gme_id = 4
+insert into gamification (gme_name, gme_description, gme_xp_reward, gme_prd_id, gme_latitude, gme_longitude, gme_radius, gme_verification_code, gme_status, gme_starts_at, gme_reveal_at, gme_ends_at, gme_created_at)
+values ('Tesouro Ponte Lisboa', 'Bicicleta escondida junto ao Tejo.', 45, 4, 38.6890, -9.1770, 30, 'LX04', 'active',
+str_to_date('2025.12.08 10:00','%Y.%m.%d %H:%i'),
+str_to_date('2025.12.08 09:30','%Y.%m.%d %H:%i'),
+str_to_date('2025.12.08 18:00','%Y.%m.%d %H:%i'),
+str_to_date('2025.12.08','%Y.%m.%d'));
 
-insert into gamification (gme_name, gme_description, gme_xp_reward, gme_prd_id, gme_latitude, gme_longitude, gme_radius, gme_status, gme_starts_at, gme_ends_at, gme_created_at)
-values ('Tesouro Coimbra Praça', 'Relógio vintage escondido em Coimbra.', 55, 5, 40.2033000, -8.4103000, 30, 'active', str_to_date('2025.12.09 10:00','%Y.%m.%d %H:%i'), str_to_date('2025.12.09 18:00','%Y.%m.%d %H:%i'), str_to_date('2025.12.09','%Y.%m.%d')); # gme_id = 5
+insert into gamification (gme_name, gme_description, gme_xp_reward, gme_prd_id, gme_latitude, gme_longitude, gme_radius, gme_verification_code, gme_status, gme_starts_at, gme_reveal_at, gme_ends_at, gme_created_at)
+values ('Tesouro Margem Sul', 'Relógio escondido perto do rio.', 55, 5, 38.6890, -9.1770, 30, 'LX05', 'active',
+str_to_date('2025.12.09 10:00','%Y.%m.%d %H:%i'),
+str_to_date('2025.12.09 09:30','%Y.%m.%d %H:%i'),
+str_to_date('2025.12.09 18:00','%Y.%m.%d %H:%i'),
+str_to_date('2025.12.09','%Y.%m.%d'));
 
-insert into gamification (gme_name, gme_description, gme_xp_reward, gme_prd_id, gme_latitude, gme_longitude, gme_radius, gme_status, gme_starts_at, gme_ends_at, gme_created_at)
-values ('Tesouro Setúbal Mercado', 'Mesa escondida em Setúbal.', 35, 6, 38.5244000, -8.8882000, 20, 'active', str_to_date('2025.12.10 10:00','%Y.%m.%d %H:%i'), str_to_date('2025.12.10 18:00','%Y.%m.%d %H:%i'), str_to_date('2025.12.10','%Y.%m.%d'));    # gme_id = 6
+insert into gamification (gme_name, gme_description, gme_xp_reward, gme_prd_id, gme_latitude, gme_longitude, gme_radius, gme_verification_code, gme_status, gme_starts_at, gme_reveal_at, gme_ends_at, gme_created_at)
+values ('Tesouro Rio Tejo', 'Mesa escondida na zona ribeirinha.', 35, 6, 38.6890, -9.1770, 20, 'LX06', 'active',
+str_to_date('2025.12.10 10:00','%Y.%m.%d %H:%i'),
+str_to_date('2025.12.10 09:30','%Y.%m.%d %H:%i'),
+str_to_date('2025.12.10 18:00','%Y.%m.%d %H:%i'),
+str_to_date('2025.12.10','%Y.%m.%d'));
 
-insert into gamification (gme_name, gme_description, gme_xp_reward, gme_prd_id, gme_latitude, gme_longitude, gme_radius, gme_status, gme_starts_at, gme_ends_at, gme_created_at)
-values ('Tesouro Aveiro Ria', 'Livro Java escondido em Aveiro.', 50, 7, 40.6405000, -8.6538000, 25, 'active', str_to_date('2025.12.11 10:00','%Y.%m.%d %H:%i'), str_to_date('2025.12.11 18:00','%Y.%m.%d %H:%i'), str_to_date('2025.12.11','%Y.%m.%d'));              # gme_id = 7
+insert into gamification (gme_name, gme_description, gme_xp_reward, gme_prd_id, gme_latitude, gme_longitude, gme_radius, gme_verification_code, gme_status, gme_starts_at, gme_reveal_at, gme_ends_at, gme_created_at)
+values ('Tesouro Tejo Norte', 'Livro Java escondido junto ao rio.', 50, 7, 38.6890, -9.1770, 25, 'LX07', 'active',
+str_to_date('2025.12.11 10:00','%Y.%m.%d %H:%i'),
+str_to_date('2025.12.11 09:30','%Y.%m.%d %H:%i'),
+str_to_date('2025.12.11 18:00','%Y.%m.%d %H:%i'),
+str_to_date('2025.12.11','%Y.%m.%d'));
 
-insert into gamification (gme_name, gme_description, gme_xp_reward, gme_prd_id, gme_latitude, gme_longitude, gme_radius, gme_status, gme_starts_at, gme_ends_at, gme_created_at)
-values ('Tesouro Sintra Vila', 'Jantes escondidas em Sintra.', 70, 8, 38.8029000, -9.3817000, 40, 'active', str_to_date('2025.12.12 10:00','%Y.%m.%d %H:%i'), str_to_date('2025.12.12 18:00','%Y.%m.%d %H:%i'), str_to_date('2025.12.12','%Y.%m.%d'));      # gme_id = 8
+insert into gamification (gme_name, gme_description, gme_xp_reward, gme_prd_id, gme_latitude, gme_longitude, gme_radius, gme_verification_code, gme_status, gme_starts_at, gme_reveal_at, gme_ends_at, gme_created_at)
+values ('Tesouro Ponte Final', 'Jantes escondidas perto da ponte.', 70, 8, 38.6890, -9.1770, 40, 'LX08', 'active',
+str_to_date('2025.12.12 10:00','%Y.%m.%d %H:%i'),
+str_to_date('2025.12.12 09:30','%Y.%m.%d %H:%i'),
+str_to_date('2025.12.12 18:00','%Y.%m.%d %H:%i'),
+str_to_date('2025.12.12','%Y.%m.%d'));
 
 #gamification_claim
 
 insert into gamification_claim (gcl_gme_id, gcl_usr_id, gcl_claimed_at, gcl_status)
-values (1, 2, str_to_date('2025.12.05 10:30','%Y.%m.%d %H:%i'), 'winner');
+values (1, 2, str_to_date('2025.12.05 10:30','%Y.%m.%d %H:%i'), 'valid');
 
 insert into gamification_claim (gcl_gme_id, gcl_usr_id, gcl_claimed_at, gcl_status)
 values (1, 6, str_to_date('2025.12.05 11:00','%Y.%m.%d %H:%i'), 'invalid');
 
 insert into gamification_claim (gcl_gme_id, gcl_usr_id, gcl_claimed_at, gcl_status)
-values (2, 4, str_to_date('2025.12.06 10:45','%Y.%m.%d %H:%i'), 'winner');
+values (2, 4, str_to_date('2025.12.06 10:45','%Y.%m.%d %H:%i'), 'valid');
 
 insert into gamification_claim (gcl_gme_id, gcl_usr_id, gcl_claimed_at, gcl_status)
 values (2, 7, str_to_date('2025.12.06 11:15','%Y.%m.%d %H:%i'), 'invalid');
 
 insert into gamification_claim (gcl_gme_id, gcl_usr_id, gcl_claimed_at, gcl_status)
-values (3, 8, str_to_date('2025.12.07 12:00','%Y.%m.%d %H:%i'), 'winner');
+values (3, 8, str_to_date('2025.12.07 12:00','%Y.%m.%d %H:%i'), 'valid');
 
 insert into gamification_claim (gcl_gme_id, gcl_usr_id, gcl_claimed_at, gcl_status)
 values (3, 9, str_to_date('2025.12.07 12:30','%Y.%m.%d %H:%i'), 'invalid');
+
+#xp_logs
+
+insert into xp_logs (xpl_usr_id, xpl_amount, xpl_reason)
+values (2, 50, 'Participação em evento gamification');
+
+insert into xp_logs (xpl_usr_id, xpl_amount, xpl_reason)
+values (4, 40, 'Participação em evento gamification');
+
+insert into xp_logs (xpl_usr_id, xpl_amount, xpl_reason)
+values (8, 60, 'Participação em evento gamification');
+
+insert into xp_logs (xpl_usr_id, xpl_amount, xpl_reason)
+values (1, 20, 'Criação de produto');
+
+insert into xp_logs (xpl_usr_id, xpl_amount, xpl_reason)
+values (3, 20, 'Criação de produto');
+
+insert into xp_logs (xpl_usr_id, xpl_amount, xpl_reason)
+values (5, 20, 'Criação de produto');
+
+insert into xp_logs (xpl_usr_id, xpl_amount, xpl_reason)
+values (2, 10, 'Licitação em produto');
+
+insert into xp_logs (xpl_usr_id, xpl_amount, xpl_reason)
+values (6, 10, 'Licitação em produto');
+
+insert into xp_logs (xpl_usr_id, xpl_amount, xpl_reason)
+values (7, 10, 'Licitação em produto');
+
+insert into xp_logs (xpl_usr_id, xpl_amount, xpl_reason)
+values (9, 15, 'Atividade na plataforma');
+
+insert into xp_logs (xpl_usr_id, xpl_amount, xpl_reason)
+values (10, 10, 'Participação geral');
+
+insert into xp_logs (xpl_usr_id, xpl_amount, xpl_reason)
+values (11, 10, 'Participação geral');
+
+#notifications
+
+insert into notifications (not_usr_id, not_type, not_message)
+values (1, 'bid', 'Recebeste uma nova licitação no teu produto iPhone 13.');
+
+insert into notifications (not_usr_id, not_type, not_message)
+values (3, 'bid', 'O teu produto PlayStation 5 recebeu uma nova licitação.');
+
+insert into notifications (not_usr_id, not_type, not_message)
+values (2, 'gamification', 'Novo evento disponível: Tesouro Lisboa Centro.');
+
+insert into notifications (not_usr_id, not_type, not_message)
+values (4, 'gamification', 'Novo evento disponível: Tesouro Ponte Sul.');
+
+insert into notifications (not_usr_id, not_type, not_message)
+values (5, 'gamification', 'Novo evento disponível: Tesouro Ponte Tejo.');
+
+insert into notifications (not_usr_id, not_type, not_message)
+values (6, 'system', 'A tua conta foi atualizada com sucesso.');
+
+insert into notifications (not_usr_id, not_type, not_message)
+values (7, 'system', 'Explora os novos produtos disponíveis.');
+
+insert into notifications (not_usr_id, not_type, not_message)
+values (8, 'bid', 'Foste ultrapassado numa licitação.');
+
+insert into notifications (not_usr_id, not_type, not_message)
+values (9, 'system', 'Nova funcionalidade disponível na plataforma.');
+
+insert into notifications (not_usr_id, not_type, not_message)
+values (10, 'gamification', 'Participa nos novos desafios disponíveis.');
+
+insert into notifications (not_usr_id, not_type, not_message)
+values (11, 'system', 'Obrigado por usares a plataforma!');
