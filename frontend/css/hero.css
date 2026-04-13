@@ -1,0 +1,27 @@
+/* ── HERO ── */
+
+.hero {
+    background: linear-gradient(135deg, #1a1a2e 0%, #2c2c54 100%);
+    color: #fff;
+    text-align: center;
+    padding: 48px 24px;
+}
+
+.hero__title {
+    font-size: 2.2rem;
+    color: #C9A84C;
+    margin-bottom: 8px;
+}
+
+.hero__sub {
+    font-size: 1rem;
+    color: #ccc;
+    margin-bottom: 20px;
+}
+
+.hero__cta {
+    display: inline-flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+}

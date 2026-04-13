@@ -1,0 +1,28 @@
+/* ── BARRA DE ESTATÍSTICAS ── */
+
+.stats-bar {
+    background: #fff;
+    border-bottom: 1px solid #e0e0e0;
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    padding: 14px 24px;
+    flex-wrap: wrap;
+}
+
+.stat {
+    text-align: center;
+}
+
+.stat__number {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #C9A84C;
+}
+
+.stat__label {
+    font-size: 0.78rem;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}

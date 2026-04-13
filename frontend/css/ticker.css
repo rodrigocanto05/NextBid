@@ -1,0 +1,45 @@
+/* ── TICKER DE LICITAÇÕES AO VIVO ── */
+
+.ticker {
+    background: #C9A84C;
+    color: #1a1a2e;
+    padding: 6px 0;
+    overflow: hidden;
+    white-space: nowrap;
+    font-size: 0.85rem;
+    font-weight: bold;
+}
+
+.ticker__label {
+    display: inline-block;
+    background: #1a1a2e;
+    color: #C9A84C;
+    padding: 0 12px;
+    margin-right: 16px;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.ticker__track {
+    display: inline-block;
+    animation: ticker-scroll 30s linear infinite;
+}
+
+.ticker__track:hover {
+    animation-play-state: paused;
+}
+
+.ticker__item {
+    display: inline-block;
+    margin-right: 48px;
+}
+
+.ticker__item::before {
+    content: "🔨 ";
+}
+
+@keyframes ticker-scroll {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}

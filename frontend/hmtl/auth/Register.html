@@ -1,47 +1,79 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt">
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Comaptible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="keywords" content="NextBid Registar, Leilão Registar, Leilão online">
-
-    <title>NextBid - Registar</title>
+    <title>NextBid — Registar</title>
+    <link rel="stylesheet" href="../../css/reset.css">
+    <link rel="stylesheet" href="../../css/navbar.css">
+    <link rel="stylesheet" href="../../css/forms.css">
+    <link rel="stylesheet" href="../../css/footer.css">
 </head>
 
 <body>
-    <nav>
-        <a href="/frontend/hmtl/index.html">Voltar</a>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <span class="navbar__logo">NextBid</span>
+        <a href="/frontend/hmtl/index.html">
+            <button class="btn btn--outline">← Início</button>
+        </a>
     </nav>
 
-    <header>
-        <h1>Registar:</h1>
-    </header>
+    <!-- CARTÃO DE REGISTO -->
+    <main class="auth-page">
+        <div class="auth-card">
 
-    <main>
-        <form id="RegisterPage">
-            <input type="Nome" id="Nome" placeholder="Nome" required>
-            <br><br>
-            <input type="email" id="email" placeholder="Email" required>
-            <br><br>
-            <input type="password" id="password" placeholder="Password" required>
-            <br><br>
-            <label for="gênero">Gênero:</label>
-            <select name="gênero" id="gênero" required>
-                <option value="Masculino">masculino</option>
-                <option value="Feminino">feminino</option>
-                <option value="outro">outro</option>
-                <input type="outro" name="outro" id="outro" placeholder="outro">
-            </select>
-            <br><br>
-            <button type="submit">Começar</button>
-        </form>
+            <div class="auth-card__header">
+                <span class="auth-card__logo">NextBid</span>
+                <p class="auth-card__title">Cria a tua conta</p>
+            </div>
 
-        <script src="Register.js"></script>
+            <form id="RegisterPage" class="auth-card__form">
+                <div class="form-group">
+                    <label for="Nome">Nome</label>
+                    <input type="text" id="Nome" placeholder="O teu nome completo" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" placeholder="exemplo@email.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Mínimo 8 caracteres" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="gênero">Género</label>
+                    <select id="gênero" name="gênero" required>
+                        <option value="" disabled selected>Seleciona o género</option>
+                        <option value="Masculino">Masculino</option>
+                        <option value="Feminino">Feminino</option>
+                        <option value="outro">Outro</option>
+                    </select>
+                </div>
+
+                <p class="auth-card__error" id="register-erro"></p>
+
+                <button type="submit" class="auth-card__btn">Criar conta</button>
+            </form>
+
+            <p class="auth-card__link">
+                Já tens conta? <a href="Login.html">Fazer login →</a>
+            </p>
+
+        </div>
     </main>
 
+    <footer>
+        <p>&copy; 2026 NextBid — Todos os direitos reservados</p>
+    </footer>
 
+    <script src="../../js/Register.js"></script>
 
 </body>
 

@@ -1,30 +1,64 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt">
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Comaptible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="keywords" content="NextBid Login, Leilão Login, Leilão online">
-    <title>NextBid - Login</title>
+    <title>NextBid — Login</title>
+    <link rel="stylesheet" href="../../css/reset.css">
+    <link rel="stylesheet" href="../../css/navbar.css">
+    <link rel="stylesheet" href="../../css/forms.css">
+    <link rel="stylesheet" href="../../css/footer.css">
 </head>
 
 <body>
-    <nav>
-        <a href="/frontend/hmtl/index.html">Voltar</a>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <span class="navbar__logo">NextBid</span>
+        <a href="/frontend/hmtl/index.html">
+            <button class="btn btn--outline">← Início</button>
+        </a>
     </nav>
 
-    <h1>Login</h1>
+    <!-- CARTÃO DE LOGIN -->
+    <main class="auth-page">
+        <div class="auth-card">
 
-    <form id="LoginPage">
-        <input type="email" id="email" placeholder="Email" required>
-        <br><br>
-        <input type="password" id="password" placeholder="Password" required>
-        <br><br>
-        <button type="submit">Entrar</button>
-    </form>
+            <div class="auth-card__header">
+                <span class="auth-card__logo">NextBid</span>
+                <p class="auth-card__title">Bem-vindo de volta</p>
+            </div>
 
-    <script src="Login.js"></script>
+            <form id="LoginPage" class="auth-card__form">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" placeholder="exemplo@email.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="A tua password" required>
+                </div>
+
+                <p class="auth-card__error" id="login-erro"></p>
+
+                <button type="submit" class="auth-card__btn">Entrar</button>
+            </form>
+
+            <p class="auth-card__link">
+                Ainda não tens conta? <a href="Register.html">Registar →</a>
+            </p>
+
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 NextBid — Todos os direitos reservados</p>
+    </footer>
+
+    <script src="../../js/Login.js"></script>
 
 </body>
 

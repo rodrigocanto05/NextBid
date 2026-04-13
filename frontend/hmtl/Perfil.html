@@ -15,17 +15,39 @@
     </header>
 
     <main>
-        <h4>Nome:</h4>
-        <br><br>
-        <h4><E-mail>E-mail:</E-mail></h4>
-        <br><br>
-        <h4>Password:</h4>
-        <br><br>
+        <h4>Nome: <span id="profile-nome"></span></h4>
+        <br>
+        <h4>E-mail: <span id="profile-email"></span></h4>
+        <br>
+        <h4>XP: <span id="profile-xp"></span></h4>
+        <br>
+        <h4>Leilões ativos: <span id="profile-leiloes"></span></h4>
+        <br>
+        <h4>Total de licitações: <span id="profile-licitacoes"></span></h4>
+        <br>
+
+        <hr>
+        <h3>Atualizar perfil</h3>
+        <form id="form-atualizar">
+            <input type="email" id="edit-email" placeholder="Novo e-mail (opcional)">
+            <br><br>
+            <input type="password" id="edit-password" placeholder="Nova password (opcional, mín. 8 chars)">
+            <br><br>
+            <textarea id="edit-bio" placeholder="Bio (opcional)" rows="3"></textarea>
+            <br><br>
+            <button type="submit">Guardar alterações</button>
+        </form>
+        <p id="perfil-msg"></p>
+
+        <br>
+        <button id="btn-logout">Terminar sessão</button>
     </main>
 
     <footer>
         <p>&copy; 2026 NextBid</p>
     </footer>
+
+    <script src="../js/Perfil.js"></script>
 
 </body>
 
