@@ -1,7 +1,3 @@
-/* ── NEXTBID — ponto de entrada CSS ──
-   Importa todos os módulos por ordem.
-   Usa este ficheiro em páginas que precisem de tudo. */
-
 @import url('reset.css');
 @import url('navbar.css');
 @import url('ticker.css');
@@ -10,3 +6,4 @@
 @import url('stats.css');
 @import url('footer.css');
 @import url('utils.css');
+@import url('forms.css');

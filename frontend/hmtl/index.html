@@ -8,15 +8,7 @@
     <meta name="description" content="NextBid — Plataforma de Leilões Online">
     <meta name="keywords" content="Leilões online, Leilões, Licitar online, produtos Leilões">
     <title>NextBid — Leilões Online</title>
-    <link rel="stylesheet" href="../css/reset.css">
-    <link rel="stylesheet" href="../css/navbar.css">
-    <link rel="stylesheet" href="../css/ticker.css">
-    <link rel="stylesheet" href="../css/hero.css">
-    <link rel="stylesheet" href="../css/cards.css">
-    <link rel="stylesheet" href="../css/stats.css">
-    <link rel="stylesheet" href="../css/footer.css">
-    <link rel="stylesheet" href="../css/utils.css">
-    <link rel="stylesheet" href="../css/forms.css">
+    <link rel="stylesheet" href="../css/main.css">
 </head>
 
 <body>
@@ -52,7 +44,7 @@
     <!-- ── HERO ─────────────────────────────────────────────── -->
     <section class="hero">
         <h1 class="hero__title">NextBid</h1>
-        <p class="hero__sub">A tua plataforma de leilões online — licita, ganha e explora tesouros perto de ti.</p>
+        <p class="hero__sub">A tua plataforma de leilões online. Licita, ganha e explora tesouros perto de ti.</p>
         <div class="hero__cta">
             <a href="LL active/LeiloesAtivos.html"><button class="btn btn--primary">Ver todos os leilões</button></a>
             <a href="CaçaAoTesouro.html"><button class="btn btn--outline">Caça ao Tesouro</button></a>
@@ -97,13 +89,13 @@
 
     <!-- Pop-up de boas-vindas após registo -->
     <script>
-    (function() {
-        const welcomeName = localStorage.getItem('welcome');
-        if (welcomeName) {
-            localStorage.removeItem('welcome');
-            const overlay = document.createElement('div');
-            overlay.className = 'welcome-overlay';
-            overlay.innerHTML = `
+        (function () {
+            const welcomeName = localStorage.getItem('welcome');
+            if (welcomeName) {
+                localStorage.removeItem('welcome');
+                const overlay = document.createElement('div');
+                overlay.className = 'welcome-overlay';
+                overlay.innerHTML = `
                 <div class="welcome-popup">
                     <img src="../img/logo-NextBid.png" alt="NextBid">
                     <h2>Bem-vindo, ${welcomeName}!</h2>
@@ -111,15 +103,15 @@
                     <button class="btn btn--primary" id="welcome-close">Começar</button>
                 </div>
             `;
-            document.body.appendChild(overlay);
-            document.getElementById('welcome-close').addEventListener('click', function() {
-                overlay.remove();
-            });
-            overlay.addEventListener('click', function(e) {
-                if (e.target === overlay) overlay.remove();
-            });
-        }
-    })();
+                document.body.appendChild(overlay);
+                document.getElementById('welcome-close').addEventListener('click', function () {
+                    overlay.remove();
+                });
+                overlay.addEventListener('click', function (e) {
+                    if (e.target === overlay) overlay.remove();
+                });
+            }
+        })();
     </script>
 
 </body>
