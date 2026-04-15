@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost/NextBid';
+const BASE_URL = 'http://localhost/NextBid/backend';
 
 // ─── Init ────────────────────────────────────────────────────────────────────
 

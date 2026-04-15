@@ -68,3 +68,16 @@
     color: #1a1a2e;
     font-weight: bold;
 }
+
+/* Logo com imagem na navbar */
+.navbar__logo-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+}
+
+.navbar__logo-img {
+    height: 36px;
+    width: auto;
+}

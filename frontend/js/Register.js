@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost/NextBid';
+const BASE_URL = 'http://localhost/NextBid/backend';
 
 document.getElementById('RegisterPage').addEventListener('submit', async function (e) {
     e.preventDefault();
@@ -7,6 +7,8 @@ document.getElementById('RegisterPage').addEventListener('submit', async functio
     const email = document.getElementById('email').value.trim();
     const password = document.getElementById('password').value;
     const gender = document.getElementById('gênero').value;
+    const birthdate = document.getElementById('birthdate').value;
+    const bio = '';
 
     if (password.length < 8) {
         mostrarErro('A password deve ter pelo menos 8 caracteres');
@@ -17,14 +19,14 @@ document.getElementById('RegisterPage').addEventListener('submit', async functio
         const res = await fetch(`${BASE_URL}/api/auth/register.php`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name, email, password, gender })
+            body: JSON.stringify({ name, email, password, gender, birthdate, bio })
         });
 
         const data = await res.json();
 
         if (data.status === 'success') {
-            alert('Registo efetuado com sucesso! Podes fazer login.');
-            window.location.href = 'Login.html';
+            localStorage.setItem('welcome', name);
+            window.location.href = '../index.html';
         } else {
             mostrarErro(data.message || 'Erro ao registar');
         }

@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost/NextBid';
+const BASE_URL = 'http://localhost/NextBid/backend';
 
 document.addEventListener('DOMContentLoaded', function () {
     const container = document.querySelector('main');
@@ -63,7 +63,7 @@ async function reclamarTesouro(e) {
     const user = JSON.parse(localStorage.getItem('user') || 'null');
     if (!user) {
         alert('Tens de fazer login para reclamar tesouros.');
-        window.location.href = '/frontend/hmtl/auth/Login.html';
+        window.location.href = '/NextBid/frontend/hmtl/auth/Login.html';
         return;
     }
 

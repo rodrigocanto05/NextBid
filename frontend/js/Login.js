@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost/NextBid';
+const BASE_URL = 'http://localhost/NextBid/backend';
 
 document.getElementById('LoginPage').addEventListener('submit', async function (e) {
     e.preventDefault();
@@ -18,7 +18,7 @@ document.getElementById('LoginPage').addEventListener('submit', async function (
         if (data.status === 'success') {
             localStorage.setItem('token', data.token);
             localStorage.setItem('user', JSON.stringify(data.user));
-            window.location.href = '/frontend/hmtl/index.html';
+            window.location.href = '/NextBid/frontend/hmtl/index.html';
         } else {
             mostrarErro(data.message || 'Credenciais inválidas');
         }

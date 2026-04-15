@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost/NextBid';
+const BASE_URL = 'http://localhost/NextBid/backend';
 
 document.addEventListener('DOMContentLoaded', function () {
     const container = document.getElementById('leiloes-container');

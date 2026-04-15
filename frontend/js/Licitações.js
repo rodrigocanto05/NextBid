@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost/NextBid';
+const BASE_URL = 'http://localhost/NextBid/backend';
 
 const params = new URLSearchParams(window.location.search);
 const productId = params.get('product_id');
@@ -48,7 +48,7 @@ document.getElementById('form-licitar')?.addEventListener('submit', async functi
     const user = JSON.parse(localStorage.getItem('user') || 'null');
     if (!user) {
         alert('Tens de fazer login para licitar.');
-        window.location.href = '/frontend/hmtl/auth/Login.html';
+        window.location.href = '/NextBid/frontend/hmtl/auth/Login.html';
         return;
     }
 

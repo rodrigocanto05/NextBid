@@ -9,8 +9,9 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     exit(json_encode(['status' => 'error', 'message' => 'Use POST.']));
 }
 
-$email = $_POST["email"] ?? '';
-$password = $_POST["password"] ?? '';
+$body     = json_decode(file_get_contents('php://input'), true) ?? [];
+$email    = $body['email'] ?? '';
+$password = $body['password'] ?? '';
 
 $userMgr = new UserManager($pdo);
 $resultado = $userMgr->login($email, $password);

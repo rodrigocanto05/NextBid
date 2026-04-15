@@ -1,10 +1,10 @@
-const BASE_URL = 'http://localhost/NextBid';
+const BASE_URL = 'http://localhost/NextBid/backend';
 
 document.addEventListener('DOMContentLoaded', function () {
     const user = JSON.parse(localStorage.getItem('user') || 'null');
 
     if (!user) {
-        window.location.href = '/frontend/hmtl/auth/Login.html';
+        window.location.href = '/NextBid/frontend/hmtl/auth/Login.html';
         return;
     }
 
@@ -65,5 +65,5 @@ document.getElementById('form-atualizar')?.addEventListener('submit', async func
 document.getElementById('btn-logout')?.addEventListener('click', function () {
     localStorage.removeItem('user');
     localStorage.removeItem('token');
-    window.location.href = '/frontend/hmtl/auth/Login.html';
+    window.location.href = '/NextBid/frontend/hmtl/auth/Login.html';
 });

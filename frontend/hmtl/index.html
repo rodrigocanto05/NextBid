@@ -16,13 +16,17 @@
     <link rel="stylesheet" href="../css/stats.css">
     <link rel="stylesheet" href="../css/footer.css">
     <link rel="stylesheet" href="../css/utils.css">
+    <link rel="stylesheet" href="../css/forms.css">
 </head>
 
 <body>
 
     <!-- ── NAVBAR ──────────────────────────────────────────── -->
     <nav class="navbar">
-        <span class="navbar__logo">NextBid</span>
+        <a href="index.html" class="navbar__logo-link">
+            <img src="../img/logo-NextBid.png" alt="NextBid" class="navbar__logo-img">
+            <span class="navbar__logo">NextBid</span>
+        </a>
 
         <ul class="navbar__links">
             <li><a href="index.html">Início</a></li>
@@ -32,7 +36,6 @@
         </ul>
 
         <div class="navbar__auth" id="navbar-auth">
-            <!-- preenchido por index.js -->
             <a href="auth/Login.html"><button class="btn btn--outline">Login</button></a>
             <a href="auth/Register.html"><button class="btn btn--primary">Registar</button></a>
         </div>
@@ -91,6 +94,33 @@
 
     <script src="../js/Cronometro.js"></script>
     <script src="../js/index.js"></script>
+
+    <!-- Pop-up de boas-vindas após registo -->
+    <script>
+    (function() {
+        const welcomeName = localStorage.getItem('welcome');
+        if (welcomeName) {
+            localStorage.removeItem('welcome');
+            const overlay = document.createElement('div');
+            overlay.className = 'welcome-overlay';
+            overlay.innerHTML = `
+                <div class="welcome-popup">
+                    <img src="../img/logo-NextBid.png" alt="NextBid">
+                    <h2>Bem-vindo, ${welcomeName}!</h2>
+                    <p>A tua conta foi criada com sucesso. Explora leilões e começa a licitar!</p>
+                    <button class="btn btn--primary" id="welcome-close">Começar</button>
+                </div>
+            `;
+            document.body.appendChild(overlay);
+            document.getElementById('welcome-close').addEventListener('click', function() {
+                overlay.remove();
+            });
+            overlay.addEventListener('click', function(e) {
+                if (e.target === overlay) overlay.remove();
+            });
+        }
+    })();
+    </script>
 
 </body>
 

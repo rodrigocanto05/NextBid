@@ -16,8 +16,11 @@
 
     <!-- NAVBAR -->
     <nav class="navbar">
-        <span class="navbar__logo">NextBid</span>
-        <a href="/frontend/hmtl/index.html">
+        <a href="../index.html" class="navbar__logo-link">
+            <img src="../../img/logo-NextBid.png" alt="NextBid" class="navbar__logo-img">
+            <span class="navbar__logo">NextBid</span>
+        </a>
+        <a href="../index.html">
             <button class="btn btn--outline">← Início</button>
         </a>
     </nav>
@@ -27,7 +30,8 @@
         <div class="auth-card">
 
             <div class="auth-card__header">
-                <span class="auth-card__logo">NextBid</span>
+                <img src="../../img/logo-NextBid.png" alt="NextBid" class="auth-card__logo-img">
+                <h1 class="auth-card__page-title">Registar</h1>
                 <p class="auth-card__title">Cria a tua conta</p>
             </div>
 
@@ -51,10 +55,15 @@
                     <label for="gênero">Género</label>
                     <select id="gênero" name="gênero" required>
                         <option value="" disabled selected>Seleciona o género</option>
-                        <option value="Masculino">Masculino</option>
-                        <option value="Feminino">Feminino</option>
-                        <option value="outro">Outro</option>
+                        <option value="M">Masculino</option>
+                        <option value="F">Feminino</option>
+                        <option value="O">Outro</option>
                     </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="birthdate">Data de nascimento</label>
+                    <input type="date" id="birthdate" required>
                 </div>
 
                 <p class="auth-card__error" id="register-erro"></p>

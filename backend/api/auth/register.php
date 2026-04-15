@@ -9,13 +9,13 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit(json_encode(['status' => 'error', 'message' => 'Método não autorizado.']));
 }
 
-$userMgr = new UserManager($pdo);
-$name      = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_SPECIAL_CHARS);
-$email     = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
-$password  = $_POST['password'] ?? '';
-$gender    = $_POST['gender'] ?? '';
-$birthdate = $_POST['birthdate'] ?? '';
-$bio       = filter_input(INPUT_POST, 'bio', FILTER_SANITIZE_SPECIAL_CHARS) ?? '';
+$body      = json_decode(file_get_contents('php://input'), true) ?? [];
+$name      = trim($body['name'] ?? '');
+$email     = filter_var($body['email'] ?? '', FILTER_VALIDATE_EMAIL);
+$password  = $body['password'] ?? '';
+$gender    = $body['gender'] ?? '';
+$birthdate = $body['birthdate'] ?? '';
+$bio       = trim($body['bio'] ?? '');
 $xpInicial = rand(10, 50);
 
 if (!$name || !$email || empty($birthdate) || empty($gender)) {
@@ -27,6 +27,8 @@ if (strlen($password) < 8) {
     echo json_encode(['status' => 'error', 'message' => 'A password deve ter no mínimo 8 caracteres.']);
     exit;
 }
+
+$userMgr = new UserManager($pdo);
 
 try {
     $success = $userMgr->register($name, $email, $password, $gender, $birthdate, $bio, $xpInicial);
