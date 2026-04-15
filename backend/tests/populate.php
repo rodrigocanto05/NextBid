@@ -14,11 +14,11 @@ try {
     $pdo->exec("TRUNCATE TABLE product;");
     $pdo->exec("TRUNCATE TABLE gamification_claim;");
     $pdo->exec("TRUNCATE TABLE gamification;");
-    $pdo->exec("TRUNCATE TABLE categorie;");
+    $pdo->exec("TRUNCATE TABLE category;");
     $pdo->exec("TRUNCATE TABLE userss;");
     $pdo->exec("SET FOREIGN_KEY_CHECKS = 1;");
 
-    $pdo->exec("INSERT INTO categorie (cat_name) VALUES ('Eletrónica'), ('Colecionáveis'), ('Veículos')");
+    $pdo->exec("INSERT INTO category (cat_name) VALUES ('Eletrónica'), ('Colecionáveis'), ('Veículos')");
     $catId = $pdo->lastInsertId();
 
     $pass = password_hash('123456', PASSWORD_BCRYPT);
@@ -44,7 +44,7 @@ try {
 
     $pdo->prepare($sqlPrd)->execute([
         'Moeda Rara 1900', 'Moeda de ouro antiga.', $catId, $userB,
-        'very good', 500.00, 38.7400, -9.1500, date('Y-m-d H:i:s', strtotime('+2 minutes')), 'active'
+        'like new', 500.00, 38.7400, -9.1500, date('Y-m-d H:i:s', strtotime('+2 minutes')), 'active'
     ]);
 
     $sqlGme = "INSERT INTO gamification (

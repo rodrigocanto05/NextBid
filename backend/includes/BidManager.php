@@ -13,13 +13,19 @@ class BidManager
         try {
             $this->pdo->beginTransaction();
 
-            $stmt = $this->pdo->prepare("SELECT prd_start_price, prd_usr_id, prd_status FROM product WHERE prd_id = ? FOR UPDATE");
+            $stmt = $this->pdo->prepare("SELECT prd_start_price, prd_usr_id, prd_status, prd_ends_at FROM product WHERE prd_id = ? FOR UPDATE");
             $stmt->execute([$productId]);
             $product = $stmt->fetch();
 
             if (!$product || $product['prd_status'] !== 'active') {
                 $this->pdo->rollBack();
                 return ['status' => 'error', 'message' => 'Este leilão já não está ativo.'];
+            }
+
+            // FIX: rejeitar licitações em leilões cuja data de fim já passou
+            if (strtotime($product['prd_ends_at']) < time()) {
+                $this->pdo->rollBack();
+                return ['status' => 'error', 'message' => 'Este leilão já terminou.'];
             }
 
             if ($product['prd_usr_id'] == $userId) {
@@ -40,11 +46,9 @@ class BidManager
             $stmt = $this->pdo->prepare("INSERT INTO bid (bid_amount, bid_usr_id, bid_prd_id) VALUES (?, ?, ?)");
             $stmt->execute([$amount, $userId, $productId]);
 
-            $xpGanho = rand(5, 15);
-            $this->pdo->prepare("UPDATE userss SET usr_xp = usr_xp + ? WHERE usr_id = ?")->execute([$xpGanho, $userId]);
-
-            $stmt = $this->pdo->prepare("INSERT INTO xp_logs (xpl_usr_id, xpl_amount, xpl_reason) VALUES (?, ?, ?)");
-            $stmt->execute([$userId, $xpGanho, "Licitação no produto #$productId"]);
+            // FIX: usa a função partilhada em vez de duplicar lógica de XP
+            require_once __DIR__ . '/functions.php';
+            atribuirXPAleatorio($this->pdo, $userId, "Licitação no produto #$productId");
 
             $this->pdo->commit();
 
@@ -53,12 +57,12 @@ class BidManager
             $previousBidder = $stmt->fetchColumn();
 
             if ($previousBidder) {
-                require_once 'NotificationManager.php';
+                require_once __DIR__ . '/NotificationManager.php';
                 $notif = new NotificationManager($this->pdo);
                 $notif->create($previousBidder, "Alguém cobriu a tua oferta no produto #$productId! Licita já novamente.");
             }
 
-            return ['status' => 'success', 'message' => 'Licitação aceite!', 'xp_ganho' => $xpGanho];
+            return ['status' => 'success', 'message' => 'Licitação aceite!'];
 
         } catch (Exception $e) {
             if ($this->pdo->inTransaction()) {

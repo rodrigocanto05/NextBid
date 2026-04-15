@@ -1,22 +1,21 @@
 <?php
+require_once '../../includes/cors.php';
 header('Content-Type: application/json');
-/** @var PDO $pdo */
 require_once "../../config/db.php";
-require_once '../../includes/UserManager.php';
+require_once '../../includes/AuthMiddleware.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
     exit(json_encode(['status' => 'error', 'message' => 'Método não autorizado.']));
 }
 
-$userId   = (int)($_POST['user_id'] ?? 0);
-$newEmail = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL) ?? '';
-$newPass  = $_POST['password'] ?? '';
-$newBio   = filter_input(INPUT_POST, 'bio', FILTER_SANITIZE_SPECIAL_CHARS) ?? '';
+$user   = AuthMiddleware::requireAuth($pdo);
+$userId = $user['id'];
 
-if ($userId <= 0) {
-    exit(json_encode(['status' => 'error', 'message' => 'Por favor preenche todos os campos.']));
-}
+$body     = json_decode(file_get_contents('php://input'), true) ?? $_POST;
+$newEmail = isset($body['email']) ? filter_var($body['email'], FILTER_VALIDATE_EMAIL) : '';
+$newPass  = $body['password'] ?? '';
+$newBio   = isset($body['bio']) ? trim(strip_tags($body['bio'])) : '';
 
 if (empty($newEmail) && empty($newPass) && empty($newBio)) {
     exit(json_encode(['status' => 'error', 'message' => 'Indica pelo menos um campo para atualizar.']));
@@ -52,7 +51,6 @@ try {
     $stmt->execute($params);
 
     echo json_encode(['status' => 'success', 'message' => 'Dados atualizados com sucesso!']);
-
 } catch (Exception $e) {
     http_response_code(400);
     echo json_encode(['status' => 'error', 'message' => 'Este email já está em uso.']);

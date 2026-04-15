@@ -44,9 +44,10 @@ class AuctionManager {
         $params = [];
 
         if ($userLat !== null && $userLng !== null) {
-            $geoQuery = ", (6371 * acos(cos(radians(:lat)) * cos(radians(prd_latitude)) * cos(radians(prd_longitude) - radians(:lng)) + sin(radians(:lat)) * sin(radians(prd_latitude)))) AS distance";
-            $params["lat"] = $userLat;
-            $params["lng"] = $userLng;
+            $geoQuery = ", (6371 * acos(cos(radians(:lat)) * cos(radians(prd_latitude)) * cos(radians(prd_longitude) - radians(:lng)) + sin(radians(:lat2)) * sin(radians(prd_latitude)))) AS distance";
+            $params["lat"]  = $userLat;
+            $params["lat2"] = $userLat;
+            $params["lng"]  = $userLng;
             $params["raio"] = $raio;
         }
 
@@ -54,7 +55,7 @@ class AuctionManager {
 
         $sql = "SELECT p.*, c.cat_name, MIN(i.img_path) as main_image $geoQuery
                 FROM product p
-                INNER JOIN categorie c ON p.prd_cat_id = c.cat_id
+                INNER JOIN category c ON p.prd_cat_id = c.cat_id
                 LEFT JOIN product_image i ON p.prd_id = i.img_prd_id
                 WHERE p.prd_status = 'active' 
                 GROUP BY p.prd_id
