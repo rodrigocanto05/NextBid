@@ -123,7 +123,6 @@ create table xp_logs (
 create table xp_level (
     lvl_id          int not null auto_increment,
     lvl_number      int not null,
-    lvl_name        varchar(80) not null,
     lvl_xp_required int not null,
     primary key (lvl_id),
     unique key uq_xp_level_number (lvl_number)
