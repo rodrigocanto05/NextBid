@@ -1,19 +1,19 @@
 # categories
 
-insert into categorie (cat_name) values ('Eletrónica');          # 1
-insert into categorie (cat_name) values ('Moda');                # 2
-insert into categorie (cat_name) values ('Casa');                # 3
-insert into categorie (cat_name) values ('Desporto');            # 4
-insert into categorie (cat_name) values ('Colecionáveis');       # 5
-insert into categorie (cat_name) values ('Videojogos');          # 6
-insert into categorie (cat_name) values ('Automóveis');          # 7
-insert into categorie (cat_name) values ('Livros');              # 8
-insert into categorie (cat_name) values ('Arte');                # 9
-insert into categorie (cat_name) values ('Música');              # 10
-insert into categorie (cat_name) values ('Antiguidades');        # 11
-insert into categorie (cat_name) values ('Brinquedos');          # 12
-insert into categorie (cat_name) values ('Relógios & Joias');    # 13
-insert into categorie (cat_name) values ('Outros');              # 14
+insert into category (cat_name) values ('Eletrónica');          # 1
+insert into category (cat_name) values ('Moda');                # 2
+insert into category (cat_name) values ('Casa');                # 3
+insert into category (cat_name) values ('Desporto');            # 4
+insert into category (cat_name) values ('Colecionáveis');       # 5
+insert into category (cat_name) values ('Videojogos');          # 6
+insert into category (cat_name) values ('Automóveis');          # 7
+insert into category (cat_name) values ('Livros');              # 8
+insert into category (cat_name) values ('Arte');                # 9
+insert into category (cat_name) values ('Música');              # 10
+insert into category (cat_name) values ('Antiguidades');        # 11
+insert into category (cat_name) values ('Brinquedos');          # 12
+insert into category (cat_name) values ('Relógios & Joias');    # 13
+insert into category (cat_name) values ('Outros');              # 14
 
 #users
 
@@ -53,10 +53,10 @@ values ('Tomas Lebre', 'tomaslebre@gmail.com', 'hash1', 'M', str_to_date('2005.1
 #products
 
 insert into product (prd_name, prd_description, prd_cat_id, prd_usr_id, prd_winner_usr_id, prd_condition, prd_start_price, prd_location, prd_latitude, prd_longitude, prd_status, prd_ends_at, prd_created_at)
-values ('iPhone 13', 'iPhone 13 usado em excelente estado.', 1, 1, null, 'very good', 400.00, 'Lisboa', 38.7169, -9.1399, 'active', date_add(now(), interval 3 day), now());     # prd_id = 1
+values ('iPhone 13', 'iPhone 13 usado em excelente estado.', 1, 1, null, 'like new', 400.00, 'Lisboa', 38.7169, -9.1399, 'active', date_add(now(), interval 3 day), now());     # prd_id = 1
 
 insert into product (prd_name, prd_description, prd_cat_id, prd_usr_id, prd_winner_usr_id, prd_condition, prd_start_price, prd_location, prd_latitude, prd_longitude, prd_status, prd_ends_at, prd_created_at)
-values ('Nike Air Max', 'Ténis praticamente novos.', 2, 5, null, 'very good', 60.00, 'Oeiras', 38.6979, -9.3017, 'active', date_add(now(), interval 5 day), now());     # prd_id = 2
+values ('Nike Air Max', 'Ténis praticamente novos.', 2, 5, null, 'like new', 60.00, 'Oeiras', 38.6979, -9.3017, 'active', date_add(now(), interval 5 day), now());     # prd_id = 2
 
 insert into product (prd_name, prd_description, prd_cat_id, prd_usr_id, prd_winner_usr_id, prd_condition, prd_start_price, prd_location, prd_latitude, prd_longitude, prd_status, prd_ends_at, prd_created_at)
 values ('Mesa de Madeira', 'Mesa sólida para sala de jantar.', 3, 4, null, 'good', 80.00, 'Sintra', 38.8029, -9.3817, 'active', date_add(now(), interval 7 day), now());     # prd_id = 3
@@ -65,17 +65,16 @@ insert into product (prd_name, prd_description, prd_cat_id, prd_usr_id, prd_winn
 values ('Bola Futebol Adidas', 'Bola oficial pouco usada.', 4, 8, null, 'good', 25.00, 'Almada', 38.6794, -9.1569, 'active', date_add(now(), interval 2 day), now());     # prd_id = 4
 
 insert into product (prd_name, prd_description, prd_cat_id, prd_usr_id, prd_winner_usr_id, prd_condition, prd_start_price, prd_location, prd_latitude, prd_longitude, prd_status, prd_ends_at, prd_created_at)
-values ('Cartas Pokémon', 'Coleção rara de cartas.', 5, 3, 7, 'very good', 150.00, 'Cascais', 38.6970, -9.4215, 'sold', date_sub(now(), interval 1 day), date_sub(now(), interval 7 day));     # prd_id = 5
+values ('Cartas Pokémon', 'Coleção rara de cartas.', 5, 3, 7, 'like new', 150.00, 'Cascais', 38.6970, -9.4215, 'sold', date_sub(now(), interval 1 day), date_sub(now(), interval 7 day));     # prd_id = 5
 
 insert into product (prd_name, prd_description, prd_cat_id, prd_usr_id, prd_winner_usr_id, prd_condition, prd_start_price, prd_location, prd_latitude, prd_longitude, prd_status, prd_ends_at, prd_created_at)
-values ('PlayStation 5', 'Consola PS5 com comando.', 6, 1, null, 'very good', 450.00, 'Lisboa', 38.7169, -9.1399, 'active', date_add(now(), interval 4 day), now());     # prd_id = 6
+values ('PlayStation 5', 'Consola PS5 com comando.', 6, 1, null, 'like new', 450.00, 'Lisboa', 38.7169, -9.1399, 'active', date_add(now(), interval 4 day), now());     # prd_id = 6
 
 insert into product (prd_name, prd_description, prd_cat_id, prd_usr_id, prd_winner_usr_id, prd_condition, prd_start_price, prd_location, prd_latitude, prd_longitude, prd_status, prd_ends_at, prd_created_at)
-values ('Peugeot 206', 'Carro usado em bom estado.', 7, 4, null, 'satisfactory', 1200.00, 'Sintra', 38.8029, -9.3817, 'active', date_add(now(), interval 7 day), now());     # prd_id = 7
+values ('Peugeot 206', 'Carro usado em bom estado.', 7, 4, null, 'used', 1200.00, 'Sintra', 38.8029, -9.3817, 'active', date_add(now(), interval 7 day), now());     # prd_id = 7
 
 insert into product (prd_name, prd_description, prd_cat_id, prd_usr_id, prd_winner_usr_id, prd_condition, prd_start_price, prd_location, prd_latitude, prd_longitude, prd_status, prd_ends_at, prd_created_at)
 values ('Livro Harry Potter', 'Livro em bom estado.', 8, 9, null, 'good', 10.00, 'Lisboa', 38.7169, -9.1399, 'active', date_add(now(), interval 3 day), now());     # prd_id = 8
-  
 #product_attribute
 
 insert into product_attribute (atr_prd_id, atr_name, atr_value)
