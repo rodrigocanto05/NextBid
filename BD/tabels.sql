@@ -1,3 +1,17 @@
+CREATE TABLE auth_tokens (
+    tok_id         INT NOT NULL AUTO_INCREMENT,
+    tok_usr_id     INT NOT NULL,
+    tok_token      VARCHAR(64) NOT NULL,
+    tok_created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    tok_expires_at DATETIME NOT NULL,
+    PRIMARY KEY (tok_id),
+    UNIQUE KEY uq_token (tok_token),
+    INDEX idx_tok_usr_id (tok_usr_id),
+    CONSTRAINT auth_tokens_fk_user
+        FOREIGN KEY (tok_usr_id) REFERENCES userss(usr_id)
+        ON DELETE CASCADE
+);
+
 create table userss (
     usr_id         int not null auto_increment,
     usr_name       varchar(80) not null,
