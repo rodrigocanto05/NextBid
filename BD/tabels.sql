@@ -16,7 +16,7 @@ create table userss (
     unique key uq_userss_email (usr_email)
 );
 
-create table category (
+create table categorie (
     cat_id      int not null auto_increment,
     cat_name    varchar(80) not null,
     primary key (cat_id),
