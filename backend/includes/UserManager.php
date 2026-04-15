@@ -33,35 +33,52 @@ class UserManager
 
     public function login(string $email, string $password): array
     {
-        $sql = "SELECT * FROM userss WHERE usr_email = :email";
-        $stmt = $this->pdo->prepare($sql);
-
+        $stmt = $this->pdo->prepare("SELECT * FROM userss WHERE usr_email = :email");
         $stmt->execute(['email' => $email]);
         $user = $stmt->fetch();
 
-        if ($user && password_verify($password, $user['usr_password'])) {
-            try {
-                $token = bin2hex(random_bytes(32));
-                return [
-                    'status' => 'success',
-                    'token'  => $token,
-                    'user'   => [
-                        'id'   => $user['usr_id'],
-                        'name' => $user['usr_name'],
-                        'xp'   => $user['usr_xp']
-                    ]
-                ];
-            } catch (Exception) {
-                return ['status' => 'error', 'message' => 'Erro ao gerar Token'];
-            }
+        if (!$user || !password_verify($password, $user['usr_password'])) {
+            return ['status' => 'error', 'message' => 'Credenciais inválidas. Tente novamente.'];
         }
 
-        return ['status' => 'error', 'message' => 'Credenciais inválidas. Tente novamente.'];
+        try {
+            $token     = bin2hex(random_bytes(32));
+            $expiresAt = date('Y-m-d H:i:s', strtotime('+7 days'));
+
+            $this->pdo->prepare(
+                "INSERT INTO auth_tokens (tok_usr_id, tok_token, tok_expires_at) VALUES (?, ?, ?)"
+            )->execute([$user['usr_id'], $token, $expiresAt]);
+
+            return [
+                'status'     => 'success',
+                'token'      => $token,
+                'expires_at' => $expiresAt,
+                'user'       => [
+                    'id'    => (int) $user['usr_id'],
+                    'name'  => $user['usr_name'],
+                    'email' => $user['usr_email'],
+                    'role'  => $user['usr_role'],
+                    'xp'    => (int) $user['usr_xp']
+                ]
+            ];
+        } catch (Exception $e) {
+            return ['status' => 'error', 'message' => 'Erro ao gerar sessão.'];
+        }
+    }
+
+    public function logout(string $token): bool
+    {
+        return $this->pdo->prepare("DELETE FROM auth_tokens WHERE tok_token = ?")->execute([$token]);
+    }
+
+    public function logoutAll(int $userId): bool
+    {
+        return $this->pdo->prepare("DELETE FROM auth_tokens WHERE tok_usr_id = ?")->execute([$userId]);
     }
 
     public function getUserProfile(int $userId): array|bool
     {
-        $sql = "SELECT usr_id, usr_name, usr_email, usr_xp, usr_photo, usr_bio, usr_birthdate
+        $sql = "SELECT usr_id, usr_name, usr_email, usr_xp, usr_photo, usr_bio, usr_birthdate, usr_balance
                 FROM userss
                 WHERE usr_id = :id";
 
@@ -72,13 +89,18 @@ class UserManager
         if ($user) {
             $stmt = $this->pdo->prepare("SELECT COUNT(*) FROM product WHERE prd_usr_id = ? AND prd_status = 'active'");
             $stmt->execute([$userId]);
-            $user['active_auctions'] = $stmt->fetchColumn();
+            $user['active_auctions'] = (int) $stmt->fetchColumn();
 
             $stmt = $this->pdo->prepare("SELECT COUNT(*) FROM bid WHERE bid_usr_id = ?");
             $stmt->execute([$userId]);
-            $user['total_bids'] = $stmt->fetchColumn();
+            $user['total_bids'] = (int) $stmt->fetchColumn();
         }
 
         return $user;
+    }
+
+    public function cleanExpiredTokens(): int
+    {
+        return (int) $this->pdo->exec("DELETE FROM auth_tokens WHERE tok_expires_at < NOW()");
     }
 }

@@ -1,310 +1,307 @@
-#categories
+# categories
 
-insert into categorie (cat_name) values ('Eletrónica');          # cat_id = 1
-insert into categorie (cat_name) values ('Moda');                # cat_id = 2
-insert into categorie (cat_name) values ('Casa');                # cat_id = 3
-insert into categorie (cat_name) values ('Desporto');            # cat_id = 4
-insert into categorie (cat_name) values ('Colecionáveis');       # cat_id = 5
-insert into categorie (cat_name) values ('Videojogos');          # cat_id = 6
-insert into categorie (cat_name) values ('Automóveis');          # cat_id = 7
-insert into categorie (cat_name) values ('Livros');              # cat_id = 8
+insert into category (cat_name) values ('Eletrónica');          # 1
+insert into category (cat_name) values ('Moda');                # 2
+insert into category (cat_name) values ('Casa');                # 3
+insert into category (cat_name) values ('Desporto');            # 4
+insert into category (cat_name) values ('Colecionáveis');       # 5
+insert into category (cat_name) values ('Videojogos');          # 6
+insert into category (cat_name) values ('Automóveis');          # 7
+insert into category (cat_name) values ('Livros');              # 8
+insert into category (cat_name) values ('Arte');                # 9
+insert into category (cat_name) values ('Música');              # 10
+insert into category (cat_name) values ('Antiguidades');        # 11
+insert into category (cat_name) values ('Brinquedos');          # 12
+insert into category (cat_name) values ('Relógios & Joias');    # 13
+insert into category (cat_name) values ('Outros');              # 14
 
 #users
 
-insert into userss (usr_name, usr_email, usr_password, usr_gender, usr_birthdate, usr_photo, usr_bio, usr_xp, usr_role, usr_created_at)
-values ('Rodrigo Canto', 'rodrigocanto@hotmail.com', 'canto', 'M', str_to_date('2005.10.20','%Y.%m.%d'), 'rodrigo_canto.jpg', 'Estudante e fã de tecnologia.', 120, 'admin', str_to_date('2025.10.20','%Y.%m.%d'));        
+insert into userss (usr_name, usr_email, usr_password, usr_gender, usr_birthdate, usr_photo, usr_bio, usr_balance, usr_location, usr_xp, usr_role, usr_created_at)
+values ('Rodrigo Canto', 'rodrigocanto@hotmail.com', 'canto', 'M', str_to_date('2005.10.20','%Y.%m.%d'), 'rodrigo_canto.jpg', 'Estudante e fã de tecnologia.', 150.00, 'Lisboa', 120, 'admin', str_to_date('2024.10.20','%Y.%m.%d'));        # usr_id = 1
 
-insert into userss (usr_name, usr_email, usr_password, usr_gender, usr_birthdate, usr_photo, usr_bio, usr_xp, usr_role, usr_created_at)
-values ('Rodrigo Daibert', 'rodrigodaibert@hotmail.com', '1234', 'M', str_to_date('2005.10.22','%Y.%m.%d'), 'rodrigo_daibert.jpg', 'Gosto de leilões e gaming.', 95, 'admin', str_to_date('2025.10.22','%Y.%m.%d'));       
+insert into userss (usr_name, usr_email, usr_password, usr_gender, usr_birthdate, usr_photo, usr_bio, usr_balance, usr_location, usr_xp, usr_role, usr_created_at)
+values ('Rodrigo Daibert', 'rodrigodaibert@hotmail.com', '1234', 'M', str_to_date('2005.10.22','%Y.%m.%d'), 'rodrigo_daibert.jpg', 'Gosto de leilões e gaming.', 90.00, 'Amadora', 95, 'admin', str_to_date('2024.10.22','%Y.%m.%d'));       # usr_id = 2
 
-insert into userss (usr_name, usr_email, usr_password, usr_gender, usr_birthdate, usr_photo, usr_bio, usr_xp, usr_role, usr_created_at)
-values ('Marco Fonseca', 'mf2006@gmail.com', 'hash1', 'M', str_to_date('2006.10.24','%Y.%m.%d'), 'marco_fonseca.jpg', 'Colecionador e vendedor ocasional.', 180, 'admin', str_to_date('2025.10.24','%Y.%m.%d'));            
+insert into userss (usr_name, usr_email, usr_password, usr_gender, usr_birthdate, usr_photo, usr_bio, usr_balance, usr_location, usr_xp, usr_role, usr_created_at)
+values ('Marco Fonseca', 'mf2006@gmail.com', 'hash1', 'M', str_to_date('2006.10.24','%Y.%m.%d'), 'marco_fonseca.jpg', 'Colecionador e vendedor ocasional.', 200.00, 'Cascais', 180, 'admin', str_to_date('2024.10.24','%Y.%m.%d'));            # usr_id = 3
 
-insert into userss (usr_name, usr_email, usr_password, usr_gender, usr_birthdate, usr_photo, usr_bio, usr_xp, usr_role, usr_created_at)
-values ('Luis Quirim', 'luisquirim@gmail.com', 'hash1', 'M', str_to_date('2004.10.28','%Y.%m.%d'), 'luis_quirim.jpg', 'Interesso-me por artigos para casa e carros.', 60, 'normaluser', str_to_date('2025.10.28','%Y.%m.%d'));    
+insert into userss (usr_name, usr_email, usr_password, usr_gender, usr_birthdate, usr_photo, usr_bio, usr_balance, usr_location, usr_xp, usr_role, usr_created_at)
+values ('Luis Quirim', 'luisquirim@gmail.com', 'hash1', 'M', str_to_date('2004.10.28','%Y.%m.%d'), 'luis_quirim.jpg', 'Interesso-me por artigos para casa e carros.', 60.00, 'Sintra', 60, 'normaluser', str_to_date('2024.10.28','%Y.%m.%d'));    # usr_id = 4
 
-insert into userss (usr_name, usr_email, usr_password, usr_gender, usr_birthdate, usr_photo, usr_bio, usr_xp, usr_role, usr_created_at)
-values ('Sandra Estrela', 'sandra@hotmail.com', 'hash1', 'F', str_to_date('2003.10.30','%Y.%m.%d'), 'sandra_estrela.jpg', 'Adoro moda e decoração.', 140, 'normaluser', str_to_date('2025.10.30','%Y.%m.%d'));                 
+insert into userss (usr_name, usr_email, usr_password, usr_gender, usr_birthdate, usr_photo, usr_bio, usr_balance, usr_location, usr_xp, usr_role, usr_created_at)
+values ('Sandra Estrela', 'sandra@hotmail.com', 'hash1', 'F', str_to_date('2003.10.30','%Y.%m.%d'), 'sandra_estrela.jpg', 'Adoro moda e decoração.', 120.00, 'Oeiras', 140, 'normaluser', str_to_date('2024.10.30','%Y.%m.%d'));                 # usr_id = 5
 
-insert into userss (usr_name, usr_email, usr_password, usr_gender, usr_birthdate, usr_photo, usr_bio, usr_xp, usr_role, usr_created_at)
-values ('Daniel Paulo', 'dexpaulo@hotmail.com', 'hash1', 'M', str_to_date('2005.11.01','%Y.%m.%d'), 'daniel_paulo.jpg', 'Utilizador ativo na plataforma.', 75, 'admin', str_to_date('2025.11.01','%Y.%m.%d'));               
+insert into userss (usr_name, usr_email, usr_password, usr_gender, usr_birthdate, usr_photo, usr_bio, usr_balance, usr_location, usr_xp, usr_role, usr_created_at)
+values ('Daniel Paulo', 'dexpaulo@hotmail.com', 'hash1', 'M', str_to_date('2005.11.01','%Y.%m.%d'), 'daniel_paulo.jpg', 'Utilizador ativo na plataforma.', 80.00, 'Loures', 75, 'admin', str_to_date('2024.11.01','%Y.%m.%d'));                # usr_id = 6
 
-insert into userss (usr_name, usr_email, usr_password, usr_gender, usr_birthdate, usr_photo, usr_bio, usr_xp, usr_role, usr_created_at)
-values ('Jocy Grangeiro', 'jocy12@gmail.com', 'hash1', 'F', str_to_date('2004.11.04','%Y.%m.%d'), 'jocy_grangeiro.jpg', 'Gosto de oportunidades e prémios.', 110, 'normaluser', str_to_date('2025.11.04','%Y.%m.%d'));            
+insert into userss (usr_name, usr_email, usr_password, usr_gender, usr_birthdate, usr_photo, usr_bio, usr_balance, usr_location, usr_xp, usr_role, usr_created_at)
+values ('Jocy Grangeiro', 'jocy12@gmail.com', 'hash1', 'F', str_to_date('2004.11.04','%Y.%m.%d'), 'jocy_grangeiro.jpg', 'Gosto de oportunidades e prémios.', 110.00, 'Setúbal', 110, 'normaluser', str_to_date('2024.11.04','%Y.%m.%d'));            # usr_id = 7
 
-insert into userss (usr_name, usr_email, usr_password, usr_gender, usr_birthdate, usr_photo, usr_bio, usr_xp, usr_role, usr_created_at)
-values ('Paulo Alberto', 'pauloencomendas@gmail.com', 'hash1', 'M', str_to_date('2001.11.09','%Y.%m.%d'), 'paulo_alberto.jpg', 'Interessa-me eletrónica e desporto.', 90, 'normaluser', str_to_date('2025.11.09','%Y.%m.%d'));     
+insert into userss (usr_name, usr_email, usr_password, usr_gender, usr_birthdate, usr_photo, usr_bio, usr_balance, usr_location, usr_xp, usr_role, usr_created_at)
+values ('Paulo Alberto', 'pauloencomendas@gmail.com', 'hash1', 'M', str_to_date('2001.11.09','%Y.%m.%d'), 'paulo_alberto.jpg', 'Interessa-me eletrónica e desporto.', 95.00, 'Almada', 90, 'normaluser', str_to_date('2024.11.09','%Y.%m.%d'));     # usr_id = 8
 
-insert into userss (usr_name, usr_email, usr_password, usr_gender, usr_birthdate, usr_photo, usr_bio, usr_xp, usr_role, usr_created_at)
-values ('Patricia Daibert', 'patriciadaibert@hotmail.com', 'hash1', 'F', str_to_date('2002.11.13','%Y.%m.%d'), 'patricia_daibert.jpg', 'Procuro artigos de moda e casa.', 130, 'normaluser', str_to_date('2025.11.13','%Y.%m.%d')); 
+insert into userss (usr_name, usr_email, usr_password, usr_gender, usr_birthdate, usr_photo, usr_bio, usr_balance, usr_location, usr_xp, usr_role, usr_created_at)
+values ('Patricia Daibert', 'patriciadaibert@hotmail.com', 'hash1', 'F', str_to_date('2002.11.13','%Y.%m.%d'), 'patricia_daibert.jpg', 'Procuro artigos de moda e casa.', 130.00, 'Lisboa', 130, 'normaluser', str_to_date('2024.11.13','%Y.%m.%d')); # usr_id = 9
 
-insert into userss (usr_name, usr_email, usr_password, usr_gender, usr_birthdate, usr_photo, usr_bio, usr_xp, usr_role, usr_created_at)
-values ('Martim Fonseca', 'mrmartim@hotmail.com', 'hash1', 'M', str_to_date('2006.12.01','%Y.%m.%d'), 'martim_fonseca.jpg', 'Curioso por videojogos e gadgets.', 55, 'normaluser', str_to_date('2025.12.01','%Y.%m.%d'));          
+insert into userss (usr_name, usr_email, usr_password, usr_gender, usr_birthdate, usr_photo, usr_bio, usr_balance, usr_location, usr_xp, usr_role, usr_created_at)
+values ('Martim Fonseca', 'mrmartim@hotmail.com', 'hash1', 'M', str_to_date('2006.12.01','%Y.%m.%d'), 'martim_fonseca.jpg', 'Curioso por videojogos e gadgets.', 50.00, 'Braga', 55, 'normaluser', str_to_date('2024.12.01','%Y.%m.%d'));          # usr_id = 10
 
-insert into userss (usr_name, usr_email, usr_password, usr_gender, usr_birthdate, usr_photo, usr_bio, usr_xp, usr_role, usr_created_at)
-values ('Tomas Lebre', 'tomaslebre@gmail.com', 'hash1', 'M', str_to_date('2005.12.02','%Y.%m.%d'), 'tomas_lebre.jpg', 'Participante frequente em leilões.', 70, 'normaluser', str_to_date('2025.12.02','%Y.%m.%d'));
-
+insert into userss (usr_name, usr_email, usr_password, usr_gender, usr_birthdate, usr_photo, usr_bio, usr_balance, usr_location, usr_xp, usr_role, usr_created_at)
+values ('Tomas Lebre', 'tomaslebre@gmail.com', 'hash1', 'M', str_to_date('2005.12.02','%Y.%m.%d'), 'tomas_lebre.jpg', 'Participante frequente em leilões.', 70.00, 'Coimbra', 70, 'normaluser', str_to_date('2024.12.02','%Y.%m.%d'));           # usr_id = 11
+  
 #products
 
-insert into product (prd_name, prd_description, prd_cat_id, prd_usr_id, prd_condition, prd_start_price, prd_location, prd_latitude, prd_longitude, prd_status, prd_ends_at, prd_created_at)
-values ('iPhone 13', 'iPhone 13 em excelente estado, 128GB.', 1, 1, 'very good', 450.00, 'Lisboa', 38.7223000, -9.1393000, 'active', str_to_date('2025.12.20','%Y.%m.%d'), str_to_date('2025.12.10','%Y.%m.%d'));   # prd_id = 1
+insert into product (prd_name, prd_description, prd_cat_id, prd_usr_id, prd_winner_usr_id, prd_condition, prd_start_price, prd_location, prd_latitude, prd_longitude, prd_status, prd_ends_at, prd_created_at)
+values ('iPhone 13', 'iPhone 13 usado em excelente estado.', 1, 1, null, 'like new', 400.00, 'Lisboa', 38.7169, -9.1399, 'active', date_add(now(), interval 3 day), now());     # prd_id = 1
 
-insert into product (prd_name, prd_description, prd_cat_id, prd_usr_id, prd_condition, prd_start_price, prd_location, prd_latitude, prd_longitude, prd_status, prd_ends_at, prd_created_at)
-values ('PlayStation 5', 'Consola PS5 com comando incluído.', 6, 3, 'good', 380.00, 'Almada', 38.6800000, -9.1580000, 'active', str_to_date('2025.12.21','%Y.%m.%d'), str_to_date('2025.12.11','%Y.%m.%d'));    # prd_id = 2
+insert into product (prd_name, prd_description, prd_cat_id, prd_usr_id, prd_winner_usr_id, prd_condition, prd_start_price, prd_location, prd_latitude, prd_longitude, prd_status, prd_ends_at, prd_created_at)
+values ('Nike Air Max', 'Ténis praticamente novos.', 2, 5, null, 'like new', 60.00, 'Oeiras', 38.6979, -9.3017, 'active', date_add(now(), interval 5 day), now());     # prd_id = 2
 
-insert into product (prd_name, prd_description, prd_cat_id, prd_usr_id, prd_condition, prd_start_price, prd_location, prd_latitude, prd_longitude, prd_status, prd_ends_at, prd_created_at)
-values ('Casaco de Pele', 'Casaco em muito bom estado, tamanho M.', 2, 5, 'good', 60.00, 'Porto', 41.1579000, -8.6291000, 'active', str_to_date('2025.12.22','%Y.%m.%d'), str_to_date('2025.12.12','%Y.%m.%d')); # prd_id = 3
+insert into product (prd_name, prd_description, prd_cat_id, prd_usr_id, prd_winner_usr_id, prd_condition, prd_start_price, prd_location, prd_latitude, prd_longitude, prd_status, prd_ends_at, prd_created_at)
+values ('Mesa de Madeira', 'Mesa sólida para sala de jantar.', 3, 4, null, 'good', 80.00, 'Sintra', 38.8029, -9.3817, 'active', date_add(now(), interval 7 day), now());     # prd_id = 3
 
-insert into product (prd_name, prd_description, prd_cat_id, prd_usr_id, prd_condition, prd_start_price, prd_location, prd_latitude, prd_longitude, prd_status, prd_ends_at, prd_created_at)
-values ('Bicicleta BTT', 'Bicicleta de montanha com pouco uso.', 4, 1, 'good', 150.00, 'Braga', 41.5454000, -8.4265000, 'active', str_to_date('2025.12.24','%Y.%m.%d'), str_to_date('2025.12.12','%Y.%m.%d'));   # prd_id = 4
+insert into product (prd_name, prd_description, prd_cat_id, prd_usr_id, prd_winner_usr_id, prd_condition, prd_start_price, prd_location, prd_latitude, prd_longitude, prd_status, prd_ends_at, prd_created_at)
+values ('Bola Futebol Adidas', 'Bola oficial pouco usada.', 4, 8, null, 'good', 25.00, 'Almada', 38.6794, -9.1569, 'active', date_add(now(), interval 2 day), now());     # prd_id = 4
 
-insert into product (prd_name, prd_description, prd_cat_id, prd_usr_id, prd_condition, prd_start_price, prd_location, prd_latitude, prd_longitude, prd_status, prd_ends_at, prd_created_at)
-values ('Relógio Vintage', 'Relógio colecionável dos anos 80.', 5, 3, 'satisfactory', 90.00, 'Coimbra', 40.2033000, -8.4103000, 'active', str_to_date('2025.12.23','%Y.%m.%d'), str_to_date('2025.12.13','%Y.%m.%d'));  # prd_id = 5
+insert into product (prd_name, prd_description, prd_cat_id, prd_usr_id, prd_winner_usr_id, prd_condition, prd_start_price, prd_location, prd_latitude, prd_longitude, prd_status, prd_ends_at, prd_created_at)
+values ('Cartas Pokémon', 'Coleção rara de cartas.', 5, 3, 7, 'like new', 150.00, 'Cascais', 38.6970, -9.4215, 'sold', date_sub(now(), interval 1 day), date_sub(now(), interval 7 day));     # prd_id = 5
 
-insert into product (prd_name, prd_description, prd_cat_id, prd_usr_id, prd_condition, prd_start_price, prd_location, prd_latitude, prd_longitude, prd_status, prd_ends_at, prd_created_at)
-values ('Mesa de Jantar', 'Mesa de madeira para 6 pessoas.', 3, 5, 'good', 120.00, 'Setúbal', 38.5244000, -8.8882000, 'active', str_to_date('2025.12.26','%Y.%m.%d'), str_to_date('2025.12.14','%Y.%m.%d'));     # prd_id = 6
+insert into product (prd_name, prd_description, prd_cat_id, prd_usr_id, prd_winner_usr_id, prd_condition, prd_start_price, prd_location, prd_latitude, prd_longitude, prd_status, prd_ends_at, prd_created_at)
+values ('PlayStation 5', 'Consola PS5 com comando.', 6, 1, null, 'like new', 450.00, 'Lisboa', 38.7169, -9.1399, 'active', date_add(now(), interval 4 day), now());     # prd_id = 6
 
-insert into product (prd_name, prd_description, prd_cat_id, prd_usr_id, prd_condition, prd_start_price, prd_location, prd_latitude, prd_longitude, prd_status, prd_ends_at, prd_created_at)
-values ('Livro Java', 'Livro técnico de programação em Java.', 8, 1, 'very good', 25.00, 'Aveiro', 40.6405000, -8.6538000, 'active', str_to_date('2025.12.27','%Y.%m.%d'), str_to_date('2025.12.15','%Y.%m.%d'));      # prd_id = 7
+insert into product (prd_name, prd_description, prd_cat_id, prd_usr_id, prd_winner_usr_id, prd_condition, prd_start_price, prd_location, prd_latitude, prd_longitude, prd_status, prd_ends_at, prd_created_at)
+values ('Peugeot 206', 'Carro usado em bom estado.', 7, 4, null, 'used', 1200.00, 'Sintra', 38.8029, -9.3817, 'active', date_add(now(), interval 7 day), now());     # prd_id = 7
 
-insert into product (prd_name, prd_description, prd_cat_id, prd_usr_id, prd_condition, prd_start_price, prd_location, prd_latitude, prd_longitude, prd_status, prd_ends_at, prd_created_at)
-values ('Jantes 18 Polegadas', 'Conjunto de 4 jantes em bom estado.', 7, 3, 'good', 300.00, 'Sintra', 38.8029000, -9.3817000, 'active', str_to_date('2025.12.28','%Y.%m.%d'), str_to_date('2025.12.16','%Y.%m.%d')); # prd_id = 8
+insert into product (prd_name, prd_description, prd_cat_id, prd_usr_id, prd_winner_usr_id, prd_condition, prd_start_price, prd_location, prd_latitude, prd_longitude, prd_status, prd_ends_at, prd_created_at)
+values ('Livro Harry Potter', 'Livro em bom estado.', 8, 9, null, 'good', 10.00, 'Lisboa', 38.7169, -9.1399, 'active', date_add(now(), interval 3 day), now());     # prd_id = 8
+#product_attribute
 
-#product_images
+insert into product_attribute (atr_prd_id, atr_name, atr_value)
+values (1, 'Storage', '128GB');                     # atr_id = 1
+
+insert into product_attribute (atr_prd_id, atr_name, atr_value)
+values (1, 'Color', 'Black');                       # atr_id = 2
+
+insert into product_attribute (atr_prd_id, atr_name, atr_value)
+values (2, 'Size', '42');                           # atr_id = 3
+
+insert into product_attribute (atr_prd_id, atr_name, atr_value)
+values (2, 'Brand', 'Nike');                        # atr_id = 4
+
+insert into product_attribute (atr_prd_id, atr_name, atr_value)
+values (3, 'Material', 'Wood');                     # atr_id = 5
+
+insert into product_attribute (atr_prd_id, atr_name, atr_value)
+values (3, 'Seats', '6');                           # atr_id = 6
+
+insert into product_attribute (atr_prd_id, atr_name, atr_value)
+values (6, 'Version', 'Digital Edition');           # atr_id = 7
+
+insert into product_attribute (atr_prd_id, atr_name, atr_value)
+values (6, 'Storage', '825GB');                     # atr_id = 8
+
+insert into product_attribute (atr_prd_id, atr_name, atr_value)
+values (7, 'Kilometers', '120000');                 # atr_id = 9
+
+insert into product_attribute (atr_prd_id, atr_name, atr_value)
+values (7, 'Fuel', 'Diesel');                       # atr_id = 10
+
+#product_image
 
 insert into product_image (img_prd_id, img_path, img_is_primary)
-values (1, 'iphone13_1.jpg', true);
-
-insert into product_image (img_prd_id, img_path)
-values (1, 'iphone13_2.jpg');
+values (1, 'iphone13_1.jpg', true);                 # img_id = 1
 
 insert into product_image (img_prd_id, img_path, img_is_primary)
-values (2, 'ps5_1.jpg', true);
-
-insert into product_image (img_prd_id, img_path)
-values (2, 'ps5_2.jpg');
+values (1, 'iphone13_2.jpg', false);                # img_id = 2
 
 insert into product_image (img_prd_id, img_path, img_is_primary)
-values (3, 'casaco_pele_1.jpg', true);
+values (2, 'nike_airmax.jpg', true);                # img_id = 3
 
 insert into product_image (img_prd_id, img_path, img_is_primary)
-values (4, 'bicicleta_btt_1.jpg', true);
-
-insert into product_image (img_prd_id, img_path)
-values (4, 'bicicleta_btt_2.jpg');
+values (3, 'mesa_madeira.jpg', true);               # img_id = 4
 
 insert into product_image (img_prd_id, img_path, img_is_primary)
-values (5, 'relogio_vintage_1.jpg', true);
+values (4, 'bola_adidas.jpg', true);                # img_id = 5
 
 insert into product_image (img_prd_id, img_path, img_is_primary)
-values (6, 'mesa_jantar_1.jpg', true);
+values (5, 'pokemon_cards.jpg', true);              # img_id = 6
 
 insert into product_image (img_prd_id, img_path, img_is_primary)
-values (7, 'livro_java_1.jpg', true);
+values (6, 'ps5.jpg', true);                        # img_id = 7
 
 insert into product_image (img_prd_id, img_path, img_is_primary)
-values (8, 'jantes_18_1.jpg', true);
+values (7, 'peugeot206.jpg', true);                 # img_id = 8
 
-insert into product_image (img_prd_id, img_path)
-values (8, 'jantes_18_2.jpg');
+insert into product_image (img_prd_id, img_path, img_is_primary)
+values (8, 'harry_potter_book.jpg', true);          # img_id = 9
 
-#bids
+#transactions
 
-insert into bid (bid_prd_id, bid_usr_id, bid_amount, bid_created_at)
-values (1, 2, 460.00, str_to_date('2025.12.10 10:00','%Y.%m.%d %H:%i'));  # bid_id = 1
+insert into transactions (tra_usr_id, tra_type, tra_amount, tra_description, tra_created_at)
+values (1, 'deposit', 150.00, 'Initial balance', str_to_date('2024.10.20','%Y.%m.%d'));           # tra_id = 1
 
-insert into bid (bid_prd_id, bid_usr_id, bid_amount, bid_created_at)
-values (1, 6, 480.00, str_to_date('2025.12.10 12:30','%Y.%m.%d %H:%i'));  # bid_id = 2
+insert into transactions (tra_usr_id, tra_type, tra_amount, tra_description, tra_created_at)
+values (2, 'deposit', 90.00, 'Initial balance', str_to_date('2024.10.22','%Y.%m.%d'));            # tra_id = 2
 
-insert into bid (bid_prd_id, bid_usr_id, bid_amount, bid_created_at)
-values (1, 8, 500.00, str_to_date('2025.12.11 09:15','%Y.%m.%d %H:%i'));  # bid_id = 3
+insert into transactions (tra_usr_id, tra_type, tra_amount, tra_description, tra_created_at)
+values (3, 'deposit', 200.00, 'Initial balance', str_to_date('2024.10.24','%Y.%m.%d'));           # tra_id = 3
 
-insert into bid (bid_prd_id, bid_usr_id, bid_amount, bid_created_at)
-values (2, 4, 390.00, str_to_date('2025.12.11 11:00','%Y.%m.%d %H:%i'));  # bid_id = 4
+insert into transactions (tra_usr_id, tra_type, tra_amount, tra_description, tra_created_at)
+values (4, 'deposit', 60.00, 'Initial balance', str_to_date('2024.10.28','%Y.%m.%d'));            # tra_id = 4
 
-insert into bid (bid_prd_id, bid_usr_id, bid_amount, bid_created_at)
-values (2, 7, 420.00, str_to_date('2025.12.11 14:20','%Y.%m.%d %H:%i'));  # bid_id = 5
+insert into transactions (tra_usr_id, tra_type, tra_amount, tra_description, tra_created_at)
+values (5, 'deposit', 120.00, 'Initial balance', str_to_date('2024.10.30','%Y.%m.%d'));           # tra_id = 5
 
-insert into bid (bid_prd_id, bid_usr_id, bid_amount, bid_created_at)
-values (3, 2, 65.00, str_to_date('2025.12.12 10:10','%Y.%m.%d %H:%i'));   # bid_id = 6
+insert into transactions (tra_usr_id, tra_type, tra_amount, tra_description, tra_created_at)
+values (6, 'deposit', 80.00, 'Initial balance', str_to_date('2024.11.01','%Y.%m.%d'));            # tra_id = 6
 
-insert into bid (bid_prd_id, bid_usr_id, bid_amount, bid_created_at)
-values (3, 9, 75.00, str_to_date('2025.12.12 13:45','%Y.%m.%d %H:%i'));   # bid_id = 7
+insert into transactions (tra_usr_id, tra_type, tra_amount, tra_description, tra_created_at)
+values (7, 'deposit', 110.00, 'Initial balance', str_to_date('2024.11.04','%Y.%m.%d'));           # tra_id = 7
 
-insert into bid (bid_prd_id, bid_usr_id, bid_amount, bid_created_at)
-values (4, 11, 160.00, str_to_date('2025.12.12 16:00','%Y.%m.%d %H:%i')); # bid_id = 8
+insert into transactions (tra_usr_id, tra_type, tra_amount, tra_description, tra_created_at)
+values (8, 'deposit', 95.00, 'Initial balance', str_to_date('2024.11.09','%Y.%m.%d'));            # tra_id = 8
 
-insert into bid (bid_prd_id, bid_usr_id, bid_amount, bid_created_at)
-values (4, 6, 180.00, str_to_date('2025.12.13 09:30','%Y.%m.%d %H:%i'));  # bid_id = 9
+insert into transactions (tra_usr_id, tra_type, tra_amount, tra_description, tra_created_at)
+values (9, 'deposit', 130.00, 'Initial balance', str_to_date('2024.11.13','%Y.%m.%d'));           # tra_id = 9
 
-insert into bid (bid_prd_id, bid_usr_id, bid_amount, bid_created_at)
-values (5, 8, 100.00, str_to_date('2025.12.13 11:00','%Y.%m.%d %H:%i'));  # bid_id = 10
+insert into transactions (tra_usr_id, tra_type, tra_amount, tra_description, tra_created_at)
+values (10, 'deposit', 50.00, 'Initial balance', str_to_date('2024.12.01','%Y.%m.%d'));           # tra_id = 10
 
-insert into bid (bid_prd_id, bid_usr_id, bid_amount, bid_created_at)
-values (5, 2, 120.00, str_to_date('2025.12.13 15:20','%Y.%m.%d %H:%i'));  # bid_id = 11
+insert into transactions (tra_usr_id, tra_type, tra_amount, tra_description, tra_created_at)
+values (11, 'deposit', 70.00, 'Initial balance', str_to_date('2024.12.02','%Y.%m.%d'));           # tra_id = 11
 
-insert into bid (bid_prd_id, bid_usr_id, bid_amount, bid_created_at)
-values (6, 7, 130.00, str_to_date('2025.12.14 10:00','%Y.%m.%d %H:%i'));  # bid_id = 12
-
-insert into bid (bid_prd_id, bid_usr_id, bid_amount, bid_created_at)
-values (7, 10, 30.00, str_to_date('2025.12.15 12:00','%Y.%m.%d %H:%i'));  # bid_id = 13
-
-insert into bid (bid_prd_id, bid_usr_id, bid_amount, bid_created_at)
-values (7, 11, 35.00, str_to_date('2025.12.15 14:10','%Y.%m.%d %H:%i'));  # bid_id = 14
+insert into transactions (tra_usr_id, tra_type, tra_amount, tra_description, tra_created_at)
+values (7, 'debit', 180.00, 'Auction win - Pokemon Cards', str_to_date('2025.01.10','%Y.%m.%d')); # tra_id = 12
+  
+#bid
 
 insert into bid (bid_prd_id, bid_usr_id, bid_amount, bid_created_at)
-values (8, 4, 320.00, str_to_date('2025.12.16 10:00','%Y.%m.%d %H:%i'));  # bid_id = 15
+values (1, 2, 420.00, str_to_date('2025.01.05','%Y.%m.%d'));     # bid_id = 1
 
 insert into bid (bid_prd_id, bid_usr_id, bid_amount, bid_created_at)
-values (8, 8, 350.00, str_to_date('2025.12.16 13:30','%Y.%m.%d %H:%i'));  # bid_id = 16
+values (1, 5, 450.00, str_to_date('2025.01.06','%Y.%m.%d'));     # bid_id = 2
+
+insert into bid (bid_prd_id, bid_usr_id, bid_amount, bid_created_at)
+values (1, 7, 480.00, str_to_date('2025.01.07','%Y.%m.%d'));     # bid_id = 3
+
+insert into bid (bid_prd_id, bid_usr_id, bid_amount, bid_created_at)
+values (2, 4, 65.00, str_to_date('2025.01.08','%Y.%m.%d'));      # bid_id = 4
+
+insert into bid (bid_prd_id, bid_usr_id, bid_amount, bid_created_at)
+values (2, 8, 70.00, str_to_date('2025.01.09','%Y.%m.%d'));      # bid_id = 5
+
+insert into bid (bid_prd_id, bid_usr_id, bid_amount, bid_created_at)
+values (5, 2, 160.00, str_to_date('2025.01.07','%Y.%m.%d'));     # bid_id = 6
+
+insert into bid (bid_prd_id, bid_usr_id, bid_amount, bid_created_at)
+values (5, 5, 170.00, str_to_date('2025.01.08','%Y.%m.%d'));     # bid_id = 7
+
+insert into bid (bid_prd_id, bid_usr_id, bid_amount, bid_created_at)
+values (5, 7, 180.00, str_to_date('2025.01.09','%Y.%m.%d'));     # bid_id = 8
+
+insert into bid (bid_prd_id, bid_usr_id, bid_amount, bid_created_at)
+values (6, 3, 470.00, str_to_date('2025.01.10','%Y.%m.%d'));     # bid_id = 9
+
+insert into bid (bid_prd_id, bid_usr_id, bid_amount, bid_created_at)
+values (6, 1, 500.00, str_to_date('2025.01.11','%Y.%m.%d'));     # bid_id = 10
+
+insert into bid (bid_prd_id, bid_usr_id, bid_amount, bid_created_at)
+values (7, 4, 1300.00, str_to_date('2025.01.12','%Y.%m.%d'));    # bid_id = 11
+
+insert into bid (bid_prd_id, bid_usr_id, bid_amount, bid_created_at)
+values (7, 8, 1400.00, str_to_date('2025.01.13','%Y.%m.%d'));    # bid_id = 12
 
 #gamification
 
-insert into gamification (gme_name, gme_description, gme_xp_reward, gme_prd_id, gme_latitude, gme_longitude, gme_radius, gme_verification_code, gme_status, gme_starts_at, gme_reveal_at, gme_ends_at, gme_created_at)
-values ('Tesouro Lisboa Centro', 'Encontra o iPhone escondido entre Lisboa e a margem sul.', 50, 1, 38.6890, -9.1770, 30, 'LX01', 'active',
-str_to_date('2025.12.05 10:00','%Y.%m.%d %H:%i'),
-str_to_date('2025.12.05 09:30','%Y.%m.%d %H:%i'),
-str_to_date('2025.12.05 18:00','%Y.%m.%d %H:%i'),
-str_to_date('2025.12.05','%Y.%m.%d'));
+insert into gamification (gme_name, gme_description, gme_xp_reward, gme_prd_id, gme_latitude, gme_longitude, gme_radius, gme_verification_code, gme_status, gme_starts_at, gme_reveal_at, gme_ends_at, gme_winner_usr_id, gme_created_at)
+values ('Treasure Hunt - Pokemon Cards', 'Find the hidden Pokemon cards reward in Cascais.', 80, 5, 38.6970, -9.4215, 30, 'PK2025', 'claimed', str_to_date('2025.01.05','%Y.%m.%d'), str_to_date('2025.01.06','%Y.%m.%d'), str_to_date('2025.01.10','%Y.%m.%d'), 7, str_to_date('2025.01.04','%Y.%m.%d'));      # gme_id = 1
 
-insert into gamification (gme_name, gme_description, gme_xp_reward, gme_prd_id, gme_latitude, gme_longitude, gme_radius, gme_verification_code, gme_status, gme_starts_at, gme_reveal_at, gme_ends_at, gme_created_at)
-values ('Tesouro Ponte Sul', 'Procura a PS5 escondida entre Lisboa e Almada.', 40, 2, 38.6890, -9.1770, 25, 'LX02', 'active',
-str_to_date('2025.12.06 10:00','%Y.%m.%d %H:%i'),
-str_to_date('2025.12.06 09:30','%Y.%m.%d %H:%i'),
-str_to_date('2025.12.06 18:00','%Y.%m.%d %H:%i'),
-str_to_date('2025.12.06','%Y.%m.%d'));
+insert into gamification (gme_name, gme_description, gme_xp_reward, gme_prd_id, gme_latitude, gme_longitude, gme_radius, gme_verification_code, gme_status, gme_starts_at, gme_reveal_at, gme_ends_at, gme_winner_usr_id, gme_created_at)
+values ('Treasure Hunt - iPhone 13', 'A premium hunt for the iPhone 13 in Lisbon.', 120, 1, 38.7169, -9.1399, 40, 'IP2025', 'active', str_to_date('2025.02.01','%Y.%m.%d'), str_to_date('2025.02.02','%Y.%m.%d'), str_to_date('2025.02.07','%Y.%m.%d'), null, str_to_date('2025.01.31','%Y.%m.%d'));      # gme_id = 2
 
-insert into gamification (gme_name, gme_description, gme_xp_reward, gme_prd_id, gme_latitude, gme_longitude, gme_radius, gme_verification_code, gme_status, gme_starts_at, gme_reveal_at, gme_ends_at, gme_created_at)
-values ('Tesouro Ponte Tejo', 'Casaco escondido na zona do Tejo.', 60, 3, 38.6890, -9.1770, 35, 'LX03', 'active',
-str_to_date('2025.12.07 10:00','%Y.%m.%d %H:%i'),
-str_to_date('2025.12.07 09:30','%Y.%m.%d %H:%i'),
-str_to_date('2025.12.07 18:00','%Y.%m.%d %H:%i'),
-str_to_date('2025.12.07','%Y.%m.%d'));
+insert into gamification (gme_name, gme_description, gme_xp_reward, gme_prd_id, gme_latitude, gme_longitude, gme_radius, gme_verification_code, gme_status, gme_starts_at, gme_reveal_at, gme_ends_at, gme_winner_usr_id, gme_created_at)
+values ('Treasure Hunt - Football', 'Search for the Adidas football hidden in Almada.', 50, 4, 38.6794, -9.1569, 25, 'FB2025', 'scheduled', str_to_date('2025.03.01','%Y.%m.%d'), str_to_date('2025.03.02','%Y.%m.%d'), str_to_date('2025.03.05','%Y.%m.%d'), null, str_to_date('2025.02.25','%Y.%m.%d'));      # gme_id = 3
 
-insert into gamification (gme_name, gme_description, gme_xp_reward, gme_prd_id, gme_latitude, gme_longitude, gme_radius, gme_verification_code, gme_status, gme_starts_at, gme_reveal_at, gme_ends_at, gme_created_at)
-values ('Tesouro Ponte Lisboa', 'Bicicleta escondida junto ao Tejo.', 45, 4, 38.6890, -9.1770, 30, 'LX04', 'active',
-str_to_date('2025.12.08 10:00','%Y.%m.%d %H:%i'),
-str_to_date('2025.12.08 09:30','%Y.%m.%d %H:%i'),
-str_to_date('2025.12.08 18:00','%Y.%m.%d %H:%i'),
-str_to_date('2025.12.08','%Y.%m.%d'));
-
-insert into gamification (gme_name, gme_description, gme_xp_reward, gme_prd_id, gme_latitude, gme_longitude, gme_radius, gme_verification_code, gme_status, gme_starts_at, gme_reveal_at, gme_ends_at, gme_created_at)
-values ('Tesouro Margem Sul', 'Relógio escondido perto do rio.', 55, 5, 38.6890, -9.1770, 30, 'LX05', 'active',
-str_to_date('2025.12.09 10:00','%Y.%m.%d %H:%i'),
-str_to_date('2025.12.09 09:30','%Y.%m.%d %H:%i'),
-str_to_date('2025.12.09 18:00','%Y.%m.%d %H:%i'),
-str_to_date('2025.12.09','%Y.%m.%d'));
-
-insert into gamification (gme_name, gme_description, gme_xp_reward, gme_prd_id, gme_latitude, gme_longitude, gme_radius, gme_verification_code, gme_status, gme_starts_at, gme_reveal_at, gme_ends_at, gme_created_at)
-values ('Tesouro Rio Tejo', 'Mesa escondida na zona ribeirinha.', 35, 6, 38.6890, -9.1770, 20, 'LX06', 'active',
-str_to_date('2025.12.10 10:00','%Y.%m.%d %H:%i'),
-str_to_date('2025.12.10 09:30','%Y.%m.%d %H:%i'),
-str_to_date('2025.12.10 18:00','%Y.%m.%d %H:%i'),
-str_to_date('2025.12.10','%Y.%m.%d'));
-
-insert into gamification (gme_name, gme_description, gme_xp_reward, gme_prd_id, gme_latitude, gme_longitude, gme_radius, gme_verification_code, gme_status, gme_starts_at, gme_reveal_at, gme_ends_at, gme_created_at)
-values ('Tesouro Tejo Norte', 'Livro Java escondido junto ao rio.', 50, 7, 38.6890, -9.1770, 25, 'LX07', 'active',
-str_to_date('2025.12.11 10:00','%Y.%m.%d %H:%i'),
-str_to_date('2025.12.11 09:30','%Y.%m.%d %H:%i'),
-str_to_date('2025.12.11 18:00','%Y.%m.%d %H:%i'),
-str_to_date('2025.12.11','%Y.%m.%d'));
-
-insert into gamification (gme_name, gme_description, gme_xp_reward, gme_prd_id, gme_latitude, gme_longitude, gme_radius, gme_verification_code, gme_status, gme_starts_at, gme_reveal_at, gme_ends_at, gme_created_at)
-values ('Tesouro Ponte Final', 'Jantes escondidas perto da ponte.', 70, 8, 38.6890, -9.1770, 40, 'LX08', 'active',
-str_to_date('2025.12.12 10:00','%Y.%m.%d %H:%i'),
-str_to_date('2025.12.12 09:30','%Y.%m.%d %H:%i'),
-str_to_date('2025.12.12 18:00','%Y.%m.%d %H:%i'),
-str_to_date('2025.12.12','%Y.%m.%d'));
-
+insert into gamification (gme_name, gme_description, gme_xp_reward, gme_prd_id, gme_latitude, gme_longitude, gme_radius, gme_verification_code, gme_status, gme_starts_at, gme_reveal_at, gme_ends_at, gme_winner_usr_id, gme_created_at)
+values ('Treasure Hunt - Harry Potter Book', 'Special reward for book lovers in Coimbra.', 40, 8, 40.2033, -8.4103, 20, 'HP2025', 'expired', str_to_date('2025.01.15','%Y.%m.%d'), str_to_date('2025.01.16','%Y.%m.%d'), str_to_date('2025.01.20','%Y.%m.%d'), null, str_to_date('2025.01.14','%Y.%m.%d'));      # gme_id = 4
 #gamification_claim
 
 insert into gamification_claim (gcl_gme_id, gcl_usr_id, gcl_claimed_at, gcl_status)
-values (1, 2, str_to_date('2025.12.05 10:30','%Y.%m.%d %H:%i'), 'valid');
+values (1, 2, str_to_date('2025.01.07','%Y.%m.%d'), 'valid');       # gcl_id = 1
 
 insert into gamification_claim (gcl_gme_id, gcl_usr_id, gcl_claimed_at, gcl_status)
-values (1, 6, str_to_date('2025.12.05 11:00','%Y.%m.%d %H:%i'), 'invalid');
+values (1, 5, str_to_date('2025.01.08','%Y.%m.%d'), 'valid');       # gcl_id = 2
 
 insert into gamification_claim (gcl_gme_id, gcl_usr_id, gcl_claimed_at, gcl_status)
-values (2, 4, str_to_date('2025.12.06 10:45','%Y.%m.%d %H:%i'), 'valid');
+values (1, 7, str_to_date('2025.01.09','%Y.%m.%d'), 'winner');      # gcl_id = 3
 
 insert into gamification_claim (gcl_gme_id, gcl_usr_id, gcl_claimed_at, gcl_status)
-values (2, 7, str_to_date('2025.12.06 11:15','%Y.%m.%d %H:%i'), 'invalid');
+values (2, 4, str_to_date('2025.02.03','%Y.%m.%d'), 'valid');       # gcl_id = 4
 
 insert into gamification_claim (gcl_gme_id, gcl_usr_id, gcl_claimed_at, gcl_status)
-values (3, 8, str_to_date('2025.12.07 12:00','%Y.%m.%d %H:%i'), 'valid');
+values (2, 8, str_to_date('2025.02.04','%Y.%m.%d'), 'invalid');     # gcl_id = 5
 
-insert into gamification_claim (gcl_gme_id, gcl_usr_id, gcl_claimed_at, gcl_status)
-values (3, 9, str_to_date('2025.12.07 12:30','%Y.%m.%d %H:%i'), 'invalid');
+#xp_level
+
+insert into xp_level (lvl_number, lvl_xp_required) values (1, 0);
+insert into xp_level (lvl_number, lvl_xp_required) values (2, 50);
+insert into xp_level (lvl_number, lvl_xp_required) values (3, 100);
+insert into xp_level (lvl_number, lvl_xp_required) values (4, 150);
+insert into xp_level (lvl_number, lvl_xp_required) values (5, 200);
+insert into xp_level (lvl_number, lvl_xp_required) values (6, 250);
+insert into xp_level (lvl_number, lvl_xp_required) values (7, 300);
+insert into xp_level (lvl_number, lvl_xp_required) values (8, 350);
+insert into xp_level (lvl_number, lvl_xp_required) values (9, 400);
+insert into xp_level (lvl_number, lvl_xp_required) values (10, 450);
 
 #xp_logs
 
-insert into xp_logs (xpl_usr_id, xpl_amount, xpl_reason)
-values (2, 50, 'Participação em evento gamification');
+insert into xp_logs (xpl_usr_id, xpl_amount, xpl_reason, xpl_created_at)
+values (2, 10, 'Placed a bid on iPhone 13', str_to_date('2025.01.05','%Y.%m.%d'));  # xpl_id = 1
 
-insert into xp_logs (xpl_usr_id, xpl_amount, xpl_reason)
-values (4, 40, 'Participação em evento gamification');
+insert into xp_logs (xpl_usr_id, xpl_amount, xpl_reason, xpl_created_at)
+values (7, 50, 'Won auction', str_to_date('2025.01.10','%Y.%m.%d'));                # xpl_id = 2
 
-insert into xp_logs (xpl_usr_id, xpl_amount, xpl_reason)
-values (8, 60, 'Participação em evento gamification');
+insert into xp_logs (xpl_usr_id, xpl_amount, xpl_reason, xpl_created_at)
+values (7, 80, 'Won treasure hunt', str_to_date('2025.01.09','%Y.%m.%d'));          # xpl_id = 3
 
-insert into xp_logs (xpl_usr_id, xpl_amount, xpl_reason)
-values (1, 20, 'Criação de produto');
+insert into xp_logs (xpl_usr_id, xpl_amount, xpl_reason, xpl_created_at)
+values (4, 10, 'Placed a bid', str_to_date('2025.01.12','%Y.%m.%d'));               # xpl_id = 4
 
-insert into xp_logs (xpl_usr_id, xpl_amount, xpl_reason)
-values (3, 20, 'Criação de produto');
-
-insert into xp_logs (xpl_usr_id, xpl_amount, xpl_reason)
-values (5, 20, 'Criação de produto');
-
-insert into xp_logs (xpl_usr_id, xpl_amount, xpl_reason)
-values (2, 10, 'Licitação em produto');
-
-insert into xp_logs (xpl_usr_id, xpl_amount, xpl_reason)
-values (6, 10, 'Licitação em produto');
-
-insert into xp_logs (xpl_usr_id, xpl_amount, xpl_reason)
-values (7, 10, 'Licitação em produto');
-
-insert into xp_logs (xpl_usr_id, xpl_amount, xpl_reason)
-values (9, 15, 'Atividade na plataforma');
-
-insert into xp_logs (xpl_usr_id, xpl_amount, xpl_reason)
-values (10, 10, 'Participação geral');
-
-insert into xp_logs (xpl_usr_id, xpl_amount, xpl_reason)
-values (11, 10, 'Participação geral');
+insert into xp_logs (xpl_usr_id, xpl_amount, xpl_reason, xpl_created_at)
+values (8, 10, 'Placed a bid', str_to_date('2025.01.13','%Y.%m.%d'));               # xpl_id = 5
 
 #notifications
 
-insert into notifications (not_usr_id, not_type, not_message)
-values (1, 'bid', 'Recebeste uma nova licitação no teu produto iPhone 13.');
+insert into notifications (not_usr_id, not_type, not_message, not_read, not_created_at)
+values (2, 'bid', 'Your bid on iPhone 13 was placed.', false, str_to_date('2025.01.05','%Y.%m.%d'));       # not_id = 1
 
-insert into notifications (not_usr_id, not_type, not_message)
-values (3, 'bid', 'O teu produto PlayStation 5 recebeu uma nova licitação.');
+insert into notifications (not_usr_id, not_type, not_message, not_read, not_created_at)
+values (2, 'outbid', 'You have been outbid on iPhone 13.', false, str_to_date('2025.01.06','%Y.%m.%d'));   # not_id = 2
 
-insert into notifications (not_usr_id, not_type, not_message)
-values (2, 'gamification', 'Novo evento disponível: Tesouro Lisboa Centro.');
+insert into notifications (not_usr_id, not_type, not_message, not_read, not_created_at)
+values (5, 'bid', 'Your bid on iPhone 13 was placed.', false, str_to_date('2025.01.06','%Y.%m.%d'));       # not_id = 3
 
-insert into notifications (not_usr_id, not_type, not_message)
-values (4, 'gamification', 'Novo evento disponível: Tesouro Ponte Sul.');
+insert into notifications (not_usr_id, not_type, not_message, not_read, not_created_at)
+values (5, 'outbid', 'You have been outbid on iPhone 13.', false, str_to_date('2025.01.07','%Y.%m.%d'));   # not_id = 4
 
-insert into notifications (not_usr_id, not_type, not_message)
-values (5, 'gamification', 'Novo evento disponível: Tesouro Ponte Tejo.');
+insert into notifications (not_usr_id, not_type, not_message, not_read, not_created_at)
+values (7, 'bid', 'Your bid on Pokemon Cards was placed.', false, str_to_date('2025.01.09','%Y.%m.%d'));   # not_id = 5
 
-insert into notifications (not_usr_id, not_type, not_message)
-values (6, 'system', 'A tua conta foi atualizada com sucesso.');
+insert into notifications (not_usr_id, not_type, not_message, not_read, not_created_at)
+values (7, 'win', 'You won the auction for Pokemon Cards.', false, str_to_date('2025.01.10','%Y.%m.%d'));  # not_id = 6
 
-insert into notifications (not_usr_id, not_type, not_message)
-values (7, 'system', 'Explora os novos produtos disponíveis.');
+insert into notifications (not_usr_id, not_type, not_message, not_read, not_created_at)
+values (3, 'bid', 'Your bid on PlayStation 5 was placed.', false, str_to_date('2025.01.10','%Y.%m.%d'));   # not_id = 7
 
-insert into notifications (not_usr_id, not_type, not_message)
-values (8, 'bid', 'Foste ultrapassado numa licitação.');
+insert into notifications (not_usr_id, not_type, not_message, not_read, not_created_at)
+values (3, 'outbid', 'You have been outbid on PlayStation 5.', false, str_to_date('2025.01.11','%Y.%m.%d')); # not_id = 8
 
-insert into notifications (not_usr_id, not_type, not_message)
-values (9, 'system', 'Nova funcionalidade disponível na plataforma.');
+insert into notifications (not_usr_id, not_type, not_message, not_read, not_created_at)
+values (1, 'bid', 'Your bid on PlayStation 5 was placed.', false, str_to_date('2025.01.11','%Y.%m.%d'));   # not_id = 9
 
-insert into notifications (not_usr_id, not_type, not_message)
-values (10, 'gamification', 'Participa nos novos desafios disponíveis.');
+#review
 
-insert into notifications (not_usr_id, not_type, not_message)
-values (11, 'system', 'Obrigado por usares a plataforma!');
+insert into review (rev_usr_id, rev_reviewed_usr_id, rev_prd_id, rev_rating, rev_created_at)
+values (7, 3, 5, 5, str_to_date('2025.01.11','%Y.%m.%d'));   # rev_id = 1

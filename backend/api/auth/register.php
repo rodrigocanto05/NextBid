@@ -1,6 +1,6 @@
 <?php
+require_once '../../includes/cors.php';
 header('Content-Type: application/json');
-/** @var PDO $pdo */
 require_once "../../config/db.php";
 require_once '../../includes/UserManager.php';
 
@@ -19,13 +19,11 @@ $bio       = trim($body['bio'] ?? '');
 $xpInicial = rand(10, 50);
 
 if (!$name || !$email || empty($birthdate) || empty($gender)) {
-    echo json_encode(['status' => 'error', 'message' => 'Por favor preenche todos os campos.']);
-    exit;
+    exit(json_encode(['status' => 'error', 'message' => 'Por favor preenche todos os campos.']));
 }
 
 if (strlen($password) < 8) {
-    echo json_encode(['status' => 'error', 'message' => 'A password deve ter no mínimo 8 caracteres.']);
-    exit;
+    exit(json_encode(['status' => 'error', 'message' => 'A password deve ter no mínimo 8 caracteres.']));
 }
 
 $userMgr = new UserManager($pdo);

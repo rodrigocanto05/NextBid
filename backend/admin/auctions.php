@@ -29,7 +29,7 @@ $auctions = $pdo->query("
            COUNT(b.bid_id) as total_bids,
            MAX(b.bid_amount) as highest_bid
     FROM product p
-    JOIN categorie c ON p.prd_cat_id = c.cat_id
+    JOIN category c ON p.prd_cat_id = c.cat_id
     JOIN userss u ON p.prd_usr_id = u.usr_id
     LEFT JOIN bid b ON p.prd_id = b.bid_prd_id
     GROUP BY p.prd_id

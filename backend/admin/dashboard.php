@@ -10,7 +10,7 @@ $totalUsers     = $pdo->query("SELECT COUNT(*) FROM userss")->fetchColumn();
 $activeAuctions = $pdo->query("SELECT COUNT(*) FROM product WHERE prd_status = 'active'")->fetchColumn();
 $soldAuctions   = $pdo->query("SELECT COUNT(*) FROM product WHERE prd_status = 'sold'")->fetchColumn();
 $totalBids      = $pdo->query("SELECT COUNT(*) FROM bid")->fetchColumn();
-$catStats       = $pdo->query("SELECT c.cat_name, COUNT(p.prd_id) as total FROM product p JOIN categorie c ON p.prd_cat_id = c.cat_id GROUP BY c.cat_name")->fetchAll();
+$catStats       = $pdo->query("SELECT c.cat_name, COUNT(p.prd_id) as total FROM product p JOIN category c ON p.prd_cat_id = c.cat_id GROUP BY c.cat_name")->fetchAll();
 $topUsers       = $pdo->query("SELECT usr_name, usr_xp FROM userss ORDER BY usr_xp DESC LIMIT 5")->fetchAll();
 ?>
 <!DOCTYPE html>
