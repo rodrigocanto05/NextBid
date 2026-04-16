@@ -1,96 +1,100 @@
--- selecionar utilizadores do género masculino com email hotmail
-select usr_name, usr_email, usr_gender
+-- selecionar utilizadores do género masculino com email hotmail, mostrando também saldo e xp
+select usr_name, usr_email, usr_gender, usr_balance, usr_xp
 from userss
 where usr_gender = 'M'
-and usr_email like '%hotmail%'
+and usr_email like '%hotmail%';
 
--- selecionar todos os produtos com o nome da categoria e do vendedor, ordenados dos mais recentes para os mais antigos
-select prd_name, cat_name, usr_name, prd_created_at
-from product
-join categorie on prd_cat_id = cat_id
-join userss on prd_usr_id = usr_id
-order by prd_created_at desc
+-- selecionar todos os produtos com o nome da categoria, do vendedor e do vencedor, ordenados dos mais recentes para os mais antigos
+select p.prd_name, c.cat_name, u.usr_name as seller_name, w.usr_name as winner_name, p.prd_created_at
+from product p
+join category c on p.prd_cat_id = c.cat_id
+join userss u on p.prd_usr_id = u.usr_id
+left join userss w on p.prd_winner_usr_id = w.usr_id
+order by p.prd_created_at desc;
 
 -- selecionar todos os produtos ativos, ordenados pelo fim do leilão
 select prd_name, prd_start_price, prd_location, prd_ends_at
 from product
 where prd_status = 'active'
-order by prd_ends_at asc
+order by prd_ends_at asc;
 
 -- selecionar os produtos com a respetiva imagem principal
-select prd_name, img_path
-from product
-join product_image on prd_id = img_prd_id
-where img_is_primary = true
-order by prd_name asc
+select p.prd_name, pi.img_path
+from product p
+join product_image pi on p.prd_id = pi.img_prd_id
+where pi.img_is_primary = true
+order by p.prd_name asc;
 
 -- selecionar os produtos que ainda não têm licitações
-select prd_name, prd_start_price, prd_status
-from product
-where prd_id not in (select bid_prd_id from bid)
+select p.prd_name, p.prd_start_price, p.prd_status
+from product p
+where p.prd_id not in (select b.bid_prd_id from bid b)
+order by p.prd_name asc;
 
 -- selecionar o número total de licitações por produto, ordenado do maior para o menor
-select prd_name, count(bid_id) total_licitacoes
-from product
-left join bid on prd_id = bid_prd_id
-group by prd_id, prd_name
-order by total_licitacoes desc
+select p.prd_name, count(b.bid_id) as total_licitacoes
+from product p
+left join bid b on p.prd_id = b.bid_prd_id
+group by p.prd_id, p.prd_name
+order by total_licitacoes desc, p.prd_name asc;
 
 -- selecionar o lance mais alto de cada produto, ordenado do maior para o menor
-select prd_name, max(bid_amount) maior_lance
-from product
-join bid on prd_id = bid_prd_id
-group by prd_id, prd_name
-order by maior_lance desc
+select p.prd_name, max(b.bid_amount) as maior_lance
+from product p
+join bid b on p.prd_id = b.bid_prd_id
+group by p.prd_id, p.prd_name
+order by maior_lance desc;
 
 -- selecionar os utilizadores que mais licitaram, ordenados do que fez mais lances para o que fez menos
-select usr_name, count(bid_id) total_lances
-from userss
-join bid on usr_id = bid_usr_id
-group by usr_id, usr_name
-order by total_lances desc
+select u.usr_name, count(b.bid_id) as total_lances
+from userss u
+join bid b on u.usr_id = b.bid_usr_id
+group by u.usr_id, u.usr_name
+order by total_lances desc, u.usr_name asc;
 
 -- selecionar os utilizadores que criaram mais produtos, ordenados do que criou mais para o que criou menos
-select usr_name, count(prd_id) total_produtos
-from userss
-join product on usr_id = prd_usr_id
-group by usr_id, usr_name
-order by total_produtos desc
+select u.usr_name, count(p.prd_id) as total_produtos
+from userss u
+join product p on u.usr_id = p.prd_usr_id
+group by u.usr_id, u.usr_name
+order by total_produtos desc, u.usr_name asc;
 
--- selecionar os utilizadores ordenados por xp, do maior para o menor
-select usr_name, usr_email, usr_xp
+-- selecionar os utilizadores ordenados por xp, do maior para o menor, mostrando também o saldo
+select usr_name, usr_email, usr_xp, usr_balance
 from userss
-order by usr_xp desc
+order by usr_xp desc, usr_name asc;
 
--- selecionar todos os eventos de gamificação com o respetivo prémio
-select gme_name, prd_name, gme_xp_reward, gme_status
-from gamification
-join product on gme_prd_id = prd_id
-order by gme_starts_at asc
+-- selecionar todos os eventos de gamificação com o respetivo prémio e vencedor
+select g.gme_name, p.prd_name, g.gme_xp_reward, g.gme_status, u.usr_name as winner_name
+from gamification g
+join product p on g.gme_prd_id = p.prd_id
+left join userss u on g.gme_winner_usr_id = u.usr_id
+order by g.gme_starts_at asc;
 
 -- selecionar o número total de tentativas por evento, ordenado do maior para o menor
-select gme_name, count(gcl_id) total_tentativas
-from gamification
-left join gamification_claim on gme_id = gcl_gme_id
-group by gme_id, gme_name
-order by total_tentativas desc
+select g.gme_name, count(gc.gcl_id) as total_tentativas
+from gamification g
+left join gamification_claim gc on g.gme_id = gc.gcl_gme_id
+group by g.gme_id, g.gme_name
+order by total_tentativas desc, g.gme_name asc;
 
 -- selecionar as notificações não lidas de um utilizador, ordenadas da mais recente para a mais antiga
 select not_type, not_message, not_created_at
 from notifications
 where not_usr_id = 8
 and not_read = false
-order by not_created_at desc
+order by not_created_at desc;
 
 -- selecionar categorias com mais produtos, ordenadas da que tem mais para a que tem menos
-select cat_name, count(prd_id) total_produtos
-from categorie
-left join product on cat_id = prd_cat_id
-group by cat_id, cat_name
-order by total_produtos desc
+select c.cat_name, count(p.prd_id) as total_produtos
+from category c
+left join product p on c.cat_id = p.prd_cat_id
+group by c.cat_id, c.cat_name
+order by total_produtos desc, c.cat_name asc;
 
--- selecionar os produtos que terminam primeiro, ordenados da data mais próxima para a mais distante
-select prd_name, prd_ends_at, prd_status
-from product
-where prd_status = 'active'
-order by prd_ends_at asc
+-- selecionar os produtos que terminam primeiro, ordenados da data mais próxima para a mais distante, mostrando também o vendedor
+select p.prd_name, u.usr_name as seller_name, p.prd_ends_at, p.prd_status
+from product p
+join userss u on p.prd_usr_id = u.usr_id
+where p.prd_status = 'active'
+order by p.prd_ends_at asc;
