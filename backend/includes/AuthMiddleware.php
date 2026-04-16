@@ -4,20 +4,28 @@ class AuthMiddleware
 {
     public static function getBearerToken(): ?string
     {
-        $headers = [];
+        $auth = '';
 
         if (function_exists('getallheaders')) {
             $headers = getallheaders();
-        } else {
-            foreach ($_SERVER as $key => $value) {
-                if (str_starts_with($key, 'HTTP_')) {
-                    $name = str_replace('_', '-', substr($key, 5));
-                    $headers[ucwords(strtolower($name), '-')] = $value;
-                }
-            }
+            $auth = $headers['Authorization'] ?? $headers['authorization'] ?? '';
         }
 
-        $auth = $headers['Authorization'] ?? $headers['authorization'] ?? '';
+        if (!$auth && !empty($_SERVER['HTTP_AUTHORIZATION'])) {
+            $auth = $_SERVER['HTTP_AUTHORIZATION'];
+        }
+
+        if (!$auth && !empty($_SERVER['REDIRECT_HTTP_AUTHORIZATION'])) {
+            $auth = $_SERVER['REDIRECT_HTTP_AUTHORIZATION'];
+        }
+
+        if (!$auth && !empty($_SERVER['Authorization'])) {
+            $auth = $_SERVER['Authorization'];
+        }
+
+        if (!$auth && !empty($_SERVER['REDIRECT_Authorization'])) {
+            $auth = $_SERVER['REDIRECT_Authorization'];
+        }
 
         if (preg_match('/Bearer\s+(.+)/i', $auth, $matches)) {
             return trim($matches[1]);
@@ -32,7 +40,10 @@ class AuthMiddleware
 
         if (!$token) {
             http_response_code(401);
-            exit(json_encode(['status' => 'error', 'message' => 'Token em falta.']));
+            exit(json_encode([
+                'status' => 'error',
+                'message' => 'Token em falta.'
+            ]));
         }
 
         $stmt = $pdo->prepare(
@@ -46,13 +57,19 @@ class AuthMiddleware
 
         if (!$row) {
             http_response_code(401);
-            exit(json_encode(['status' => 'error', 'message' => 'Token inválido.']));
+            exit(json_encode([
+                'status' => 'error',
+                'message' => 'Token inválido.'
+            ]));
         }
 
         if (strtotime($row['tok_expires_at']) < time()) {
             $pdo->prepare("DELETE FROM auth_tokens WHERE tok_token = ?")->execute([$token]);
             http_response_code(401);
-            exit(json_encode(['status' => 'error', 'message' => 'Sessão expirada. Inicia sessão novamente.']));
+            exit(json_encode([
+                'status' => 'error',
+                'message' => 'Sessão expirada. Inicia sessão novamente.'
+            ]));
         }
 
         return [
@@ -70,7 +87,10 @@ class AuthMiddleware
 
         if ($user['id'] !== $resourceUserId && $user['role'] !== 'admin') {
             http_response_code(403);
-            exit(json_encode(['status' => 'error', 'message' => 'Sem permissão para este recurso.']));
+            exit(json_encode([
+                'status' => 'error',
+                'message' => 'Sem permissão para este recurso.'
+            ]));
         }
 
         return $user;
@@ -82,7 +102,10 @@ class AuthMiddleware
 
         if ($user['role'] !== 'admin') {
             http_response_code(403);
-            exit(json_encode(['status' => 'error', 'message' => 'Apenas administradores.']));
+            exit(json_encode([
+                'status' => 'error',
+                'message' => 'Apenas administradores.'
+            ]));
         }
 
         return $user;
