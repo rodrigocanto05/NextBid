@@ -21,3 +21,4 @@ A maior dificuldade consistiu em garantir que as diferenças identificadas fosse
 Não possuo tarefas pendentes relativamente à minha componente. Contudo, a validação prática das propostas apresentadas dependerá da implementação técnica nas próximas fases.
 
 Em conclusão, a minha contribuição foi fundamental para reforçar a base conceptual do projeto, assegurando coerência entre a ideia inicial, o público-alvo definido e o posicionamento no mercado.
+<img width="445" height="867" alt="Screenshot_35" src="https://github.com/user-attachments/assets/60c7b31a-168a-4f5f-b069-0bbb20961f7f" />
