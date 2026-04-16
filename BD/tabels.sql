@@ -1,16 +1,3 @@
-CREATE TABLE auth_tokens (
-    tok_id         INT NOT NULL AUTO_INCREMENT,
-    tok_usr_id     INT NOT NULL,
-    tok_token      VARCHAR(64) NOT NULL,
-    tok_created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    tok_expires_at DATETIME NOT NULL,
-    PRIMARY KEY (tok_id),
-    UNIQUE KEY uq_token (tok_token),
-    INDEX idx_tok_usr_id (tok_usr_id),
-    CONSTRAINT auth_tokens_fk_user
-        FOREIGN KEY (tok_usr_id) REFERENCES userss(usr_id)
-        ON DELETE CASCADE
-);
 
 create table userss (
     usr_id         int not null auto_increment,
@@ -28,6 +15,17 @@ create table userss (
     usr_created_at datetime not null default current_timestamp,
     primary key (usr_id),
     unique key uq_userss_email (usr_email)
+);
+
+create table auth_tokens (
+    tok_id         int not null auto_increment,
+    tok_usr_id     int not null,
+    tok_token      varchar(64) not null,
+    tok_created_at datetime not null default current_timestamp,
+    tok_expires_at datetime not null,
+    primary key (tok_id),
+    unique key uq_token (tok_token),
+    index idx_tok_usr_id (tok_usr_id)
 );
 
 create table category (
@@ -171,6 +169,11 @@ create index idx_product_cat_id on product(prd_cat_id);
 create index idx_product_winner_usr_id on product(prd_winner_usr_id);
 create index idx_product_status on product(prd_status);
 create index idx_product_ends_at on product(prd_ends_at);
+
+alter table auth_tokens
+add constraint auth_tokens_fk_user
+foreign key (tok_usr_id) references userss(usr_id)
+on delete cascade;
 
 alter table product
 add constraint product_fk_user
