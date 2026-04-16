@@ -4,6 +4,12 @@ require_once __DIR__ . '/TransactionManager.php';
 
 function executarLazyCron(PDO $pdo): void
 {
+    executarLazyCronLeiloes($pdo);
+    executarLazyCronGamificacao($pdo);
+}
+
+function executarLazyCronLeiloes(PDO $pdo): void
+{
     $notif = new NotificationManager($pdo);
     $tx    = new TransactionManager($pdo);
 
@@ -36,12 +42,12 @@ function executarLazyCron(PDO $pdo): void
                 $transfer = $tx->transfer($winnerId, $sellerId, $amount, "Leilão #$id - $name");
 
                 if ($transfer['status'] === 'success') {
-                    $notif->create($winnerId, "Parabéns! Ganhaste o leilão de $name por " . number_format($amount, 2) . "€!");
-                    $notif->create($sellerId, "O teu leilão de $name foi vendido por " . number_format($amount, 2) . "€!");
+                    $notif->create($winnerId, "Parabéns! Ganhaste o leilão de $name por " . number_format($amount, 2) . "€!", 'auction_won');
+                    $notif->create($sellerId, "O teu leilão de $name foi vendido por " . number_format($amount, 2) . "€!", 'auction_sold');
                     atribuirXPAleatorio($pdo, $winnerId, "Vitória no leilão #$id");
                 } else {
-                    $notif->create($winnerId, "Ganhaste o leilão de $name mas não tens saldo suficiente. Carrega a carteira e contacta o vendedor.");
-                    $notif->create($sellerId, "O leilão de $name terminou mas o vencedor não tem saldo suficiente.");
+                    $notif->create($winnerId, "Ganhaste o leilão de $name mas não tens saldo suficiente. Carrega a carteira e contacta o vendedor.", 'auction_payment_failed');
+                    $notif->create($sellerId, "O leilão de $name terminou mas o vencedor não tem saldo suficiente.", 'auction_payment_failed');
                 }
             } else {
                 $pdo->prepare("UPDATE product SET prd_status = 'expired' WHERE prd_id = ?")->execute([$id]);
@@ -53,6 +59,27 @@ function executarLazyCron(PDO $pdo): void
             }
             error_log("Erro ao fechar leilão $id: " . $e->getMessage());
         }
+    }
+}
+
+function executarLazyCronGamificacao(PDO $pdo): void
+{
+    try {
+        $pdo->exec(
+            "UPDATE gamification 
+             SET gme_status = 'active' 
+             WHERE gme_status = 'scheduled' 
+               AND gme_starts_at <= NOW()"
+        );
+
+        $pdo->exec(
+            "UPDATE gamification 
+             SET gme_status = 'expired' 
+             WHERE gme_status IN ('scheduled', 'active') 
+               AND gme_ends_at < NOW()"
+        );
+    } catch (Exception $e) {
+        error_log("Erro no lazy cron de gamificação: " . $e->getMessage());
     }
 }
 
