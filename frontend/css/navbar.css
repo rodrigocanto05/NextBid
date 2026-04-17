@@ -1,83 +1,74 @@
-/* ── NAVBAR & BOTÕES ── */
+﻿.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    background: rgba(10, 14, 26, 0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--gold-soft);
+}
 
-.navbar {
-    background: #1a1a2e;
-    color: #fff;
+.navbar__inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 14px 24px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 24px;
-    height: 60px;
-    position: sticky;
-    top: 0;
-    z-index: 100;
+    position: relative;
+    height: 80px;
 }
 
-.navbar__logo {
-    font-size: 1.4rem;
-    font-weight: bold;
-    color: #C9A84C;
-    letter-spacing: 1px;
+.navbar__brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.35rem;
+    letter-spacing: 0.12em;
+    color: var(--gold);
+    font-weight: 700;
+}
+
+.navbar__logo-icon {
+    font-size: 1.8rem;
+    line-height: 1;
 }
 
 .navbar__links {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
     display: flex;
-    gap: 24px;
-    list-style: none;
+    gap: 40px;
 }
 
-.navbar__links a {
-    color: #ccc;
-    font-size: 0.95rem;
-    transition: color 0.2s;
+.navbar__link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    color: var(--text-soft);
+    font-size: 0.9rem;
+    transition: color var(--t-base), transform var(--t-fast);
 }
 
-.navbar__links a:hover {
-    color: #C9A84C;
-    text-decoration: none;
+.navbar__link:hover,
+.navbar__link--active { color: var(--gold); }
+.navbar__link:hover   { transform: translateY(-1px); }
+
+.navbar__link-icon {
+    font-size: 1.4rem;
+    line-height: 1;
 }
 
 .navbar__auth {
     display: flex;
-    gap: 10px;
     align-items: center;
+    gap: 12px;
 }
 
-/* Botões globais (usados na navbar e noutros blocos) */
-
-.btn {
-    padding: 7px 16px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 0.9rem;
-    font-family: inherit;
-    transition: opacity 0.2s;
-}
-
-.btn:hover { opacity: 0.85; }
-
-.btn--outline {
-    background: transparent;
-    border: 1px solid #C9A84C;
-    color: #C9A84C;
-}
-
-.btn--primary {
-    background: #C9A84C;
-    color: #1a1a2e;
-    font-weight: bold;
-}
-
-/* Logo com imagem na navbar */
-.navbar__logo-link {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    text-decoration: none;
-}
-
-.navbar__logo-img {
-    height: 36px;
-    width: auto;
+@media (max-width: 900px) {
+    .navbar__links { display: none; }
 }

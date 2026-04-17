@@ -1,0 +1,35 @@
+﻿.result-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    border-radius: var(--radius-full);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+}
+
+.result-badge--sold {
+    background: rgba(46, 204, 113, 0.15);
+    color: var(--success);
+    border: 1px solid rgba(46, 204, 113, 0.4);
+}
+
+.result-badge--unsold {
+    background: rgba(231, 76, 60, 0.15);
+    color: var(--danger);
+    border: 1px solid rgba(231, 76, 60, 0.4);
+}
+
+.login-prompt {
+    max-width: 480px;
+    margin: 80px auto;
+    padding: 40px 32px;
+    background: var(--bg-card);
+    border: 1px solid var(--gold-soft);
+    border-radius: var(--radius-xl);
+    text-align: center;
+}
+
+.login-prompt h2 { color: var(--gold); margin-bottom: 12px; }
+.login-prompt p  { color: var(--text-muted); margin-bottom: 20px; }

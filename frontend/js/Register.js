@@ -6,7 +6,7 @@ document.getElementById('RegisterPage').addEventListener('submit', async functio
     const name = document.getElementById('Nome').value.trim();
     const email = document.getElementById('email').value.trim();
     const password = document.getElementById('password').value;
-    const gender = document.getElementById('gênero').value;
+    const gender = document.getElementById('genero').value;
     const birthdate = document.getElementById('birthdate').value;
     const bio = '';
 
