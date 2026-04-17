@@ -34,4 +34,24 @@ Esta integração valida o funcionamento do sistema ao nível de:
 
 ---
 
+## Validação do Sistema
+
+O trabalho desenvolvido contribui para demonstrar que o sistema consegue:
+
+- Obter dados a partir do backend  
+- Processar e enviar esses dados  
+- Apresentá-los corretamente no frontend  
+
+Isto confirma o funcionamento do fluxo:
+
+Dados → Backend → Frontend (HTML)
+
+---
+
+## Considerações Finais
+
+O meu foco esteve na componente prática da aplicação, garantindo que a interface não é apenas visual, mas funcional e ligada ao sistema.
+
+A integração entre frontend e backend foi essencial para validar o comportamento real da aplicação, assegurando que os dados são corretamente refletidos na experiência do utilizador.\
+
 
