@@ -1,45 +1,56 @@
-/* ── TICKER DE LICITAÇÕES AO VIVO ── */
-
-.ticker {
-    background: #C9A84C;
-    color: #1a1a2e;
-    padding: 6px 0;
+﻿.ticker {
+    position: fixed;
+    top: 80px;
+    left: 0;
+    right: 0;
+    z-index: 40;
+    background: linear-gradient(90deg, var(--bg-panel), var(--bg-deep), var(--bg-panel));
+    border-top: 1px solid var(--gold-soft);
+    border-bottom: 1px solid var(--gold-soft);
     overflow: hidden;
-    white-space: nowrap;
-    font-size: 0.85rem;
-    font-weight: bold;
-}
-
-.ticker__label {
-    display: inline-block;
-    background: #1a1a2e;
-    color: #C9A84C;
-    padding: 0 12px;
-    margin-right: 16px;
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+    height: 45px;
 }
 
 .ticker__track {
-    display: inline-block;
-    animation: ticker-scroll 30s linear infinite;
-}
-
-.ticker__track:hover {
-    animation-play-state: paused;
+    display: flex;
+    gap: 40px;
+    padding: 0 24px;
+    white-space: nowrap;
+    animation: ticker-scroll 50s linear infinite;
+    height: 100%;
+    align-items: center;
 }
 
 .ticker__item {
-    display: inline-block;
-    margin-right: 48px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 18px;
+    background: rgba(10, 14, 26, 0.5);
+    border: 1px solid var(--gold-faint);
+    border-radius: var(--radius-full);
+    font-size: 0.85rem;
 }
 
-.ticker__item::before {
-    content: "🔨 ";
+.ticker__dot {
+    width: 8px;
+    height: 8px;
+    background: var(--gold);
+    border-radius: 50%;
+    animation: pulse-dot 1.5s infinite;
 }
+
+.ticker__live   { color: var(--gold); font-weight: 600; font-size: 0.75rem; letter-spacing: 0.1em; }
+.ticker__name   { color: var(--text-soft); }
+.ticker__sep    { color: var(--text-faint); }
+.ticker__amount { color: var(--gold); font-weight: 600; }
 
 @keyframes ticker-scroll {
-    0%   { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+}
+
+@keyframes pulse-dot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%      { opacity: 0.5; transform: scale(1.3); }
 }

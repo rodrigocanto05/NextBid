@@ -1,27 +1,84 @@
-/* ── HERO ── */
+﻿.hero {
+    position: relative;
+    height: 80vh;
+    min-height: 500px;
+    overflow: hidden;
+    margin-bottom: 40px;
+}
 
-.hero {
-    background: linear-gradient(135deg, #1a1a2e 0%, #2c2c54 100%);
-    color: #fff;
-    text-align: center;
-    padding: 48px 24px;
+.hero__bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    transition: background-image 1s ease-in-out;
+}
+
+.hero__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg,
+        rgba(10, 14, 26, 0.5) 0%,
+        rgba(10, 14, 26, 0.75) 60%,
+        var(--bg-base) 100%);
+}
+
+.hero__content {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 24px;
+}
+
+.hero__kicker {
+    color: var(--gold);
+    font-size: 0.9rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
 }
 
 .hero__title {
-    font-size: 2.2rem;
-    color: #C9A84C;
-    margin-bottom: 8px;
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    font-weight: 700;
+    max-width: 800px;
+    line-height: 1.1;
 }
 
-.hero__sub {
-    font-size: 1rem;
-    color: #ccc;
-    margin-bottom: 20px;
+.hero__subtitle {
+    font-size: 1.2rem;
+    color: var(--text-soft);
+    max-width: 600px;
 }
 
-.hero__cta {
-    display: inline-flex;
-    gap: 12px;
-    flex-wrap: wrap;
-    justify-content: center;
+.hero__ctas { display: flex; gap: 16px; margin-top: 8px; }
+
+.hero__dots {
+    position: absolute;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+    display: flex;
+    gap: 10px;
+}
+
+.hero__dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transition: all var(--t-base);
+    cursor: pointer;
+}
+
+.hero__dot--active {
+    background: var(--gold);
+    width: 32px;
+    border-radius: var(--radius-full);
 }

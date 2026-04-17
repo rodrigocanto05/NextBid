@@ -3,15 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NextBid — Todos os Leilões</title>
+  <title>NextBid — Os Meus Leilões</title>
   <link rel="stylesheet" href="../../css/reset.css" />
   <link rel="stylesheet" href="../../css/layout.css" />
   <link rel="stylesheet" href="../../css/buttons.css" />
   <link rel="stylesheet" href="../../css/navbar.css" />
   <link rel="stylesheet" href="../../css/dropdown.css" />
   <link rel="stylesheet" href="../../css/ticker.css" />
-  <link rel="stylesheet" href="../../css/filter-bar.css" />
   <link rel="stylesheet" href="../../css/cards.css" />
+  <link rel="stylesheet" href="../../css/stats.css" />
+  <link rel="stylesheet" href="../../css/tabs.css" />
+  <link rel="stylesheet" href="../../css/my-auctions.css" />
   <link rel="stylesheet" href="../../css/fab.css" />
   <link rel="stylesheet" href="../../css/modal.css" />
   <link rel="stylesheet" href="../../css/modal-novo-leilao.css" />
@@ -27,9 +29,9 @@
       </a>
       <nav class="navbar__links">
         <a href="../index.html" class="navbar__link"><span class="navbar__link-icon">🏠</span>Início</a>
-        <a href="LeiloesAtivos.html" class="navbar__link navbar__link--active"><span class="navbar__link-icon">🔨</span>Leilões</a>
+        <a href="LeiloesAtivos.html" class="navbar__link"><span class="navbar__link-icon">🔨</span>Leilões</a>
         <a href="../CaçaAoTesouro.html" class="navbar__link"><span class="navbar__link-icon">💎</span>Caça ao Tesouro</a>
-        <a href="MeusLeiloes.html" class="navbar__link"><span class="navbar__link-icon">⚖️</span>Os Meus Leilões</a>
+        <a href="MeusLeiloes.html" class="navbar__link navbar__link--active"><span class="navbar__link-icon">⚖️</span>Os Meus Leilões</a>
       </nav>
       <div class="navbar__auth" id="navbar-auth"></div>
     </div>
@@ -38,32 +40,49 @@
   <div class="ticker"><div class="ticker__track" id="ticker-track"></div></div>
 
   <main class="page__main">
-    <div class="page-header">
-      <h1 class="page-header__title">Todos os Leilões</h1>
-      <p class="page-header__sub">Explora todos os leilões ativos e encontra oportunidades únicas</p>
+    <div id="auth-content">
+      <div class="page-header">
+        <h1 class="page-header__title">Os Meus Leilões</h1>
+        <p class="page-header__sub">Gere os teus leilões ativos e consulta o histórico de vendas</p>
+      </div>
+
+      <!-- USER STATS -->
+      <section class="stats stats--compact" id="user-stats">
+        <div class="stats__inner">
+          <div><div class="stat__value" id="stat-balance">—</div><div class="stat__label">Saldo</div></div>
+          <div><div class="stat__value" id="stat-level">—</div><div class="stat__label">Nível</div></div>
+          <div><div class="stat__value" id="stat-xp">—</div><div class="stat__label">XP</div></div>
+          <div><div class="stat__value" id="stat-won">—</div><div class="stat__label">Leilões Ganhos</div></div>
+          <div><div class="stat__value" id="stat-bids">—</div><div class="stat__label">Total Licitado</div></div>
+        </div>
+      </section>
+
+      <nav class="tabs" role="tablist">
+        <button class="tab tab--active" data-tab="ativo"   role="tab">Ativos</button>
+        <button class="tab"              data-tab="passado" role="tab">Passados</button>
+      </nav>
+
+      <section id="panel-ativo" class="tab-panel active">
+        <div class="auctions-grid auctions-grid--cols-3" id="grid-ativo">
+          <div class="cards-loading"><div class="spinner"></div><p>A carregar…</p></div>
+        </div>
+      </section>
+
+      <section id="panel-passado" class="tab-panel">
+        <div class="auctions-grid auctions-grid--cols-3" id="grid-passado">
+          <div class="cards-loading"><div class="spinner"></div><p>A carregar…</p></div>
+        </div>
+      </section>
     </div>
 
-    <!-- FILTER BAR -->
-    <div class="filter-bar"><div class="filter-bar__panel">
-      <div class="filter-bar__search">
-        <span class="filter-bar__icon">🔍</span>
-        <input type="text" id="search-input" class="filter-bar__input" placeholder="Pesquisar leilões..." />
-      </div>
-      <select id="filter-category" class="filter-bar__select">
-        <option value="">Todas as categorias</option>
-      </select>
-    </div></div>
-
-    <p class="results-count" id="results-count"></p>
-
-    <div class="auctions-grid" id="leiloes-container">
-      <div class="cards-loading" id="cards-loading">
-        <div class="spinner"></div><p>A carregar leilões…</p>
-      </div>
+    <!-- Login prompt (hidden unless not logged in) -->
+    <div class="login-prompt" id="login-prompt" style="display:none">
+      <h2>Sessão Necessária</h2>
+      <p>Inicia sessão para ver os teus leilões.</p>
+      <a href="../auth/login.html" class="btn btn--primary">Iniciar Sessão</a>
     </div>
   </main>
 
-  <!-- FAB stack -->
   <div class="fab-stack">
     <button class="fab fab--primary" id="btn-novo-leilao" title="Criar Novo Leilão">+</button>
   </div>  <!-- MODAL: Criar Leilão -->
@@ -148,6 +167,7 @@
       </form>
     </div>
   </div>
+
   <footer class="footer"><div class="footer__inner">
     <p class="footer__copy">© 2026 NextBid. Todos os direitos reservados.</p>
   </div></footer>
@@ -164,6 +184,6 @@
   <script src="../../js/novo-leilao/Upload.js"></script>
   <script src="../../js/novo-leilao/Submit.js"></script>
   <script src="../../js/novo-leilao/Init.js"></script>
-  <script src="../../js/pages/Leiloes.js"></script>
+  <script src="../../js/pages/MeusLeiloes.js"></script>
 </body>
 </html>

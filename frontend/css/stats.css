@@ -1,28 +1,39 @@
-/* ── BARRA DE ESTATÍSTICAS ── */
-
-.stats-bar {
-    background: #fff;
-    border-bottom: 1px solid #e0e0e0;
-    display: flex;
-    justify-content: center;
-    gap: 40px;
-    padding: 14px 24px;
-    flex-wrap: wrap;
+﻿.stats {
+    background: linear-gradient(90deg, var(--bg-panel), var(--bg-deep));
+    border-top: 1px solid var(--gold-soft);
+    border-bottom: 1px solid var(--gold-soft);
+    padding: 32px 24px;
 }
 
-.stat {
+.stats__inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 24px;
     text-align: center;
 }
 
-.stat__number {
-    font-size: 1.4rem;
-    font-weight: bold;
-    color: #C9A84C;
+.stat__value {
+    font-size: 2rem;
+    color: var(--gold);
+    font-weight: 700;
+    margin-bottom: 4px;
 }
 
 .stat__label {
-    font-size: 0.78rem;
-    color: #888;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    letter-spacing: 0.05em;
 }
+
+.stats--compact {
+    margin: 24px 0 12px;
+    padding: 20px 24px;
+    border-radius: var(--radius-lg);
+    background: var(--bg-card);
+    border: 1px solid var(--gold-soft);
+}
+
+.stats--compact .stat__value { font-size: 1.5rem; }
+.stats--compact .stat__label { font-size: 0.8rem; }

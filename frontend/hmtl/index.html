@@ -1,119 +1,102 @@
-<!DOCTYPE html>
-<html>
-
+﻿<!DOCTYPE html>
+<html lang="pt">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="NextBid — Plataforma de Leilões Online">
-    <meta name="keywords" content="Leilões online, Leilões, Licitar online, produtos Leilões">
-    <title>NextBid — Leilões Online</title>
-    <link rel="stylesheet" href="../css/main.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NextBid — Leilões Premium</title>
+  <link rel="stylesheet" href="../css/reset.css" />
+  <link rel="stylesheet" href="../css/layout.css" />
+  <link rel="stylesheet" href="../css/buttons.css" />
+  <link rel="stylesheet" href="../css/navbar.css" />
+  <link rel="stylesheet" href="../css/dropdown.css" />
+  <link rel="stylesheet" href="../css/ticker.css" />
+  <link rel="stylesheet" href="../css/hero.css" />
+  <link rel="stylesheet" href="../css/cards.css" />
+  <link rel="stylesheet" href="../css/stats.css" />
+  <link rel="stylesheet" href="../css/footer.css" />
+  <link rel="stylesheet" href="../css/utils.css" />
 </head>
+<body class="page">
 
-<body>
-
-    <!-- ── NAVBAR ──────────────────────────────────────────── -->
-    <nav class="navbar">
-        <a href="index.html" class="navbar__logo-link">
-            <img src="../img/logo-NextBid.png" alt="NextBid" class="navbar__logo-img">
-            <span class="navbar__logo">NextBid</span>
+  <!-- NAVBAR -->
+  <header class="navbar">
+    <div class="navbar__inner">
+      <a href="index.html" class="navbar__brand">
+        <span class="navbar__logo-icon">⬡</span>
+        <span>NEXTBID</span>
+      </a>
+      <nav class="navbar__links">
+        <a href="index.html" class="navbar__link navbar__link--active">
+          <span class="navbar__link-icon">🏠</span>Início
         </a>
-
-        <ul class="navbar__links">
-            <li><a href="index.html">Início</a></li>
-            <li><a href="LL active/LeiloesAtivos.html">Leilões</a></li>
-            <li><a href="CaçaAoTesouro.html">Caça ao Tesouro</a></li>
-            <li><a href="Perfil.html">Perfil</a></li>
-        </ul>
-
-        <div class="navbar__auth" id="navbar-auth">
-            <a href="auth/Login.html"><button class="btn btn--outline">Login</button></a>
-            <a href="auth/Register.html"><button class="btn btn--primary">Registar</button></a>
-        </div>
-    </nav>
-
-    <!-- ── TICKER: LICITAÇÕES AO VIVO ──────────────────────── -->
-    <div class="ticker">
-        <span class="ticker__label">Ao Vivo</span>
-        <span class="ticker__track" id="ticker-track">
-            <span class="ticker__item">A carregar licitações...</span>
-        </span>
+        <a href="LL active/LeiloesAtivos.html" class="navbar__link">
+          <span class="navbar__link-icon">🔨</span>Leilões
+        </a>
+        <a href="CaçaAoTesouro.html" class="navbar__link">
+          <span class="navbar__link-icon">💎</span>Caça ao Tesouro
+        </a>
+        <a href="LL active/MeusLeiloes.html" class="navbar__link">
+          <span class="navbar__link-icon">⚖️</span>Os Meus Leilões
+        </a>
+      </nav>
+      <div class="navbar__auth" id="navbar-auth"></div>
     </div>
+  </header>
 
-    <!-- ── HERO ─────────────────────────────────────────────── -->
+  <!-- TICKER -->
+  <div class="ticker"><div class="ticker__track" id="ticker-track"></div></div>
+
+  <!-- HERO -->
+  <main class="page__main">
     <section class="hero">
-        <h1 class="hero__title">NextBid</h1>
-        <p class="hero__sub">A tua plataforma de leilões online. Licita, ganha e explora tesouros perto de ti.</p>
-        <div class="hero__cta">
-            <a href="LL active/LeiloesAtivos.html"><button class="btn btn--primary">Ver todos os leilões</button></a>
-            <a href="CaçaAoTesouro.html"><button class="btn btn--outline">Caça ao Tesouro</button></a>
+      <div class="hero__bg" id="hero-bg"></div>
+      <div class="hero__overlay"></div>
+      <div class="hero__content">
+        <span class="hero__kicker">★ Leilões Premium</span>
+        <h1 class="hero__title">Descobre peças únicas em tempo real</h1>
+        <p class="hero__subtitle">Licitações ao vivo em relógios, arte, automóveis e colecionáveis raros.</p>
+        <div class="hero__ctas">
+          <a href="LL active/LeiloesAtivos.html" class="btn btn--primary btn--lg">Explorar Leilões</a>
+          <a href="CaçaAoTesouro.html" class="btn btn--ghost btn--lg">Caça ao Tesouro</a>
         </div>
+      </div>
+      <div class="hero__dots" id="hero-dots"></div>
     </section>
 
-    <!-- ── STATS ─────────────────────────────────────────────── -->
-    <div class="stats-bar">
-        <div class="stat">
-            <p class="stat__number" id="stat-ativos">—</p>
-            <p class="stat__label">Leilões ativos</p>
-        </div>
-        <div class="stat">
-            <p class="stat__number">24/7</p>
-            <p class="stat__label">Disponível</p>
-        </div>
-        <div class="stat">
-            <p class="stat__number">🔒</p>
-            <p class="stat__label">Seguro</p>
-        </div>
+    <!-- STATS -->
+    <section class="stats">
+      <div class="stats__inner">
+        <div><div class="stat__value">250+</div><div class="stat__label">Leilões ativos</div></div>
+        <div><div class="stat__value">24/7</div><div class="stat__label">Licitações</div></div>
+        <div><div class="stat__value">100%</div><div class="stat__label">Seguro</div></div>
+        <div><div class="stat__value">10K+</div><div class="stat__label">Utilizadores</div></div>
+      </div>
+    </section>
+
+    <!-- FEATURED AUCTIONS -->
+    <section class="section">
+      <h2 class="section__title">Leilões em Destaque</h2>
+    </section>
+    <div class="auctions-grid" id="leiloes-container">
+      <div class="cards-loading" id="cards-loading">
+        <div class="spinner"></div>
+        <p>A carregar leilões…</p>
+      </div>
     </div>
+  </main>
 
-    <!-- ── LEILÕES EM DESTAQUE ───────────────────────────────── -->
-    <main>
-        <section class="section">
-            <h2 class="section__title">Leilões em Curso</h2>
-            <div class="auctions-grid" id="auctions-grid">
-                <div class="empty-state">
-                    <p>A carregar leilões...</p>
-                </div>
-            </div>
-        </section>
-    </main>
+  <footer class="footer"><div class="footer__inner">
+    <p class="footer__copy">© 2026 NextBid. Todos os direitos reservados.</p>
+  </div></footer>
 
-    <!-- ── FOOTER ───────────────────────────────────────────── -->
-    <footer>
-        <p>&copy; 2026 NextBid — Todos os direitos reservados</p>
-    </footer>
-
-    <script src="../js/Cronometro.js"></script>
-    <script src="../js/index.js"></script>
-
-    <!-- Pop-up de boas-vindas após registo -->
-    <script>
-        (function () {
-            const welcomeName = localStorage.getItem('welcome');
-            if (welcomeName) {
-                localStorage.removeItem('welcome');
-                const overlay = document.createElement('div');
-                overlay.className = 'welcome-overlay';
-                overlay.innerHTML = `
-                <div class="welcome-popup">
-                    <img src="../img/logo-NextBid.png" alt="NextBid">
-                    <h2>Bem-vindo, ${welcomeName}!</h2>
-                    <p>A tua conta foi criada com sucesso. Explora leilões e começa a licitar!</p>
-                    <button class="btn btn--primary" id="welcome-close">Começar</button>
-                </div>
-            `;
-                document.body.appendChild(overlay);
-                document.getElementById('welcome-close').addEventListener('click', function () {
-                    overlay.remove();
-                });
-                overlay.addEventListener('click', function (e) {
-                    if (e.target === overlay) overlay.remove();
-                });
-            }
-        })();
-    </script>
-
+  <script src="../js/shared/Helpers.js"></script>
+  <script src="../js/shared/Auth.js"></script>
+  <script src="../js/shared/Navbar.js"></script>
+  <script src="../js/shared/Cronometro.js"></script>
+  <script src="../js/shared/HeroCarousel.js"></script>
+  <script src="../js/shared/Ticker.js"></script>
+  <script src="../js/shared/AuctionCard.js"></script>
+  <script src="../js/shared/FilterBar.js"></script>
+  <script src="../js/pages/Home.js"></script>
 </body>
-
 </html>

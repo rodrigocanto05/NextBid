@@ -1,0 +1,74 @@
+﻿.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 14, 26, 0.85);
+    backdrop-filter: blur(6px);
+    display: none;
+    align-items: flex-start;
+    justify-content: center;
+    overflow-y: auto;
+    z-index: 100;
+    padding: 40px 16px;
+}
+
+.modal-overlay.open { display: flex; }
+
+.modal {
+    background: var(--bg-card);
+    border: 1px solid var(--gold-soft);
+    border-radius: var(--radius-xl);
+    width: 100%;
+    max-width: 640px;
+    box-shadow: var(--shadow-lg);
+    display: flex;
+    flex-direction: column;
+    max-height: calc(100vh - 80px);
+    overflow: hidden;
+    animation: modal-in var(--t-slow) both;
+}
+
+.modal--sm { max-width: 420px; }
+
+.modal__header {
+    padding: 20px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--gold-faint);
+}
+
+.modal__title {
+    font-size: 1.35rem;
+    color: var(--text-white);
+    letter-spacing: 0.02em;
+}
+
+.modal__close {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    color: var(--gold);
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background var(--t-base);
+}
+
+.modal__close:hover { background: var(--gold-faint); }
+
+.modal__body {
+    padding: 24px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.modal__footer {
+    padding: 16px 24px;
+    border-top: 1px solid var(--gold-faint);
+}
+
+@keyframes modal-in {
+    from { opacity: 0; transform: translateY(20px) scale(0.98); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+}

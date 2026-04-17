@@ -1,6 +1,6 @@
 <?php
 $host = 'localhost';
-$port = '8889';
+$port = '3306';
 $db   = 'nextbid';
 $user = 'root';
 $pass = 'root';

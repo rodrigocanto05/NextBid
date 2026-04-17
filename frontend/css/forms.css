@@ -1,204 +1,132 @@
-/* ── AUTH FORMS (Login & Register) ── */
-
-/* Página inteira — fundo gradiente, conteúdo centrado */
+/* ============ AUTH PAGE LAYOUT ============ */
 .auth-page {
-    flex: 1;
+    min-height: calc(100vh - 160px);
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 40px 16px;
-    background: linear-gradient(135deg, #1a1a2e 0%, #2c2c54 100%);
+    padding: 120px 24px 60px;
 }
 
-/* Cartão branco central */
 .auth-card {
-    background: #fff;
-    border-radius: 10px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-    padding: 40px 36px;
     width: 100%;
-    max-width: 420px;
+    max-width: 440px;
+    background: var(--bg-card);
+    border: 1px solid var(--gold-soft);
+    border-radius: var(--radius-xl);
+    padding: 36px 32px;
+    box-shadow: var(--shadow-lg);
+}
+
+/* ============ HEADER ============ */
+.auth-card__header {
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    align-items: center;
+    margin-bottom: 24px;
 }
 
-/* Cabeçalho do cartão */
-.auth-card__header {
+.auth-card__logo-img {
+    width: 72px;
+    height: 72px;
+    object-fit: contain;
+    margin-bottom: 12px;
+}
+
+.auth-card__page-title {
+    color: var(--gold);
+    font-size: 1.8rem;
+    margin-bottom: 4px;
     text-align: center;
-}
-
-.auth-card__logo {
-    font-size: 2rem;
-    font-weight: bold;
-    color: #C9A84C;
-    letter-spacing: 2px;
-    display: block;
-    margin-bottom: 6px;
+    letter-spacing: 0.08em;
 }
 
 .auth-card__title {
-    font-size: 1rem;
-    color: #555;
-    font-weight: normal;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.95rem;
 }
 
-/* Formulário */
+/* ============ FORM ============ */
 .auth-card__form {
     display: flex;
     flex-direction: column;
     gap: 16px;
 }
 
-/* Grupo label + input */
 .form-group {
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 6px;
 }
 
 .form-group label {
-    font-size: 0.82rem;
-    font-weight: bold;
-    color: #1a1a2e;
-    text-transform: uppercase;
-    letter-spacing: 0.4px;
+    color: var(--text-soft);
+    font-size: 0.85rem;
+    letter-spacing: 0.04em;
 }
 
 .form-group input,
 .form-group select {
     width: 100%;
-    padding: 10px 12px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 0.95rem;
+    padding: 12px 14px;
+    background: var(--bg-base);
+    border: 1px solid var(--gold-border);
+    border-radius: var(--radius-md);
+    color: var(--text-white);
     font-family: inherit;
-    color: #1a1a2e;
-    background: #fafafa;
-    transition: border-color 0.2s, box-shadow 0.2s;
-    outline: none;
+    font-size: 0.95rem;
+    transition: border-color var(--t-base), background var(--t-base);
 }
 
 .form-group input:focus,
 .form-group select:focus {
-    border-color: #C9A84C;
-    box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.15);
-    background: #fff;
+    outline: none;
+    border-color: var(--gold);
+    background: var(--bg-card);
 }
 
-/* Botão principal full-width */
-.auth-card__btn {
-    width: 100%;
-    padding: 12px;
-    font-size: 1rem;
-    font-weight: bold;
-    background: #C9A84C;
-    color: #1a1a2e;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: opacity 0.2s;
-}
+.form-group input::placeholder { color: var(--text-muted); }
 
-.auth-card__btn:hover {
-    opacity: 0.88;
-}
-
-/* Mensagem de erro */
+/* ============ ACTIONS ============ */
 .auth-card__error {
+    color: var(--danger);
     font-size: 0.85rem;
-    color: #e74c3c;
+    min-height: 1.2em;
     text-align: center;
-    min-height: 20px;
 }
 
-/* Link de navegação entre Login/Register */
+.auth-card__btn {
+    padding: 14px;
+    background: var(--gold);
+    color: var(--bg-base);
+    border: none;
+    border-radius: var(--radius-md);
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    transition: background var(--t-base), transform var(--t-fast);
+}
+.auth-card__btn:hover { background: var(--gold-hover); transform: translateY(-1px); }
+
 .auth-card__link {
     text-align: center;
-    font-size: 0.88rem;
-    color: #888;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-top: 18px;
 }
+.auth-card__link a { color: var(--gold); }
 
-.auth-card__link a {
-    color: #C9A84C;
-    font-weight: bold;
+/* ============ OUTLINE BUTTON (navbar back) ============ */
+.btn--outline {
+    background: transparent;
+    border: 1px solid var(--gold-border);
+    color: var(--text-white);
+    padding: 8px 16px;
+    border-radius: var(--radius-md);
+    font-family: inherit;
+    cursor: pointer;
+    transition: background var(--t-base), border-color var(--t-base);
 }
-
-.auth-card__link a:hover {
-    text-decoration: underline;
-}
-
-/* Logo no cartão de auth */
-.auth-card__logo-img {
-    height: 64px;
-    width: auto;
-    margin: 0 auto 12px;
-    display: block;
-}
-
-/* Título da página (Login / Registar) */
-.auth-card__page-title {
-    font-size: 1.6rem;
-    font-weight: bold;
-    color: #1a1a2e;
-    text-align: center;
-    margin-bottom: 4px;
-}
-
-/* Pop-up de boas-vindas */
-.welcome-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.6);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 9999;
-    animation: fadeIn 0.3s ease;
-}
-
-.welcome-popup {
-    background: #fff;
-    border-radius: 12px;
-    padding: 40px 36px;
-    text-align: center;
-    max-width: 400px;
-    width: 90%;
-    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.4);
-    animation: popIn 0.4s ease;
-}
-
-.welcome-popup img {
-    height: 80px;
-    margin-bottom: 16px;
-}
-
-.welcome-popup h2 {
-    font-size: 1.4rem;
-    color: #1a1a2e;
-    margin-bottom: 8px;
-}
-
-.welcome-popup p {
-    font-size: 0.95rem;
-    color: #555;
-    margin-bottom: 20px;
-}
-
-.welcome-popup .btn {
-    padding: 10px 32px;
-    font-size: 1rem;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-@keyframes popIn {
-    from { transform: scale(0.8); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
-}
+.btn--outline:hover { background: var(--gold-faint); border-color: var(--gold); }
