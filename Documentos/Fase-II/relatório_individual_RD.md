@@ -18,3 +18,20 @@ Implementei páginas HTML estruturadas para:
 Tive especial atenção à forma como os dados são apresentados, assegurando coerência entre a estrutura da interface e os fluxos principais do utilizador.
 
 ---
+
+## Integração Frontend ↔ Backend
+
+Trabalhei diretamente na ligação entre o frontend e o backend, permitindo que a aplicação:
+
+- Faça pedidos ao servidor (HTTP requests)
+- Receba dados processados pelo backend
+- Apresente esses dados dinamicamente no HTML
+
+Esta integração valida o funcionamento do sistema ao nível de:
+- Obtenção de dados
+- Comunicação cliente-servidor
+- Atualização da interface com base nos dados recebidos
+
+---
+
+
