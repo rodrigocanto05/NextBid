@@ -1,4 +1,4 @@
-# Relatório Individual – NextBid
+# Relatório Individual – Fase II
 
 ## Contributo Individual
 
