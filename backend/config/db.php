@@ -1,13 +1,22 @@
 <?php
 $host = 'localhost';
-$db = 'nextbid';
+$port = '8889';
+$db   = 'nextbid';
 $user = 'root';
 $pass = 'root';
 
-try{
-    $pdo = new PDO("mysql:host=$host;dbname=$db;charset=utf8", $user, $pass);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+try {
+    $pdo = new PDO(
+        "mysql:host=$host;port=$port;dbname=$db;charset=utf8mb4",
+        $user,
+        $pass,
+        [
+            PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+            PDO::ATTR_EMULATE_PREPARES   => false,
+        ]
+    );
 } catch (PDOException $e) {
+    http_response_code(500);
     die("Erro de Ligação: " . $e->getMessage());
 }

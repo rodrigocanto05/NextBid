@@ -23,7 +23,14 @@ if (isset($_GET['toggle_role'])) {
     exit;
 }
 
-$users = $pdo->query("SELECT usr_id, usr_name, usr_email, usr_role, usr_xp, usr_created_at FROM userss ORDER BY usr_created_at DESC")->fetchAll();
+$users = $pdo->query("
+    SELECT u.usr_id, u.usr_name, u.usr_email, u.usr_role, u.usr_xp, u.usr_balance,
+           u.usr_location, u.usr_created_at,
+           (SELECT COUNT(*) FROM product WHERE prd_usr_id = u.usr_id) as total_auctions,
+           (SELECT COUNT(*) FROM bid WHERE bid_usr_id = u.usr_id) as total_bids
+    FROM userss u
+    ORDER BY u.usr_created_at DESC
+")->fetchAll();
 ?>
 <!DOCTYPE html>
 <html lang="pt">
@@ -32,31 +39,35 @@ $users = $pdo->query("SELECT usr_id, usr_name, usr_email, usr_role, usr_xp, usr_
     <title>Utilizadores - NextBid Admin</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: Arial, sans-serif; background: #1a1a2e; color: white; }
-        .navbar { background: #16213e; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; }
-        .navbar a { color: white; text-decoration: none; margin-left: 20px; }
-        .navbar a:hover { color: #C9A84C; }
-        .logo { height: 50px; mix-blend-mode: lighten; }
-        .container { padding: 30px; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #1a1a2e; color: white; }
+        .navbar { background: #16213e; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #C9A84C; }
+        .navbar a { color: #ccc; text-decoration: none; margin-left: 20px; padding: 5px 10px; border-radius: 5px; transition: all 0.2s; }
+        .navbar a:hover, .navbar a.active { color: white; background: #0f3460; }
+        .container { padding: 30px; max-width: 1400px; margin: 0 auto; }
         h2 { margin-bottom: 20px; color: #aaa; }
         table { width: 100%; border-collapse: collapse; background: #16213e; border-radius: 10px; overflow: hidden; }
-        th { background: #0f3460; padding: 15px; text-align: left; color: #aaa; }
-        td { padding: 15px; border-bottom: 1px solid #0f3460; }
+        th { background: #0f3460; padding: 12px; text-align: left; color: #aaa; font-size: 12px; text-transform: uppercase; }
+        td { padding: 12px; border-bottom: 1px solid #0f3460; font-size: 13px; }
         tr:hover { background: #0f3460; }
-        .badge-admin { background: #C9A84C; padding: 4px 10px; border-radius: 20px; font-size: 12px; }
-        .badge-user { background: #0f3460; border: 1px solid #aaa; padding: 4px 10px; border-radius: 20px; font-size: 12px; }
-        .btn { padding: 6px 12px; border-radius: 5px; text-decoration: none; font-size: 13px; margin-right: 5px; }
-        .btn-danger { background: #C9A84C; color: white; }
+        .badge-admin { background: #C9A84C; color: #1a1a2e; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: bold; }
+        .badge-user { background: transparent; border: 1px solid #666; padding: 3px 10px; border-radius: 20px; font-size: 11px; color: #aaa; }
+        .btn { padding: 5px 10px; border-radius: 5px; text-decoration: none; font-size: 12px; margin-right: 3px; }
+        .btn-danger { background: #e74c3c; color: white; }
         .btn-info { background: #533483; color: white; }
-        .logout { background: #C9A84C; padding: 8px 15px; border-radius: 5px; color: white !important; }
+        .logout { background: #C9A84C; padding: 8px 15px; border-radius: 5px; color: #1a1a2e !important; font-weight: bold; }
+        .balance { color: #28a745; }
     </style>
 </head>
 <body>
     <div class="navbar">
-<img src="nextbid_logo.png" alt="NextBid" class="logo" style="height: 70px; mix-blend-mode: lighten;">
+        <img src="nextbid_logo.png" alt="NextBid" class="logo" style="height: 70px; mix-blend-mode: lighten;">
         <div>
             <a href="dashboard.php">Dashboard</a>
+            <a href="users.php" class="active">Utilizadores</a>
             <a href="auctions.php">Leilões</a>
+            <a href="categories.php">Categorias</a>
+            <a href="gamification.php">Gamificação</a>
+            <a href="reviews.php">Reviews</a>
             <a href="logout.php" class="logout">Sair</a>
         </div>
     </div>
@@ -65,8 +76,8 @@ $users = $pdo->query("SELECT usr_id, usr_name, usr_email, usr_role, usr_xp, usr_
         <table>
             <thead>
                 <tr>
-                    <th>ID</th><th>Nome</th><th>Email</th><th>Role</th>
-                    <th>XP</th><th>Registado em</th><th>Ações</th>
+                    <th>ID</th><th>Nome</th><th>Email</th><th>Localização</th><th>Role</th>
+                    <th>XP</th><th>Saldo</th><th>Leilões</th><th>Bids</th><th>Registado</th><th>Ações</th>
                 </tr>
             </thead>
             <tbody>
@@ -75,11 +86,15 @@ $users = $pdo->query("SELECT usr_id, usr_name, usr_email, usr_role, usr_xp, usr_
                     <td><?= $u['usr_id'] ?></td>
                     <td><?= htmlspecialchars($u['usr_name']) ?></td>
                     <td><?= htmlspecialchars($u['usr_email']) ?></td>
+                    <td><?= htmlspecialchars($u['usr_location'] ?? '-') ?></td>
                     <td><span class="badge-<?= $u['usr_role'] === 'admin' ? 'admin' : 'user' ?>"><?= $u['usr_role'] ?></span></td>
-                    <td><?= $u['usr_xp'] ?> XP</td>
-                    <td><?= $u['usr_created_at'] ?></td>
+                    <td><?= $u['usr_xp'] ?></td>
+                    <td class="balance"><?= number_format($u['usr_balance'], 2) ?>€</td>
+                    <td><?= $u['total_auctions'] ?></td>
+                    <td><?= $u['total_bids'] ?></td>
+                    <td><?= date('d/m/Y', strtotime($u['usr_created_at'])) ?></td>
                     <td>
-                        <a href="?toggle_role=<?= $u['usr_id'] ?>" class="btn btn-info">Mudar Role</a>
+                        <a href="?toggle_role=<?= $u['usr_id'] ?>" class="btn btn-info">Role</a>
                         <a href="?delete=<?= $u['usr_id'] ?>" class="btn btn-danger" onclick="return confirm('Tens a certeza?')">Apagar</a>
                     </td>
                 </tr>

@@ -9,13 +9,13 @@ class UserManager
         $this->pdo = $pdo;
     }
 
-    public function register(string $name, string $email, string $password, string $gender, string $birthdate, string $bio, int $xp): bool
+    public function register(string $name, string $email, string $password, string $gender, string $birthdate, string $bio, string $location, int $xp): bool
     {
         $hash = password_hash($password, PASSWORD_BCRYPT);
         $role = 'normaluser';
 
-        $sql = "INSERT INTO userss (usr_name, usr_email, usr_password, usr_gender, usr_birthdate, usr_bio, usr_xp, usr_role)
-                VALUES (:name, :email, :password, :gender, :birthdate, :bio, :xp, :role)";
+        $sql = "INSERT INTO userss (usr_name, usr_email, usr_password, usr_gender, usr_birthdate, usr_bio, usr_location, usr_xp, usr_role)
+                VALUES (:name, :email, :password, :gender, :birthdate, :bio, :location, :xp, :role)";
 
         $stmt = $this->pdo->prepare($sql);
 
@@ -26,6 +26,7 @@ class UserManager
             'gender'    => $gender,
             'birthdate' => $birthdate,
             'bio'       => $bio,
+            'location'  => $location,
             'xp'        => $xp,
             'role'      => $role
         ]);
@@ -54,11 +55,13 @@ class UserManager
                 'token'      => $token,
                 'expires_at' => $expiresAt,
                 'user'       => [
-                    'id'    => (int) $user['usr_id'],
-                    'name'  => $user['usr_name'],
-                    'email' => $user['usr_email'],
-                    'role'  => $user['usr_role'],
-                    'xp'    => (int) $user['usr_xp']
+                    'id'       => (int) $user['usr_id'],
+                    'name'     => $user['usr_name'],
+                    'email'    => $user['usr_email'],
+                    'role'     => $user['usr_role'],
+                    'xp'       => (int) $user['usr_xp'],
+                    'photo'    => $user['usr_photo'],
+                    'location' => $user['usr_location']
                 ]
             ];
         } catch (Exception $e) {
@@ -78,7 +81,8 @@ class UserManager
 
     public function getUserProfile(int $userId): array|bool
     {
-        $sql = "SELECT usr_id, usr_name, usr_email, usr_xp, usr_photo, usr_bio, usr_birthdate, usr_balance
+        $sql = "SELECT usr_id, usr_name, usr_email, usr_xp, usr_photo, usr_bio, usr_birthdate,
+                       usr_balance, usr_location, usr_role, usr_created_at
                 FROM userss
                 WHERE usr_id = :id";
 
@@ -94,9 +98,37 @@ class UserManager
             $stmt = $this->pdo->prepare("SELECT COUNT(*) FROM bid WHERE bid_usr_id = ?");
             $stmt->execute([$userId]);
             $user['total_bids'] = (int) $stmt->fetchColumn();
+
+            $stmt = $this->pdo->prepare("SELECT COUNT(*) FROM product WHERE prd_usr_id = ? AND prd_status = 'sold'");
+            $stmt->execute([$userId]);
+            $user['total_sold'] = (int) $stmt->fetchColumn();
+
+            $stmt = $this->pdo->prepare("SELECT AVG(rev_rating) FROM review WHERE rev_reviewed_usr_id = ?");
+            $stmt->execute([$userId]);
+            $avg = $stmt->fetchColumn();
+            $user['avg_rating'] = $avg ? round((float) $avg, 2) : null;
         }
 
         return $user;
+    }
+
+    public function updatePhoto(int $userId, string $photoPath): bool
+    {
+        return $this->pdo->prepare("UPDATE userss SET usr_photo = ? WHERE usr_id = ?")
+            ->execute([$photoPath, $userId]);
+    }
+
+    public function getXpHistory(int $userId, int $limit = 50): array
+    {
+        $stmt = $this->pdo->prepare(
+            "SELECT xpl_id, xpl_amount, xpl_reason, xpl_created_at
+             FROM xp_logs
+             WHERE xpl_usr_id = ?
+             ORDER BY xpl_created_at DESC
+             LIMIT $limit"
+        );
+        $stmt->execute([$userId]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function cleanExpiredTokens(): int
