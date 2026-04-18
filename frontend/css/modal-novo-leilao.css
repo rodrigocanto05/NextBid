@@ -38,6 +38,66 @@
 
 .form-hint--gold { color: var(--gold); }
 
+.form-group--nested { margin-bottom: 0; }
+
+.form-sublabel {
+    display: block;
+    font-size: 0.78rem;
+    color: var(--text-faint);
+    margin-bottom: 6px;
+    letter-spacing: 0.03em;
+}
+
+/* Quick-duration chips */
+.quick-dur {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+.quick-dur__chip {
+    padding: 7px 14px;
+    background: rgba(10, 14, 26, 0.5);
+    border: 1px solid var(--gold-border);
+    border-radius: var(--radius-full);
+    color: var(--text-soft);
+    font-family: inherit;
+    font-size: 0.82rem;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    transition: background var(--t-base), border-color var(--t-base), color var(--t-base), transform var(--t-fast);
+}
+.quick-dur__chip:hover {
+    background: var(--gold-faint);
+    border-color: var(--gold);
+    color: var(--text-white);
+    transform: translateY(-1px);
+}
+.quick-dur__chip.is-active {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: var(--bg-base);
+    font-weight: 600;
+}
+
+/* Force native date/time pickers into our dark theme */
+input[type="date"].form-input,
+input[type="time"].form-input {
+    color-scheme: dark;
+    cursor: pointer;
+}
+input[type="date"].form-input::-webkit-calendar-picker-indicator,
+input[type="time"].form-input::-webkit-calendar-picker-indicator {
+    filter: invert(0.75) sepia(1) saturate(3) hue-rotate(15deg) brightness(0.95);
+    cursor: pointer;
+    opacity: 0.85;
+    transition: opacity var(--t-base);
+}
+input[type="date"].form-input::-webkit-calendar-picker-indicator:hover,
+input[type="time"].form-input::-webkit-calendar-picker-indicator:hover {
+    opacity: 1;
+}
+
 .photo-upload-row {
     display: flex;
     gap: 10px;

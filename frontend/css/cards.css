@@ -35,10 +35,116 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.5s;
+    transition: transform 0.5s, opacity 0.3s;
 }
+.auction-card__img.is-loading { opacity: 0; }
 
 .auction-card:hover .auction-card__img { transform: scale(1.08); }
+
+/* Missing image placeholder — grey wrap with spin→stop→broken-icon on hover */
+.auction-card__img-wrap--empty {
+    background: linear-gradient(135deg, #242a3a, #1c2030);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.broken-wheel {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.04);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    transition: border-color 0.3s ease;
+    overflow: hidden;
+}
+
+.broken-wheel__icon {
+    color: rgba(255, 255, 255, 0.12);
+    transition: color 0.35s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 0;
+}
+.broken-wheel__icon svg { width: 26px; height: 26px; display: block; }
+
+/* On card hover: the wheel spins twice then settles; icon brightens */
+.auction-card:hover .broken-wheel {
+    animation: wheel-spin-stop 1.4s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+}
+.auction-card:hover .broken-wheel__icon {
+    color: rgba(212, 175, 55, 0.65);
+}
+
+@keyframes wheel-spin-stop {
+    0% {
+        transform: rotate(0deg);
+        border-color: rgba(255,255,255,0.04);
+        border-top-color: var(--gold);
+    }
+    70% {
+        transform: rotate(900deg);
+        border-color: rgba(255,255,255,0.04);
+        border-top-color: var(--gold);
+    }
+    100% {
+        transform: rotate(900deg);
+        border-color: rgba(212, 175, 55, 0.3);
+        border-top-color: rgba(212, 175, 55, 0.3);
+    }
+}
+
+/* Image loading skeleton (shown under <img> while it downloads) */
+.img-skeleton {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #242a3a, #1c2030);
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+}
+.img-skeleton.is-hidden { opacity: 0; }
+.img-spinner {
+    width: 38px; height: 38px;
+    border: 2px solid var(--gold-faint);
+    border-top-color: var(--gold);
+    border-radius: 50%;
+    animation: spin 0.9s linear infinite;
+}
+
+.auction-card__live-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(46, 204, 113, 0.18);
+    color: var(--success);
+    border: 1px solid rgba(46, 204, 113, 0.4);
+    padding: 4px 10px;
+    border-radius: var(--radius-full);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+}
+.auction-card__live-badge::before {
+    content: "";
+    width: 6px; height: 6px;
+    background: var(--success);
+    border-radius: 50%;
+    animation: pulse-live 1.4s ease-in-out infinite;
+}
+@keyframes pulse-live {
+    0%, 100% { opacity: 1; }
+    50%      { opacity: 0.3; }
+}
 
 .auction-card__cat-badge {
     position: absolute;

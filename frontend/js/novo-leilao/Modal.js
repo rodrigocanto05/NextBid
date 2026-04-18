@@ -1,4 +1,4 @@
-﻿// Open/close logic for the "Criar Leilão" modal
+// Open/close logic for the "Criar Leilão" modal
 window.NB = window.NB || {};
 NB.NovoLeilao = NB.NovoLeilao || {};
 
@@ -32,17 +32,52 @@ NB.NovoLeilao.bindModalTriggers = function () {
 };
 
 NB.NovoLeilao.setDatetimeLimits = function () {
-    const input = document.getElementById('nl-fim');
-    if (!input) return;
+    const dateEl = document.getElementById('nl-fim-date');
+    const timeEl = document.getElementById('nl-fim-time');
+    const hidden = document.getElementById('nl-fim');
+    const chips  = document.querySelectorAll('#nl-quick-dur .quick-dur__chip');
+    if (!dateEl || !timeEl || !hidden) return;
+
+    const pad = n => String(n).padStart(2, '0');
+    const fmtDate = d => `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+    const fmtTime = d => `${pad(d.getHours())}:${pad(d.getMinutes())}`;
+
     const now = new Date();
     const min = new Date(now.getTime() + 60 * 60 * 1000);
     const max = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
-    const def = new Date(now.getTime() + 24 * 60 * 60 * 1000);
-    const fmt = d => {
-        const p = n => String(n).padStart(2, '0');
-        return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}`;
+
+    dateEl.min = fmtDate(min);
+    dateEl.max = fmtDate(max);
+
+    const syncHidden = () => {
+        if (dateEl.value && timeEl.value) hidden.value = `${dateEl.value}T${timeEl.value}`;
+        refreshActiveChip();
     };
-    input.min = fmt(min);
-    input.max = fmt(max);
-    input.value = fmt(def);
+
+    const refreshActiveChip = () => {
+        if (!dateEl.value || !timeEl.value) return;
+        const picked = new Date(`${dateEl.value}T${timeEl.value}`);
+        const diffHours = Math.round((picked.getTime() - Date.now()) / 3600000);
+        chips.forEach(chip => {
+            const h = Number(chip.dataset.hours);
+            chip.classList.toggle('is-active', h === diffHours);
+        });
+    };
+
+    const applyHours = h => {
+        const target = new Date(Date.now() + h * 3600000);
+        dateEl.value = fmtDate(target);
+        timeEl.value = fmtTime(target);
+        syncHidden();
+    };
+
+    // default: 24h from now
+    applyHours(24);
+
+    dateEl.addEventListener('change', syncHidden);
+    timeEl.addEventListener('change', syncHidden);
+
+    chips.forEach(chip => {
+        chip.addEventListener('click', () => applyHours(Number(chip.dataset.hours)));
+    });
 };

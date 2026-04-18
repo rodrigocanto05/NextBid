@@ -43,9 +43,20 @@
 .btn--danger {
     background: transparent;
     color: var(--danger);
+    border-color: rgba(231, 76, 60, 0.5);
 }
 .btn--danger:hover:not(:disabled) {
     background: rgba(231, 76, 60, 0.1);
+    border-color: var(--danger);
+}
+.btn--danger.btn--solid {
+    background: var(--danger);
+    color: #fff;
+    border-color: var(--danger);
+}
+.btn--danger.btn--solid:hover:not(:disabled) {
+    background: #c0392b;
+    border-color: #c0392b;
 }
 
 .btn--full { width: 100%; }

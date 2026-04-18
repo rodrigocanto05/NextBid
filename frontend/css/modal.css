@@ -28,6 +28,41 @@
 }
 
 .modal--sm { max-width: 420px; }
+.modal--compact { max-width: 480px; }
+
+/* Confirm dialog (logout, destructive actions) */
+.confirm-text {
+    color: var(--text-soft);
+    font-size: 0.95rem;
+    margin-bottom: 24px;
+    line-height: 1.5;
+}
+.confirm-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+/* Wallet modal grid */
+.wallet-modal__sub { color: var(--text-muted); margin-bottom: 20px; font-size: 0.9rem; }
+.wallet-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+}
+.wallet-amount {
+    padding: 14px;
+    background: var(--bg-panel);
+    border: 1px solid var(--gold-border);
+    border-radius: var(--radius-md);
+    color: var(--text-white);
+    font-family: inherit;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background var(--t-base), border-color var(--t-base), transform var(--t-fast);
+}
+.wallet-amount:hover { background: var(--gold-faint); border-color: var(--gold); transform: translateY(-1px); }
 
 .modal__header {
     padding: 20px 24px;

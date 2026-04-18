@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt">
 <head>
   <meta charset="UTF-8" />
@@ -11,7 +11,6 @@
   <link rel="stylesheet" href="../../css/dropdown.css" />
   <link rel="stylesheet" href="../../css/ticker.css" />
   <link rel="stylesheet" href="../../css/cards.css" />
-  <link rel="stylesheet" href="../../css/stats.css" />
   <link rel="stylesheet" href="../../css/tabs.css" />
   <link rel="stylesheet" href="../../css/my-auctions.css" />
   <link rel="stylesheet" href="../../css/fab.css" />
@@ -25,13 +24,14 @@
   <header class="navbar">
     <div class="navbar__inner">
       <a href="../index.html" class="navbar__brand">
-        <span class="navbar__logo-icon">⬡</span><span>NEXTBID</span>
+        <img class="navbar__logo-img" src="../../img/logo-NextBid.png" alt="NextBid" />
+        <span>NEXTBID</span>
       </a>
       <nav class="navbar__links">
-        <a href="../index.html" class="navbar__link"><span class="navbar__link-icon">🏠</span>Início</a>
-        <a href="LeiloesAtivos.html" class="navbar__link"><span class="navbar__link-icon">🔨</span>Leilões</a>
-        <a href="../CaçaAoTesouro.html" class="navbar__link"><span class="navbar__link-icon">💎</span>Caça ao Tesouro</a>
-        <a href="MeusLeiloes.html" class="navbar__link navbar__link--active"><span class="navbar__link-icon">⚖️</span>Os Meus Leilões</a>
+        <a href="../index.html" class="navbar__link"><span class="navbar__link-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>Início</a>
+        <a href="LeiloesAtivos.html" class="navbar__link"><span class="navbar__link-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m14.5 12.5-8 8a2.12 2.12 0 1 1-3-3l8-8"/><path d="m16 16 6-6"/><path d="m8 8 6-6"/><path d="m9 7 8 8"/><path d="m21 11-8-8"/></svg></span>Leilões</a>
+        <a href="../CaçaAoTesouro.html" class="navbar__link"><span class="navbar__link-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12l4 6-10 13L2 9Z"/><path d="M11 3 8 9l4 13 4-13-3-6"/><path d="M2 9h20"/></svg></span>Caça ao Tesouro</a>
+        <a href="MeusLeiloes.html" class="navbar__link navbar__link--active"><span class="navbar__link-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg></span>Os Meus Leilões</a>
       </nav>
       <div class="navbar__auth" id="navbar-auth"></div>
     </div>
@@ -43,23 +43,37 @@
     <div id="auth-content">
       <div class="page-header">
         <h1 class="page-header__title">Os Meus Leilões</h1>
-        <p class="page-header__sub">Gere os teus leilões ativos e consulta o histórico de vendas</p>
+        <p class="page-header__sub">Gere os seus leilões ativos e consulte o histórico</p>
       </div>
 
-      <!-- USER STATS -->
-      <section class="stats stats--compact" id="user-stats">
-        <div class="stats__inner">
-          <div><div class="stat__value" id="stat-balance">—</div><div class="stat__label">Saldo</div></div>
-          <div><div class="stat__value" id="stat-level">—</div><div class="stat__label">Nível</div></div>
-          <div><div class="stat__value" id="stat-xp">—</div><div class="stat__label">XP</div></div>
-          <div><div class="stat__value" id="stat-won">—</div><div class="stat__label">Leilões Ganhos</div></div>
-          <div><div class="stat__value" id="stat-bids">—</div><div class="stat__label">Total Licitado</div></div>
+      <!-- 3 STAT CARDS -->
+      <section class="my-stats">
+        <div class="stat-card">
+          <div class="stat-card__icon">🔨</div>
+          <div>
+            <div class="stat-card__label">Leilões Ativos</div>
+            <div class="stat-card__value" id="stat-active">0</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card__icon stat-card__icon--success">✓</div>
+          <div>
+            <div class="stat-card__label">Vendidos</div>
+            <div class="stat-card__value" id="stat-sold">0</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card__icon stat-card__icon--info">📈</div>
+          <div>
+            <div class="stat-card__label">Total Vendido</div>
+            <div class="stat-card__value" id="stat-total">0 €</div>
+          </div>
         </div>
       </section>
 
       <nav class="tabs" role="tablist">
-        <button class="tab tab--active" data-tab="ativo"   role="tab">Ativos</button>
-        <button class="tab"              data-tab="passado" role="tab">Passados</button>
+        <button class="tab tab--active" data-tab="ativo"   role="tab" id="tab-ativo">Leilões Ativos (0)</button>
+        <button class="tab"              data-tab="passado" role="tab" id="tab-passado">Histórico (0)</button>
       </nav>
 
       <section id="panel-ativo" class="tab-panel active">
@@ -75,7 +89,6 @@
       </section>
     </div>
 
-    <!-- Login prompt (hidden unless not logged in) -->
     <div class="login-prompt" id="login-prompt" style="display:none">
       <h2>Sessão Necessária</h2>
       <p>Inicia sessão para ver os teus leilões.</p>
@@ -85,7 +98,9 @@
 
   <div class="fab-stack">
     <button class="fab fab--primary" id="btn-novo-leilao" title="Criar Novo Leilão">+</button>
-  </div>  <!-- MODAL: Criar Leilão -->
+  </div>
+
+  <!-- MODAL: Criar Leilão -->
   <div class="modal-overlay" id="modal-novo-leilao" role="dialog" aria-modal="true" aria-labelledby="modal-title">
     <div class="modal">
       <div class="modal__header">
@@ -144,9 +159,26 @@
         </div>
 
         <div class="form-group">
-          <label class="form-label" for="nl-fim">Data e Hora de Fim</label>
-          <input type="datetime-local" id="nl-fim" name="ends_at" class="form-input" required />
-          <span class="form-hint">O leilão começa imediatamente após publicação</span>
+          <label class="form-label">Data e Hora de Fim</label>
+          <div class="quick-dur" id="nl-quick-dur" role="group" aria-label="Duração rápida">
+            <button type="button" class="quick-dur__chip" data-hours="1">1 hora</button>
+            <button type="button" class="quick-dur__chip" data-hours="6">6 horas</button>
+            <button type="button" class="quick-dur__chip is-active" data-hours="24">1 dia</button>
+            <button type="button" class="quick-dur__chip" data-hours="72">3 dias</button>
+            <button type="button" class="quick-dur__chip" data-hours="168">7 dias</button>
+          </div>
+          <div class="form-row">
+            <div class="form-group form-group--nested">
+              <label class="form-sublabel" for="nl-fim-date">📅 Data</label>
+              <input type="date" id="nl-fim-date" class="form-input" required />
+            </div>
+            <div class="form-group form-group--nested">
+              <label class="form-sublabel" for="nl-fim-time">🕐 Hora</label>
+              <input type="time" id="nl-fim-time" class="form-input" required />
+            </div>
+          </div>
+          <input type="hidden" id="nl-fim" name="ends_at" />
+          <span class="form-hint">💡 O leilão começa imediatamente após publicação</span>
         </div>
 
         <div class="form-group">
@@ -174,6 +206,7 @@
 
   <script src="../../js/shared/Helpers.js"></script>
   <script src="../../js/shared/Auth.js"></script>
+  <script src="../../js/shared/Wallet.js"></script>
   <script src="../../js/shared/Navbar.js"></script>
   <script src="../../js/shared/Cronometro.js"></script>
   <script src="../../js/shared/Ticker.js"></script>

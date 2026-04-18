@@ -1,4 +1,4 @@
-﻿.navbar {
+.navbar {
     position: fixed;
     top: 0;
     left: 0;
@@ -10,38 +10,41 @@
 }
 
 .navbar__inner {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 14px 24px;
-    display: flex;
+    width: 100%;
+    padding: 8px 28px;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
     align-items: center;
-    justify-content: space-between;
-    position: relative;
+    gap: 24px;
     height: 80px;
 }
 
 .navbar__brand {
     display: flex;
     align-items: center;
-    gap: 10px;
-    font-size: 1.35rem;
+    gap: 12px;
+    font-size: 1.25rem;
     letter-spacing: 0.12em;
     color: var(--gold);
     font-weight: 700;
+    justify-self: start;
+}
+
+.navbar__logo-img {
+    width: 56px;
+    height: 56px;
+    object-fit: contain;
 }
 
 .navbar__logo-icon {
-    font-size: 1.8rem;
+    font-size: 1.7rem;
     line-height: 1;
 }
 
 .navbar__links {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
     display: flex;
     gap: 40px;
+    justify-self: center;
 }
 
 .navbar__link {
@@ -50,7 +53,7 @@
     align-items: center;
     gap: 2px;
     color: var(--text-soft);
-    font-size: 0.9rem;
+    font-size: 0.82rem;
     transition: color var(--t-base), transform var(--t-fast);
 }
 
@@ -59,16 +62,26 @@
 .navbar__link:hover   { transform: translateY(-1px); }
 
 .navbar__link-icon {
-    font-size: 1.4rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 22px;
     line-height: 1;
+}
+.navbar__link-icon svg {
+    width: 22px;
+    height: 22px;
+    stroke-width: 1.75;
 }
 
 .navbar__auth {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
+    justify-self: end;
 }
 
 @media (max-width: 900px) {
+    .navbar__inner { grid-template-columns: auto 1fr; padding: 10px 16px; }
     .navbar__links { display: none; }
 }
