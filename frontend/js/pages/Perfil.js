@@ -22,15 +22,13 @@ function initAvatarUploader() {
     const renderAvatar = () => {
         const u = JSON.parse(localStorage.getItem('user') || 'null');
         preview.innerHTML = '';
-        if (u && u.avatar) {
-            const img = document.createElement('img');
-            img.src = u.avatar;
-            img.alt = u.name || '';
-            img.style.width  = '100%';
-            img.style.height = '100%';
-            img.style.objectFit = 'cover';
-            preview.appendChild(img);
-        }
+        const img = document.createElement('img');
+        img.src = (u && u.avatar) ? u.avatar : (window.NB && NB.defaultAvatarUrl ? NB.defaultAvatarUrl() : '../img/avatar-placeholder.png');
+        img.alt = u?.name || '';
+        img.style.width  = '100%';
+        img.style.height = '100%';
+        img.style.objectFit = 'cover';
+        preview.appendChild(img);
     };
     renderAvatar();
 

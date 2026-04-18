@@ -19,6 +19,15 @@
   <!-- Leaflet (mapa open-source, sem API key) -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
         integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
+  <style>
+    /* Garantir que a navbar fica por cima do mapa Leaflet */
+    .navbar { z-index: 1100 !important; }
+    #caca-map { z-index: 1; }
+    #caca-map .leaflet-pane,
+    #caca-map .leaflet-top,
+    #caca-map .leaflet-bottom { z-index: 400; }
+  </style>
 </head>
 <body class="page">
 
@@ -48,12 +57,9 @@
   </header>
 
   <!-- MAIN -->
-  <main class="page__main" style="padding:24px;">
+  <main class="page__main" style="padding:110px 24px 24px;">
     <section style="max-width:1400px;margin:0 auto;">
-      <h1 style="font-family:'Cinzel',serif;color:var(--gold,#d4af37);margin:0 0 6px;">Caça ao Tesouro</h1>
-      <p style="color:var(--text-muted,#8a8f9c);margin:0 0 20px;">
-        O tesouro move-se em tempo real. Aproxima-te fisicamente e insere o código para reclamar.
-      </p>
+      <h1 style="font-family:'Cinzel',serif;color:var(--gold,#d4af37);margin:0 0 20px;">Caça ao Tesouro</h1>
 
       <!-- Grid mapa + painel -->
       <div style="display:grid;grid-template-columns:1fr 340px;gap:20px;min-height:520px;">

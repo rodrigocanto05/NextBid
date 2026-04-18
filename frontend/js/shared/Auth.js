@@ -28,6 +28,12 @@ NB.requireAuth = function (redirectUrl) {
     return user;
 };
 
+NB.defaultAvatarUrl = function () {
+    const match = location.pathname.match(/\/hmtl\/(.*)$/);
+    const depth = match ? match[1].split('/').length - 1 : 0;
+    return '../'.repeat(depth + 1) + 'img/avatar-placeholder.png';
+};
+
 NB.avatarUrl = function (user) {
-    return user?.avatar || null;
+    return user?.avatar || NB.defaultAvatarUrl();
 };
