@@ -29,5 +29,5 @@ NB.requireAuth = function (redirectUrl) {
 };
 
 NB.avatarUrl = function (user) {
-    return user?.avatar || null;
+    return user?.avatar || 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80';
 };

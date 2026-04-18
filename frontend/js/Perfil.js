@@ -9,63 +9,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     carregarPerfil(user.id);
-    initAvatarUploader();
 });
-
-function initAvatarUploader() {
-    const preview = document.getElementById('avatar-preview');
-    const fileEl  = document.getElementById('avatar-file');
-    const rmBtn   = document.getElementById('avatar-remove');
-    const msg     = document.getElementById('avatar-msg');
-    if (!preview || !fileEl) return;
-
-    const renderAvatar = () => {
-        const u = JSON.parse(localStorage.getItem('user') || 'null');
-        preview.innerHTML = '';
-        if (u && u.avatar) {
-            const img = document.createElement('img');
-            img.src = u.avatar;
-            img.alt = u.name || '';
-            img.style.width  = '100%';
-            img.style.height = '100%';
-            img.style.objectFit = 'cover';
-            preview.appendChild(img);
-        }
-    };
-    renderAvatar();
-
-    fileEl.addEventListener('change', () => {
-        const file = fileEl.files?.[0];
-        if (!file) return;
-        if (file.size > 2 * 1024 * 1024) {
-            if (msg) { msg.style.color = 'red'; msg.textContent = 'Imagem demasiado grande (máx 2 MB).'; }
-            fileEl.value = '';
-            return;
-        }
-        const reader = new FileReader();
-        reader.onload = () => {
-            const u = JSON.parse(localStorage.getItem('user') || 'null');
-            if (!u) return;
-            u.avatar = reader.result;
-            delete u.token;
-            localStorage.setItem('user', JSON.stringify(u));
-            renderAvatar();
-            if (msg) { msg.style.color = 'green'; msg.textContent = 'Foto atualizada.'; }
-        };
-        reader.readAsDataURL(file);
-    });
-
-    rmBtn?.addEventListener('click', () => {
-        const u = JSON.parse(localStorage.getItem('user') || 'null');
-        if (!u) return;
-        delete u.avatar;
-        delete u.token;
-        localStorage.setItem('user', JSON.stringify(u));
-        fileEl.value = '';
-        renderAvatar();
-        if (msg) { msg.style.color = 'orange'; msg.textContent = 'Foto removida.'; }
-    });
-}
 
 async function carregarPerfil(userId) {
     try {

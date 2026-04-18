@@ -22,15 +22,12 @@ NB._navbarGuest = function () {
 NB._navbarUser = function (user) {
     const walletVal = Number(user.wallet ?? user.usr_balance ?? 0);
     const level = Math.floor(Math.sqrt((user.xp ?? 0) / 100)) + 1;
-    const avatar = NB.avatarUrl(user);
-    const avatarStyle = avatar ? '' : ' style="background:linear-gradient(135deg,#2a2d36,#1a1d24);"';
-    const avatarImg   = avatar ? `<img src="${NB.escHtml(avatar)}" alt="${NB.escHtml(user.name)}" />` : '';
     return `
         <div class="user-cluster">
             <div class="dropdown-wrap">
                 <div class="user-card" id="nb-user-card">
-                    <div class="user-card__avatar"${avatarStyle}>
-                        ${avatarImg}
+                    <div class="user-card__avatar">
+                        <img src="${NB.escHtml(NB.avatarUrl(user))}" alt="${NB.escHtml(user.name)}" />
                     </div>
                     <div class="user-card__info">
                         <div class="user-card__row">
