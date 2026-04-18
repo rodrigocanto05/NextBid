@@ -20,7 +20,7 @@ Por fim, a tabela **notifications** gere os alertas enviados aos utilizadores, e
 
 De forma geral, o modelo garante integridade referencial, normalização e suporte direto aos requisitos funcionais da aplicação, articulando autenticação, leilões, saldo, gamificação e reputação num sistema coerente e escalável.
 
-> **Nota:** o diagrama MER/ER é apresentado em anexo na entrega.
+<img width="2017" height="1370" alt="Untitled" src="https://github.com/user-attachments/assets/23a765b5-078f-4406-8dc8-24b3c761f99b" />
 
 ---
 
