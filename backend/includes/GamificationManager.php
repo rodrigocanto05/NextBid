@@ -272,6 +272,24 @@ class GamificationManager
         }
     }
 
+    /**
+     * Lista os tesouros reclamados (ganhos) por um utilizador.
+     * Faz JOIN com product para puxar o nome real do produto-prémio.
+     */
+    public function getClaimedByUser(int $userId): array
+    {
+        $sql = "SELECT g.gme_id, g.gme_name, g.gme_description, g.gme_xp_reward, g.gme_prd_id,
+                       p.prd_name, c.gcl_claimed_at, c.gcl_status
+                FROM gamification_claim c
+                INNER JOIN gamification g ON g.gme_id = c.gcl_gme_id
+                LEFT JOIN product p ON p.prd_id = g.gme_prd_id
+                WHERE c.gcl_usr_id = :uid AND c.gcl_status = 'winner'
+                ORDER BY c.gcl_claimed_at DESC";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['uid' => $userId]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     private function calculateDistance($lat1, $lng1, $lat2, $lng2): float
     {
         $earthRadius = 6371;
