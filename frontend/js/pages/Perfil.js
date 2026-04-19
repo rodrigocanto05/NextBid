@@ -158,15 +158,50 @@ async function carregarPerfil(userId) {
 
         if (data.status === 'success') {
             const p = data.data;
-            document.getElementById('profile-nome').textContent    = p.usr_name  || '';
-            document.getElementById('profile-email').textContent   = p.usr_email || '';
-            document.getElementById('profile-xp').textContent      = p.usr_xp    || '0';
-            document.getElementById('profile-leiloes').textContent = p.active_auctions || '0';
-            document.getElementById('profile-licitacoes').textContent = p.total_bids || '0';
+            setProfileField('profile-id',          p.usr_id);
+            setProfileField('profile-nome',        p.usr_name);
+            setProfileField('profile-email',       p.usr_email);
+            setProfileField('profile-role',        p.usr_role);
+            setProfileField('profile-location',    p.usr_location);
+            setProfileField('profile-birthdate',   formatDateOnly(p.usr_birthdate));
+            setProfileField('profile-created',     formatDateOnly(p.usr_created_at));
+            setProfileField('profile-bio',         p.usr_bio);
+            setProfileField('profile-balance',     p.usr_balance != null ? Number(p.usr_balance).toFixed(2) + '€' : '—');
+            setProfileField('profile-xp',          p.usr_xp != null ? p.usr_xp : '0');
+            setProfileField('profile-rating',      p.avg_rating != null ? Number(p.avg_rating).toFixed(2) + ' / 5' : 'Sem avaliações');
+            setProfileField('profile-leiloes',     p.active_auctions != null ? p.active_auctions : '0');
+            setProfileField('profile-licitacoes',  p.total_bids != null ? p.total_bids : '0');
+            setProfileField('profile-vendidos',    p.total_sold != null ? p.total_sold : '0');
+
+            prefillEditForm(p);
         }
     } catch (err) {
         console.error('Erro ao carregar perfil:', err);
     }
+}
+
+function setProfileField(id, value) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.textContent = (value === null || value === undefined || value === '') ? '—' : String(value);
+}
+
+function formatDateOnly(dt) {
+    if (!dt) return '';
+    const d = new Date(String(dt).replace(' ', 'T'));
+    if (isNaN(d)) return dt;
+    return d.toLocaleDateString('pt-PT');
+}
+
+function prefillEditForm(p) {
+    const nameEl     = document.getElementById('edit-name');
+    const emailEl    = document.getElementById('edit-email');
+    const locationEl = document.getElementById('edit-location');
+    const bioEl      = document.getElementById('edit-bio');
+    if (nameEl && !nameEl.value)         nameEl.placeholder     = p.usr_name     || nameEl.placeholder;
+    if (emailEl && !emailEl.value)       emailEl.placeholder    = p.usr_email    || emailEl.placeholder;
+    if (locationEl && !locationEl.value) locationEl.placeholder = p.usr_location || locationEl.placeholder;
+    if (bioEl && !bioEl.value && p.usr_bio) bioEl.placeholder   = p.usr_bio;
 }
 
 document.getElementById('form-atualizar')?.addEventListener('submit', async function (e) {
@@ -175,13 +210,17 @@ document.getElementById('form-atualizar')?.addEventListener('submit', async func
     const user = JSON.parse(localStorage.getItem('user') || 'null');
     if (!user) return;
 
+    const name     = document.getElementById('edit-name')?.value.trim()     || '';
     const email    = document.getElementById('edit-email')?.value.trim()    || '';
     const password = document.getElementById('edit-password')?.value         || '';
+    const location = document.getElementById('edit-location')?.value.trim() || '';
     const bio      = document.getElementById('edit-bio')?.value.trim()       || '';
 
     const payload = { user_id: user.id };
+    if (name)     payload.name     = name;
     if (email)    payload.email    = email;
     if (password) payload.password = password;
+    if (location) payload.location = location;
     if (bio)      payload.bio      = bio;
 
     try {
@@ -199,6 +238,20 @@ document.getElementById('form-atualizar')?.addEventListener('submit', async func
         if (msgEl) {
             msgEl.style.color = data.status === 'success' ? 'green' : 'red';
             msgEl.textContent = data.message || (data.status === 'success' ? 'Perfil atualizado!' : 'Erro ao atualizar.');
+        }
+
+        if (data.status === 'success') {
+            if (name || email) {
+                const stored = JSON.parse(localStorage.getItem('user') || 'null');
+                if (stored) {
+                    if (name)  stored.name  = name;
+                    if (email) stored.email = email;
+                    delete stored.token;
+                    localStorage.setItem('user', JSON.stringify(stored));
+                }
+            }
+            document.getElementById('edit-password').value = '';
+            carregarPerfil(user.id);
         }
     } catch (err) {
         console.error('Erro ao atualizar perfil:', err);

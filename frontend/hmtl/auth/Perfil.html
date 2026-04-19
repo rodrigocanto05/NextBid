@@ -26,15 +26,33 @@
         </section>
         <hr>
 
+        <h4>ID: <span id="profile-id"></span></h4>
+        <br>
         <h4>Nome: <span id="profile-nome"></span></h4>
         <br>
         <h4>E-mail: <span id="profile-email"></span></h4>
         <br>
+        <h4>Papel: <span id="profile-role"></span></h4>
+        <br>
+        <h4>Localização: <span id="profile-location"></span></h4>
+        <br>
+        <h4>Data de nascimento: <span id="profile-birthdate"></span></h4>
+        <br>
+        <h4>Membro desde: <span id="profile-created"></span></h4>
+        <br>
+        <h4>Bio: <span id="profile-bio"></span></h4>
+        <br>
+        <h4>Saldo: <span id="profile-balance"></span></h4>
+        <br>
         <h4>XP: <span id="profile-xp"></span></h4>
+        <br>
+        <h4>Avaliação média: <span id="profile-rating"></span></h4>
         <br>
         <h4>Leilões ativos: <span id="profile-leiloes"></span></h4>
         <br>
         <h4>Total de licitações: <span id="profile-licitacoes"></span></h4>
+        <br>
+        <h4>Total vendido: <span id="profile-vendidos"></span></h4>
         <br>
 
         <hr>
@@ -49,11 +67,15 @@
         <hr>
         <h3>Atualizar perfil</h3>
         <form id="form-atualizar">
+            <input type="text" id="edit-name" placeholder="Novo nome (opcional, 2-80 chars)">
+            <br><br>
             <input type="email" id="edit-email" placeholder="Novo e-mail (opcional)">
             <br><br>
             <input type="password" id="edit-password" placeholder="Nova password (opcional, mín. 8 chars)">
             <br><br>
-            <textarea id="edit-bio" placeholder="Bio (opcional)" rows="3"></textarea>
+            <input type="text" id="edit-location" placeholder="Localização (opcional, máx. 120 chars)">
+            <br><br>
+            <textarea id="edit-bio" placeholder="Bio (opcional, 10-500 chars)" rows="3"></textarea>
             <br><br>
             <button type="submit">Guardar alterações</button>
         </form>
