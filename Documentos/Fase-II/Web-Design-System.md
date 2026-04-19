@@ -4,7 +4,7 @@
 
 ## 1. Paleta de Cores
 
-### 1.1 Cor Primária — Dourado
+### 1.1 Cor Primária
 
 O dourado é a **cor de marca** e deve ser reservado para: logotipo, CTAs principais, preços, valores numéricos em destaque, estados ativos e elementos interativos no hover.
 
@@ -16,7 +16,7 @@ O dourado é a **cor de marca** e deve ser reservado para: logotipo, CTAs princi
 | `--gold-border` | `rgba(212, 175, 55, 0.30)` | — | Borders de inputs, botões ghost |
 | `--gold-faint` | `rgba(212, 175, 55, 0.10)` | — | Fundos hover, separadores |
 
-### 1.2 Neutros — Fundos (Dark Theme)
+### 1.2 Fundos (Dark Theme)
 
 Quatro tons de azul-escuro quase-preto compõem a base da interface. Quanto mais alto o elemento está na hierarquia visual, mais claro o fundo.
 
@@ -164,7 +164,7 @@ Os gradientes substituem cores planas em áreas elevadas e trazem textura sem po
 
 ## 7. Efeitos Visuais
 
-### 7.1 Glassmorphism (desfoque de fundo)
+# Glassmorphism (desfoque de fundo)
 
 Aplicado em elementos sobrepostos ao conteúdo para criar sensação de vidro fosco:
 
@@ -173,17 +173,6 @@ Aplicado em elementos sobrepostos ao conteúdo para criar sensação de vidro fo
 | Navbar | `background: rgba(10,14,26,0.95); backdrop-filter: blur(12px);` |
 | Modal overlay | `background: rgba(10,14,26,0.85); backdrop-filter: blur(6px);` |
 | Badges sobre imagens | `background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);` |
-
-### 7.2 Opacidade para Hierarquia
-
-Em vez de variar cores, variamos opacidade do branco sobre o escuro:
-
-```
-100% → título principal
- 80% → texto de leitura
- 60% → metadados
- 40% → auxiliar / placeholder
-```
 
 ---
 
@@ -197,8 +186,6 @@ Em vez de variar cores, variamos opacidade do branco sobre o escuro:
 | Tamanho padrão | `22 × 22 px` (navbar), `16 × 16 px` (inline) |
 | Cor | Herda via `stroke="currentColor"` — acompanha a cor do texto |
 | Formato | **SVG inline** — sem biblioteca externa |
-
-**Regra de composição:** um ícone nunca vai sozinho num botão; é acompanhado de label excepto em FABs e controlos de fechar (X).
 
 ---
 
