@@ -246,5 +246,6 @@ Aplicado em elementos sobrepostos ao conteúdo para criar sensação de vidro fo
 
 ---
 
-
+Web Design System 
+https://www.figma.com/make/Yujn2szXgjPFQCKFMCMj8V/Dark-Luxury-Web-Design-System?t=oLSweMesTIeu6g4y-1
 
