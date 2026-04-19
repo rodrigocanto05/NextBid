@@ -151,7 +151,9 @@ function formatBidDate(dt) {
 
 async function carregarPerfil(userId) {
     try {
-        const res = await fetch(`${BASE_URL}/api/user/profile.php?user_id=${userId}`);
+        const token = localStorage.getItem('token');
+        const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
+        const res = await fetch(`${BASE_URL}/api/user/profile.php?user_id=${userId}`, { headers });
         const data = await res.json();
 
         if (data.status === 'success') {
@@ -183,9 +185,12 @@ document.getElementById('form-atualizar')?.addEventListener('submit', async func
     if (bio)      payload.bio      = bio;
 
     try {
+        const token = localStorage.getItem('token');
+        const headers = { 'Content-Type': 'application/json' };
+        if (token) headers['Authorization'] = `Bearer ${token}`;
         const res = await fetch(`${BASE_URL}/api/user/update_profile.php`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers,
             body: JSON.stringify(payload)
         });
 
