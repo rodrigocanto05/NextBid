@@ -94,17 +94,6 @@ A Cinzel beneficia de tracking generoso para respirar:
 | Labels UPPERCASE | `0.05em` – `0.10em` |
 | Texto corrido | normal (0) |
 
-### 2.5 Exemplos de Uso
-
-```
-HERO TITLE                  4.5rem / 700 / spacing 0.02em
-Título de Secção            2rem   / 700 / spacing 0.02em
-Botão Primário              0.95rem / 600 / spacing 0.08em / UPPERCASE
-Texto Padrão                0.95rem / 400 / line-height 1.5
-Label de Campo              0.85rem / 400 / text-soft
-Badge "LIVE"                0.72rem / 600 / spacing 0.05em / UPPERCASE
-```
-
 ---
 
 ## 3. Espaçamento
