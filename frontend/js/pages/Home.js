@@ -1,10 +1,14 @@
 ﻿// Home / index page wire-up
 (function () {
+    const REFRESH_MS = 15000;
+    let refreshTimer = null;
+
     document.addEventListener('DOMContentLoaded', () => {
         NB.renderNavbar();
         NB.initHeroCarousel();
         NB.initTicker();
         loadFeatured();
+        refreshTimer = setInterval(loadFeatured, REFRESH_MS);
     });
 
     function loadFeatured() {

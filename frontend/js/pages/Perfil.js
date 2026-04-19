@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     carregarPerfil(user.id);
+    carregarMinhasLicitacoes();
     initAvatarUploader();
 });
 
@@ -63,6 +64,89 @@ function initAvatarUploader() {
         renderAvatar();
         if (msg) { msg.style.color = 'orange'; msg.textContent = 'Foto removida.'; }
     });
+}
+
+async function carregarMinhasLicitacoes() {
+    const loadingEl = document.getElementById('bids-loading');
+    const emptyEl   = document.getElementById('bids-empty');
+    const errorEl   = document.getElementById('bids-error');
+    const listEl    = document.getElementById('profile-bids-list');
+    if (!listEl) return;
+
+    const token = localStorage.getItem('token');
+    if (!token) {
+        if (loadingEl) loadingEl.hidden = true;
+        if (errorEl) {
+            errorEl.textContent = 'Sessão inválida. Faz login novamente.';
+            errorEl.hidden = false;
+        }
+        return;
+    }
+
+    try {
+        const res = await fetch(`${BASE_URL}/api/bids/my_bids.php?limit=50`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const data = await res.json();
+
+        if (loadingEl) loadingEl.hidden = true;
+
+        if (data.status !== 'success') {
+            if (errorEl) {
+                errorEl.textContent = data.message || 'Erro ao carregar licitações.';
+                errorEl.hidden = false;
+            }
+            return;
+        }
+
+        const bids = data.bids || [];
+        listEl.innerHTML = '';
+
+        if (!bids.length) {
+            if (emptyEl) emptyEl.hidden = false;
+            return;
+        }
+
+        bids.forEach(b => {
+            const li = document.createElement('li');
+            const winning = !!b.is_winning;
+            const amount  = Number(b.bid_amount || 0).toFixed(2);
+            const highest = Number(b.current_highest || 0).toFixed(2);
+            const status  = winning ? 'A vencer' : 'Coberto';
+            const date    = formatBidDate(b.bid_created_at);
+            const prdName = escHtmlLocal(b.prd_name || 'Leilão');
+            const prdStatus = escHtmlLocal(b.prd_status || '');
+            const prdId  = parseInt(b.prd_id, 10) || 0;
+
+            li.innerHTML =
+                `<strong>${prdName}</strong> — ` +
+                `A minha oferta: ${amount}€ | Atual: ${highest}€ — ` +
+                `<em>${status}</em> ` +
+                `<small>(${date} · leilão: ${prdStatus})</small> ` +
+                (prdId ? `<a href="../LL active/LeilaoAtivox.html?id=${prdId}">Ver leilão</a>` : '');
+            listEl.appendChild(li);
+        });
+    } catch (err) {
+        if (loadingEl) loadingEl.hidden = true;
+        if (errorEl) {
+            errorEl.textContent = 'Erro de rede ao carregar licitações.';
+            errorEl.hidden = false;
+        }
+        console.error('Erro ao carregar licitações:', err);
+    }
+}
+
+function escHtmlLocal(str) {
+    return String(str || '').replace(/[&<>"']/g, c => (
+        { '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]
+    ));
+}
+
+function formatBidDate(dt) {
+    if (!dt) return '—';
+    const d = new Date(String(dt).replace(' ', 'T'));
+    if (isNaN(d)) return dt;
+    return d.toLocaleString('pt-PT');
 }
 
 async function carregarPerfil(userId) {
