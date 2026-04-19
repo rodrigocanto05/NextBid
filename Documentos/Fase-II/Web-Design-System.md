@@ -56,8 +56,6 @@ Em vez de criar múltiplos tons cinza, usa-se **branco com diferentes alfas**. I
 font-family: 'Cinzel', serif;
 ```
 
-Fallback: `serif` genérica do sistema.
-
 ### 2.2 Pesos Disponíveis
 
 | Peso | Valor | Uso recomendado |
