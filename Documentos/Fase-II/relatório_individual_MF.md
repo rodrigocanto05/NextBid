@@ -8,7 +8,14 @@ No desenvolvimento do projeto **NextBid**, o meu contributo centrou-se na compon
 
 ## Frontend
 
-Desenvolvi a página do Perfil e dos Detalhes do Leilão em Css.
+Fui responsável pelo desenvolvimento da interface da aplicação.
+
+Implementei páginas CSs estruturadas para:
+- Visualização do Perfil
+- Detalhes do Leilão
+
+Creiei com coerência para seguir o segmento que queremos para a nossa aplicação.
+
 
 ---
 
@@ -32,4 +39,4 @@ Tratei também da apresentação para a nossa apresentação.
 
 ## Considerações finais 
 
-Nesta segunda fase trabalei enssialmente no que era necessário para a entrega do projeto e desenvolvi uma parte do frontened.
+Nesta segunda fase trabalei enssialmente no que era necessário para a segunda entrega do projeto e desenvolvi uma parte do frontened.
