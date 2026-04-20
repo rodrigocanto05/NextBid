@@ -3,6 +3,7 @@
 ## Contributo Individual
 
 No desenvolvimento do projeto **NextBid**, o meu contributo centrou-se na componente de **frontend**, **wireframes**, **Web Design System**, apresentação.
+
 ---
 
 ## Frontend
