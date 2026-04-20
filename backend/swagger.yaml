@@ -1,0 +1,36 @@
+openapi: 3.0.0
+info:
+  title: NextBid API
+  description: API do sistema de leilões NextBid
+  version: 1.0.0
+
+servers:
+  - url: http://localhost/NextBid/backend/api
+    description: Servidor Local
+
+paths:
+  /auth/login.php: # Ajusta o caminho conforme a tua estrutura
+    post:
+      summary: Autenticação de utilizador
+      tags:
+        - Autenticação
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: "utilizador@email.com"
+                password:
+                  type: string
+                  example: "123456"
+      responses:
+        '200':
+          description: Login efetuado com sucesso
+        '401':
+          description: Credenciais inválidas
+        '405':
+          description: Método não permitido (deve ser POST)
