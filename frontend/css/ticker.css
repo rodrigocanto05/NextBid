@@ -1,6 +1,6 @@
 ﻿.ticker {
     position: fixed;
-    top: 80px;
+    top: 104px;
     left: 0;
     right: 0;
     z-index: 40;
@@ -21,6 +21,8 @@
     align-items: center;
 }
 
+.ticker:hover .ticker__track { animation-play-state: paused; }
+
 .ticker__item {
     display: inline-flex;
     align-items: center;
@@ -30,7 +32,19 @@
     border: 1px solid var(--gold-faint);
     border-radius: var(--radius-full);
     font-size: 0.85rem;
+    color: inherit;
+    text-decoration: none;
+    transition: border-color var(--t-base), background var(--t-base), transform var(--t-fast);
 }
+
+a.ticker__item:hover {
+    border-color: var(--gold);
+    background: rgba(10, 14, 26, 0.75);
+    transform: translateY(-1px);
+    cursor: pointer;
+}
+
+.ticker__item--static { cursor: default; }
 
 .ticker__dot {
     width: 8px;
