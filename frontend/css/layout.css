@@ -7,7 +7,7 @@
 
 .page__main {
     flex: 1;
-    padding-top: 165px; /* navbar (80) + ticker (40) + gap */
+    padding-top: 189px; /* navbar (104) + ticker (45) + gap */
 }
 
 .section {
