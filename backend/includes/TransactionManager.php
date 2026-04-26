@@ -1,0 +1,124 @@
+<?php
+
+class TransactionManager
+{
+    private PDO $pdo;
+
+    public function __construct(PDO $pdo)
+    {
+        $this->pdo = $pdo;
+    }
+
+    public function deposit(int $userId, float $amount, string $description = 'Depósito'): array
+    {
+        if ($amount <= 0) {
+            return ['status' => 'error', 'message' => 'Valor inválido.'];
+        }
+
+        $this->pdo->beginTransaction();
+        try {
+            $this->pdo->prepare("UPDATE userss SET usr_balance = usr_balance + ? WHERE usr_id = ?")
+                ->execute([$amount, $userId]);
+
+            $this->pdo->prepare(
+                "INSERT INTO transactions (tra_usr_id, tra_type, tra_amount, tra_description) VALUES (?, 'deposit', ?, ?)"
+            )->execute([$userId, $amount, $description]);
+
+            $this->pdo->commit();
+            return ['status' => 'success', 'message' => 'Depósito realizado.', 'amount' => $amount];
+        } catch (Exception $e) {
+            $this->pdo->rollBack();
+            return ['status' => 'error', 'message' => 'Erro no depósito.'];
+        }
+    }
+
+    public function debit(int $userId, float $amount, string $description = 'Débito'): array
+    {
+        if ($amount <= 0) {
+            return ['status' => 'error', 'message' => 'Valor inválido.'];
+        }
+
+        $this->pdo->beginTransaction();
+        try {
+            $stmt = $this->pdo->prepare("SELECT usr_balance FROM userss WHERE usr_id = ? FOR UPDATE");
+            $stmt->execute([$userId]);
+            $balance = (float) $stmt->fetchColumn();
+
+            if ($balance < $amount) {
+                $this->pdo->rollBack();
+                return ['status' => 'error', 'message' => 'Saldo insuficiente.', 'balance' => $balance];
+            }
+
+            $this->pdo->prepare("UPDATE userss SET usr_balance = usr_balance - ? WHERE usr_id = ?")
+                ->execute([$amount, $userId]);
+
+            $this->pdo->prepare(
+                "INSERT INTO transactions (tra_usr_id, tra_type, tra_amount, tra_description) VALUES (?, 'debit', ?, ?)"
+            )->execute([$userId, $amount, $description]);
+
+            $this->pdo->commit();
+            return ['status' => 'success', 'message' => 'Débito realizado.', 'amount' => $amount];
+        } catch (Exception $e) {
+            $this->pdo->rollBack();
+            return ['status' => 'error', 'message' => 'Erro no débito.'];
+        }
+    }
+
+    public function transfer(int $fromUserId, int $toUserId, float $amount, string $description): array
+    {
+        if ($amount <= 0) {
+            return ['status' => 'error', 'message' => 'Valor inválido.'];
+        }
+
+        $this->pdo->beginTransaction();
+        try {
+            $stmt = $this->pdo->prepare("SELECT usr_balance FROM userss WHERE usr_id = ? FOR UPDATE");
+            $stmt->execute([$fromUserId]);
+            $balance = (float) $stmt->fetchColumn();
+
+            if ($balance < $amount) {
+                $this->pdo->rollBack();
+                return ['status' => 'error', 'message' => 'Saldo insuficiente do comprador.'];
+            }
+
+            $this->pdo->prepare("UPDATE userss SET usr_balance = usr_balance - ? WHERE usr_id = ?")
+                ->execute([$amount, $fromUserId]);
+            $this->pdo->prepare("UPDATE userss SET usr_balance = usr_balance + ? WHERE usr_id = ?")
+                ->execute([$amount, $toUserId]);
+
+            $this->pdo->prepare(
+                "INSERT INTO transactions (tra_usr_id, tra_type, tra_amount, tra_description) VALUES (?, 'debit', ?, ?)"
+            )->execute([$fromUserId, $amount, $description]);
+
+            $this->pdo->prepare(
+                "INSERT INTO transactions (tra_usr_id, tra_type, tra_amount, tra_description) VALUES (?, 'deposit', ?, ?)"
+            )->execute([$toUserId, $amount, $description]);
+
+            $this->pdo->commit();
+            return ['status' => 'success', 'message' => 'Transferência concluída.'];
+        } catch (Exception $e) {
+            $this->pdo->rollBack();
+            return ['status' => 'error', 'message' => 'Erro na transferência.'];
+        }
+    }
+
+    public function getBalance(int $userId): float
+    {
+        $stmt = $this->pdo->prepare("SELECT usr_balance FROM userss WHERE usr_id = ?");
+        $stmt->execute([$userId]);
+        return (float) $stmt->fetchColumn();
+    }
+
+    public function getHistory(int $userId, int $limit = 50): array
+    {
+        $stmt = $this->pdo->prepare(
+            "SELECT tra_id, tra_type, tra_amount, tra_description, tra_created_at
+             FROM transactions
+             WHERE tra_usr_id = ?
+             ORDER BY tra_created_at DESC
+             LIMIT $limit"
+        );
+        $stmt->execute([$userId]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+}

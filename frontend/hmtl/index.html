@@ -1,0 +1,104 @@
+﻿<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NextBid — Leilões Premium</title>
+  <link rel="stylesheet" href="../css/reset.css" />
+  <link rel="stylesheet" href="../css/layout.css" />
+  <link rel="stylesheet" href="../css/buttons.css" />
+  <link rel="stylesheet" href="../css/navbar.css" />
+  <link rel="stylesheet" href="../css/dropdown.css" />
+  <link rel="stylesheet" href="../css/ticker.css" />
+  <link rel="stylesheet" href="../css/hero.css" />
+  <link rel="stylesheet" href="../css/cards.css" />
+  <link rel="stylesheet" href="../css/stats.css" />
+  <link rel="stylesheet" href="../css/modal.css" />
+  <link rel="stylesheet" href="../css/footer.css" />
+  <link rel="stylesheet" href="../css/utils.css" />
+</head>
+<body class="page">
+
+  <!-- NAVBAR -->
+  <header class="navbar">
+    <div class="navbar__inner">
+      <a href="index.html" class="navbar__brand">
+        <img class="navbar__logo-img" src="../img/logo-NextBid.png" alt="NextBid" />
+        <span>NEXTBID</span>
+      </a>
+      <nav class="navbar__links">
+        <a href="index.html" class="navbar__link navbar__link--active">
+          <span class="navbar__link-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>Início
+        </a>
+        <a href="LL active/LeiloesAtivos.html" class="navbar__link">
+          <span class="navbar__link-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m14.5 12.5-8 8a2.12 2.12 0 1 1-3-3l8-8"/><path d="m16 16 6-6"/><path d="m8 8 6-6"/><path d="m9 7 8 8"/><path d="m21 11-8-8"/></svg></span>Leilões
+        </a>
+        <a href="CaçaAoTesouro.html" class="navbar__link">
+          <span class="navbar__link-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12l4 6-10 13L2 9Z"/><path d="M11 3 8 9l4 13 4-13-3-6"/><path d="M2 9h20"/></svg></span>Caça ao Tesouro
+        </a>
+        <a href="LL active/MeusLeiloes.html" class="navbar__link">
+          <span class="navbar__link-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg></span>Os Meus Leilões
+        </a>
+      </nav>
+      <div class="navbar__auth" id="navbar-auth"></div>
+    </div>
+  </header>
+
+  <!-- TICKER -->
+  <div class="ticker"><div class="ticker__track" id="ticker-track"></div></div>
+
+  <!-- HERO -->
+  <main class="page__main">
+    <section class="hero">
+      <div class="hero__bg" id="hero-bg"></div>
+      <div class="hero__overlay"></div>
+      <div class="hero__content">
+        <span class="hero__kicker">★ Leilões Premium</span>
+        <h1 class="hero__title">Descobre peças únicas em tempo real</h1>
+        <p class="hero__subtitle">Licitações ao vivo em relógios, arte, automóveis e colecionáveis raros.</p>
+        <div class="hero__ctas">
+          <a href="LL active/LeiloesAtivos.html" class="btn btn--primary btn--lg">Explorar Leilões</a>
+          <a href="CaçaAoTesouro.html" class="btn btn--ghost btn--lg">Caça ao Tesouro</a>
+        </div>
+      </div>
+      <div class="hero__dots" id="hero-dots"></div>
+    </section>
+
+    <!-- STATS -->
+    <section class="stats">
+      <div class="stats__inner">
+        <div><div class="stat__value">250+</div><div class="stat__label">Leilões ativos</div></div>
+        <div><div class="stat__value">24/7</div><div class="stat__label">Licitações</div></div>
+        <div><div class="stat__value">100%</div><div class="stat__label">Seguro</div></div>
+        <div><div class="stat__value">10K+</div><div class="stat__label">Utilizadores</div></div>
+      </div>
+    </section>
+
+    <!-- FEATURED AUCTIONS -->
+    <section class="section">
+      <h2 class="section__title">Leilões em Destaque</h2>
+    </section>
+    <div class="auctions-grid" id="leiloes-container">
+      <div class="cards-loading" id="cards-loading">
+        <div class="spinner"></div>
+        <p>A carregar leilões…</p>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer"><div class="footer__inner">
+    <p class="footer__copy">© 2026 NextBid. Todos os direitos reservados.</p>
+  </div></footer>
+
+  <script src="../js/shared/Helpers.js"></script>
+  <script src="../js/shared/Auth.js"></script>
+  <script src="../js/shared/Wallet.js"></script>
+  <script src="../js/shared/Navbar.js"></script>
+  <script src="../js/shared/Cronometro.js"></script>
+  <script src="../js/shared/HeroCarousel.js"></script>
+  <script src="../js/shared/Ticker.js"></script>
+  <script src="../js/shared/AuctionCard.js"></script>
+  <script src="../js/shared/FilterBar.js"></script>
+  <script src="../js/pages/Home.js"></script>
+</body>
+</html>
