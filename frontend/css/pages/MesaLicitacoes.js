@@ -48,7 +48,7 @@ document.getElementById('form-licitar')?.addEventListener('submit', async functi
     const user = JSON.parse(localStorage.getItem('user') || 'null');
     if (!user) {
         alert('Tens de fazer login para licitar.');
-        //window.location.href = "auth/Login.html";
+        window.location.href = "auth/Login.html";
         return;
     }
 

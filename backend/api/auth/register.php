@@ -18,7 +18,7 @@ $birthdate = $body['birthdate'] ?? '';
 $bio       = trim($body['bio'] ?? '');
 $location  = trim($body['location'] ?? '');
 
-if ($name === '' || !$email || $password === '' || $gender === '' || $birthdate === '' || $bio === '' || $location === '') {
+if ($name === '' || !$email || $password === '' || $gender === '' || $birthdate === '') {
     exit(json_encode(['status' => 'error', 'message' => 'Todos os campos são obrigatórios.']));
 }
 
@@ -56,7 +56,7 @@ if (strlen($password) > 72) {
     exit(json_encode(['status' => 'error', 'message' => 'A password não pode exceder 72 caracteres.']));
 }
 
-if (strlen($bio) < 10 || strlen($bio) > 500) {
+if ($bio !== '' && (strlen($bio) < 10 || strlen($bio) > 500)) {
     exit(json_encode(['status' => 'error', 'message' => 'A biografia deve ter entre 10 e 500 caracteres.']));
 }
 

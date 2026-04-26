@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const user = JSON.parse(localStorage.getItem('user') || 'null');
 
     if (!user) {
-        //window.location.href = "auth/Login.html";
+        window.location.href = "auth/Login.html";
         return;
     }
 
@@ -261,5 +261,5 @@ document.getElementById('form-atualizar')?.addEventListener('submit', async func
 document.getElementById('btn-logout')?.addEventListener('click', function () {
     localStorage.removeItem('user');
     localStorage.removeItem('token');
-    //window.location.href = "auth/Login.html";
+    window.location.href = "auth/Login.html";
 });

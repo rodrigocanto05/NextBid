@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost/NextBid/backend';
+const BASE_URL = 'http://localhost/backend';
 
 document.getElementById('RegisterPage').addEventListener('submit', async function (e) {
     e.preventDefault();

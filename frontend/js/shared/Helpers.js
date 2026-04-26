@@ -1,6 +1,6 @@
 ﻿// Shared helpers (API, formatting, escaping)
 window.NB = window.NB || {};
-NB.BASE_URL = 'http://localhost/NextBid/backend';
+NB.BASE_URL = 'http://localhost/backend';
 
 NB.formatCurrency = function (amount) {
     return new Intl.NumberFormat('pt-PT', {

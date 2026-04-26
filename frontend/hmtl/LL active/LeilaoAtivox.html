@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>NextBid — Leilão</title>
 
-  <!-- CSS shared (só para navbar/footer não ficarem partidos; estrutura da página é crua) -->
   <link rel="stylesheet" href="../../css/reset.css" />
   <link rel="stylesheet" href="../../css/layout.css" />
   <link rel="stylesheet" href="../../css/buttons.css" />
@@ -15,6 +14,7 @@
   <link rel="stylesheet" href="../../css/forms.css" />
   <link rel="stylesheet" href="../../css/footer.css" />
   <link rel="stylesheet" href="../../css/utils.css" />
+  <link rel="stylesheet" href="../../css/leilao-detail.css" />
 </head>
 
 <body class="page">
@@ -27,175 +27,268 @@
         <span>NEXTBID</span>
       </a>
       <nav class="navbar__links">
-        <a href="../index.html" class="navbar__link">Início</a>
-        <a href="LeiloesAtivos.html" class="navbar__link navbar__link--active">Leilões</a>
-        <a href="../CaçaAoTesouro.html" class="navbar__link">Caça ao Tesouro</a>
-        <a href="MeusLeiloes.html" class="navbar__link">Os Meus Leilões</a>
+        <a href="../index.html" class="navbar__link">
+          <span class="navbar__link-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          </span>
+          Início
+        </a>
+        <a href="LeiloesAtivos.html" class="navbar__link navbar__link--active">
+          <span class="navbar__link-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+          </span>
+          Leilões
+        </a>
+        <a href="../CaçaAoTesouro.html" class="navbar__link">
+          <span class="navbar__link-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          </span>
+          Caça ao Tesouro
+        </a>
+        <a href="MeusLeiloes.html" class="navbar__link">
+          <span class="navbar__link-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          </span>
+          Os Meus Leilões
+        </a>
       </nav>
       <div class="navbar__auth" id="navbar-auth"></div>
     </div>
   </header>
 
   <!-- MAIN -->
-  <main class="page__main">
+  <main class="la-main">
+    <div class="la-wrapper">
 
-    <p><a href="LeiloesAtivos.html" id="back-link">← Voltar aos Leilões</a></p>
+      <!-- Back link -->
+      <a href="LeiloesAtivos.html" class="la-back">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+        Voltar aos Leilões
+      </a>
 
-    <!-- Estado de carregamento/erro -->
-    <p id="la-loading">A carregar leilão…</p>
-    <p id="la-error" hidden></p>
+      <!-- Loading state -->
+      <div id="la-loading" class="la-loading-state">
+        <p>A carregar leilão…</p>
+      </div>
 
-    <!-- CONTENT: só é mostrado após carregar com sucesso -->
-    <article id="la-content" hidden>
+      <!-- Error state -->
+      <div id="la-error" class="la-error-state" hidden></div>
 
-      <!-- Cabeçalho -->
-      <header>
-        <h1 id="la-title"></h1>
-        <p>
-          Categoria: <span id="la-category"></span> ·
-          Condição: <span id="la-condition"></span> ·
-          Estado: <span id="la-status"></span>
-        </p>
-        <p>Localização: <span id="la-location"></span></p>
-      </header>
+      <!-- CONTENT -->
+      <div id="la-content" hidden>
 
-      <!-- Galeria de imagens -->
-      <section aria-label="Imagens do produto">
-        <h2>Imagens</h2>
-        <div>
-          <img id="la-main-image" alt="Imagem principal" width="400" />
+        <!-- Page header -->
+        <header class="la-header">
+          <h1 class="la-header__title" id="la-title"></h1>
+          <div class="la-header__meta">
+            <span id="la-category"></span>
+            <span class="la-header__sep">·</span>
+            <span id="la-condition"></span>
+            <span class="la-header__sep">·</span>
+            <span id="la-location"></span>
+            <span class="la-header__sep">·</span>
+            <span id="la-status-badge"></span>
+          </div>
+        </header>
+
+        <!-- Two-column grid -->
+        <div class="la-grid">
+
+          <!-- ══════════ LEFT COLUMN ══════════ -->
+          <div class="la-left">
+
+            <!-- Image gallery -->
+            <div class="la-gallery">
+              <div class="la-gallery__main">
+                <img id="la-main-image" alt="Imagem do produto" />
+              </div>
+              <div class="la-gallery__thumbs" id="la-thumbs"></div>
+            </div>
+
+            <!-- Seller info -->
+            <div class="la-card">
+              <p class="la-card__title">Vendedor</p>
+              <div class="la-seller">
+                <div class="la-seller__photo">
+                  <img id="la-seller-photo" alt="Foto do vendedor" />
+                </div>
+                <div>
+                  <p class="la-seller__name" id="la-seller-name"></p>
+                  <p class="la-seller__rating">
+                    ★ <span id="la-seller-rating">—</span>
+                    (<span id="la-seller-reviews">0</span> avaliações)
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Description -->
+            <div class="la-card">
+              <p class="la-card__title">Descrição</p>
+              <p class="la-description" id="la-description"></p>
+            </div>
+
+            <!-- Attributes (hidden if none) -->
+            <div class="la-card" id="la-attributes-section" hidden>
+              <p class="la-card__title">Atributos</p>
+              <table class="la-attrs-table">
+                <tbody id="la-attributes"></tbody>
+              </table>
+            </div>
+
+          </div>
+
+          <!-- ══════════ RIGHT COLUMN ══════════ -->
+          <div class="la-right">
+
+            <!-- Auction stats + bid form -->
+            <div class="la-auction-panel">
+              <div class="la-auction-panel__header">
+                <p class="la-countdown-label">Tempo restante</p>
+                <p class="la-countdown" id="la-countdown">— : — : —</p>
+                <p class="la-ends-at" id="la-ends-at"></p>
+              </div>
+
+              <div class="la-auction-panel__body">
+
+                <!-- Stats grid -->
+                <div class="la-bid-stats">
+                  <div class="la-stat-item">
+                    <p class="la-stat-item__label">Preço inicial</p>
+                    <p class="la-stat-item__value" id="la-start-price">—</p>
+                  </div>
+                  <div class="la-stat-item">
+                    <p class="la-stat-item__label">Licitação atual</p>
+                    <p class="la-stat-item__value la-stat-item__value--gold" id="la-current-bid">—</p>
+                  </div>
+                  <div class="la-stat-item">
+                    <p class="la-stat-item__label">Nº licitações</p>
+                    <p class="la-stat-item__value" id="la-bid-count">0</p>
+                  </div>
+                  <div class="la-stat-item">
+                    <p class="la-stat-item__label">O teu saldo</p>
+                    <p class="la-stat-item__value" id="la-user-balance-stat">—</p>
+                  </div>
+                </div>
+
+                <!-- State messages -->
+                <p id="la-bid-required-auth" class="la-bid-info-msg" hidden>
+                  <a href="../auth/Login.html">Inicia sessão</a> para licitar neste leilão.
+                </p>
+                <p id="la-bid-owner-msg" class="la-bid-info-msg" hidden>
+                  Não podes licitar no teu próprio leilão.
+                </p>
+                <p id="la-bid-ended-msg" class="la-bid-info-msg la-bid-info-msg--danger" hidden>
+                  Este leilão já terminou — não aceita mais licitações.
+                </p>
+
+                <!-- Bid form -->
+                <form id="la-bid-form" hidden>
+                  <div class="la-balance-row">
+                    <span>Saldo: <span class="la-balance-val" id="la-user-balance">—</span></span>
+                    <button type="button" id="la-add-funds" class="btn btn--ghost btn--sm">+ Adicionar</button>
+                  </div>
+
+                  <p class="la-bid-min-label">
+                    Mínimo: <strong id="la-min-bid">—</strong>
+                  </p>
+
+                  <div class="la-bid-input-row">
+                    <input id="la-bid-amount" name="amount" type="number" step="1" min="1"
+                      class="la-bid-input" placeholder="Valor (€)" required />
+                    <button type="submit" class="btn btn--primary">Licitar</button>
+                  </div>
+
+                  <div class="la-presets">
+                    <button type="button" class="la-preset-btn la-bid-preset" data-delta="5">+5€</button>
+                    <button type="button" class="la-preset-btn la-bid-preset" data-delta="10">+10€</button>
+                    <button type="button" class="la-preset-btn la-bid-preset" data-delta="50">+50€</button>
+                    <button type="button" class="la-preset-btn la-bid-preset" data-delta="100">+100€</button>
+                    <button type="button" class="la-preset-btn la-bid-preset" data-delta="500">+500€</button>
+                  </div>
+
+                  <p class="la-bid-feedback" id="la-bid-msg" aria-live="polite"></p>
+                </form>
+
+              </div>
+            </div>
+
+            <!-- Real-time chat -->
+            <div class="la-chat">
+              <div class="la-chat__header">
+                <span class="la-chat__title">Chat em Direto</span>
+                <span class="la-chat__dot"></span>
+                <span class="la-chat__count" id="la-chat-count">0 msgs</span>
+              </div>
+
+              <div class="la-chat__messages" id="la-chat-messages">
+                <p class="la-chat__empty" id="la-chat-empty">Sem mensagens ainda.</p>
+              </div>
+
+              <div class="la-chat__footer">
+                <form id="la-chat-form" hidden>
+                  <div class="la-chat__input-row">
+                    <textarea id="la-chat-input" name="content" maxlength="500" rows="1"
+                      class="la-chat__textarea" placeholder="Escreve uma mensagem…" required></textarea>
+                    <button type="submit" class="la-chat__send-btn" aria-label="Enviar">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                    </button>
+                  </div>
+                  <p class="la-chat__send-msg" id="la-chat-send-msg" aria-live="polite"></p>
+                </form>
+
+                <p id="la-chat-auth-msg" class="la-chat__auth" hidden>
+                  <a href="../auth/Login.html">Inicia sessão</a> para participar no chat.
+                </p>
+              </div>
+            </div>
+
+            <!-- Bids history -->
+            <div class="la-card">
+              <p class="la-card__title">
+                Histórico de licitações
+                <span style="color:var(--text-faint);font-weight:400"> (<span id="la-bids-count">0</span>)</span>
+              </p>
+              <ol class="la-bids-list" id="la-bids-list">
+                <li id="la-bids-empty" class="la-bids-empty">Ainda não existem licitações.</li>
+              </ol>
+            </div>
+
+            <!-- Owner actions -->
+            <div class="la-owner-card" id="la-owner-actions" hidden>
+              <p class="la-owner-card__title">Gestão do leilão</p>
+              <p class="la-owner-card__desc">Apenas visível para ti como dono deste leilão.</p>
+              <button type="button" id="la-delete-btn" class="btn btn--danger btn--solid">
+                Eliminar Leilão
+              </button>
+              <p class="la-delete-msg" id="la-delete-msg" aria-live="polite"></p>
+            </div>
+
+          </div>
+          <!-- end right column -->
         </div>
-        <div id="la-thumbs" aria-label="Miniaturas"></div>
-      </section>
+        <!-- end grid -->
 
-      <!-- Cronómetro + estatísticas -->
-      <section aria-label="Tempo e lances">
-        <h2>Cronómetro</h2>
-        <p>Termina em: <strong id="la-countdown">—</strong></p>
-        <p>Termina a: <span id="la-ends-at"></span></p>
-        <p>Preço inicial: <span id="la-start-price"></span></p>
-        <p>Licitação atual: <strong id="la-current-bid"></strong></p>
-        <p>Número de licitações: <span id="la-bid-count"></span></p>
-      </section>
+      </div>
+      <!-- end content -->
 
-      <!-- Vendedor -->
-      <section aria-label="Vendedor">
-        <h2>Vendedor</h2>
-        <p>
-          <img id="la-seller-photo" alt="Foto do vendedor" width="48" height="48" />
-          <span id="la-seller-name"></span>
-        </p>
-        <p>Avaliação: <span id="la-seller-rating">—</span> (<span id="la-seller-reviews">0</span> reviews)</p>
-      </section>
-
-      <!-- Descrição -->
-      <section aria-label="Descrição">
-        <h2>Descrição</h2>
-        <p id="la-description"></p>
-      </section>
-
-      <!-- Atributos -->
-      <section aria-label="Atributos do produto" id="la-attributes-section" hidden>
-        <h2>Atributos</h2>
-        <table>
-          <thead><tr><th>Atributo</th><th>Valor</th></tr></thead>
-          <tbody id="la-attributes"></tbody>
-        </table>
-      </section>
-
-      <!-- Formulário de licitação -->
-      <section aria-label="Licitar" id="la-bid-section">
-        <h2>Licitar</h2>
-
-        <p id="la-bid-required-auth" hidden>
-          Precisas de <a href="../auth/Login.html">iniciar sessão</a> para licitar.
-        </p>
-
-        <p id="la-bid-owner-msg" hidden>
-          Não podes licitar no teu próprio leilão. Podes eliminá-lo abaixo.
-        </p>
-
-        <p id="la-bid-ended-msg" hidden>
-          Este leilão já terminou — já não aceita licitações.
-        </p>
-
-        <form id="la-bid-form" hidden>
-          <p>Licitação mínima: <strong id="la-min-bid"></strong></p>
-          <p>O teu saldo: <strong id="la-user-balance">—</strong>
-            <button type="button" id="la-add-funds">Adicionar fundos</button>
-          </p>
-
-          <label for="la-bid-amount">Valor (€):</label>
-          <input id="la-bid-amount" name="amount" type="number" step="1" min="1" required />
-
-          <fieldset>
-            <legend>Atalhos (+€ sobre a mínima)</legend>
-            <button type="button" class="la-bid-preset" data-delta="5">+5€</button>
-            <button type="button" class="la-bid-preset" data-delta="10">+10€</button>
-            <button type="button" class="la-bid-preset" data-delta="50">+50€</button>
-            <button type="button" class="la-bid-preset" data-delta="100">+100€</button>
-            <button type="button" class="la-bid-preset" data-delta="500">+500€</button>
-          </fieldset>
-
-          <p>
-            <button type="submit">Licitar</button>
-          </p>
-
-          <p id="la-bid-msg" aria-live="polite"></p>
-        </form>
-      </section>
-
-      <!-- Histórico de licitações -->
-      <section aria-label="Histórico de licitações">
-        <h2>Histórico de licitações (<span id="la-bids-count">0</span>)</h2>
-        <ol id="la-bids-list">
-          <li id="la-bids-empty">Ainda não existem licitações.</li>
-        </ol>
-      </section>
-
-      <!-- Chat -->
-      <section aria-label="Chat do leilão">
-        <h2>Chat</h2>
-
-        <div id="la-chat-messages" aria-live="polite">
-          <p id="la-chat-empty">Sem mensagens.</p>
-        </div>
-
-        <form id="la-chat-form" hidden>
-          <label for="la-chat-input">Nova mensagem:</label>
-          <input id="la-chat-input" name="content" type="text" maxlength="500" placeholder="Escreve uma mensagem…" required />
-          <button type="submit">Enviar</button>
-          <p id="la-chat-msg" aria-live="polite"></p>
-        </form>
-
-        <p id="la-chat-auth-msg" hidden>
-          Tens de <a href="../auth/Login.html">iniciar sessão</a> para enviar mensagens.
-        </p>
-      </section>
-
-      <!-- Zona do dono: eliminar leilão -->
-      <section aria-label="Ações do dono" id="la-owner-actions" hidden>
-        <h2>Gestão do leilão</h2>
-        <p>Esta zona só é visível para ti porque és o dono deste leilão.</p>
-        <button type="button" id="la-delete-btn">Eliminar leilão</button>
-        <p id="la-delete-msg" aria-live="polite"></p>
-      </section>
-
-    </article>
+    </div>
   </main>
 
-  <footer class="footer"><div class="footer__inner">
-    <p class="footer__copy">© 2026 NextBid. Todos os direitos reservados.</p>
-  </div></footer>
+  <footer class="footer">
+    <div class="footer__inner">
+      <p class="footer__copy">© 2026 NextBid. Todos os direitos reservados.</p>
+    </div>
+  </footer>
 
-  <!-- Scripts shared -->
+  <!-- Shared scripts -->
   <script src="../../js/shared/Helpers.js"></script>
   <script src="../../js/shared/Auth.js"></script>
   <script src="../../js/shared/Wallet.js"></script>
   <script src="../../js/shared/Navbar.js"></script>
   <script src="../../js/shared/Cronometro.js"></script>
 
-  <!-- Página -->
+  <!-- Page script -->
   <script src="../../js/pages/LeilaoAtivox.js"></script>
 </body>
 </html>

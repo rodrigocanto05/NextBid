@@ -1,265 +1,332 @@
-const BASE_URL = 'http://localhost/NextBid/backend';
+// Profile page — uses shared NB helpers
+(function () {
+    let profileData = null;
 
-document.addEventListener('DOMContentLoaded', function () {
-    const user = JSON.parse(localStorage.getItem('user') || 'null');
+    document.addEventListener('DOMContentLoaded', init);
 
-    if (!user) {
-        //window.location.href = "auth/Login.html";
-        return;
+    function init() {
+        NB.renderNavbar();
+
+        const user = NB.requireAuth('../auth/Login.html');
+        if (!user) return;
+
+        loadProfile(user.id);
+        loadBids();
+        initAvatarUploader();
+        initTabs();
+        initUpdateForm(user);
+        initLogout();
+        initWallet();
+        initEditTrigger();
     }
 
-    carregarPerfil(user.id);
-    carregarMinhasLicitacoes();
-    initAvatarUploader();
-});
+    // ─────────────────────────────────────────────────────────────
+    //  Profile data
+    // ─────────────────────────────────────────────────────────────
 
-function initAvatarUploader() {
-    const preview = document.getElementById('avatar-preview');
-    const fileEl = document.getElementById('avatar-file');
-    const rmBtn = document.getElementById('avatar-remove');
-    const msg = document.getElementById('avatar-msg');
-    if (!preview || !fileEl) return;
-
-    const renderAvatar = () => {
-        const u = JSON.parse(localStorage.getItem('user') || 'null');
-        preview.innerHTML = '';
-        const img = document.createElement('img');
-        img.src = (u && u.avatar) ? u.avatar : (window.NB && NB.defaultAvatarUrl ? NB.defaultAvatarUrl() : '../img/avatar-placeholder.png');
-        img.alt = u?.name || '';
-        img.style.width = '100%';
-        img.style.height = '100%';
-        img.style.objectFit = 'cover';
-        preview.appendChild(img);
-    };
-    renderAvatar();
-
-    fileEl.addEventListener('change', () => {
-        const file = fileEl.files?.[0];
-        if (!file) return;
-        if (file.size > 2 * 1024 * 1024) {
-            if (msg) { msg.style.color = 'red'; msg.textContent = 'Imagem demasiado grande (máx 2 MB).'; }
-            fileEl.value = '';
-            return;
+    async function loadProfile(userId) {
+        try {
+            const data = await NB.apiGet(`/api/user/profile.php?user_id=${userId}`);
+            if (data.status !== 'success') return;
+            profileData = data.data;
+            renderProfile(profileData);
+            prefillForm(profileData);
+        } catch (err) {
+            console.error('Erro ao carregar perfil:', err);
         }
-        const reader = new FileReader();
-        reader.onload = () => {
-            const u = JSON.parse(localStorage.getItem('user') || 'null');
-            if (!u) return;
-            u.avatar = reader.result;
-            delete u.token;
-            localStorage.setItem('user', JSON.stringify(u));
-            renderAvatar();
-            if (msg) { msg.style.color = 'green'; msg.textContent = 'Foto atualizada.'; }
-        };
-        reader.readAsDataURL(file);
-    });
-
-    rmBtn?.addEventListener('click', () => {
-        const u = JSON.parse(localStorage.getItem('user') || 'null');
-        if (!u) return;
-        delete u.avatar;
-        delete u.token;
-        localStorage.setItem('user', JSON.stringify(u));
-        fileEl.value = '';
-        renderAvatar();
-        if (msg) { msg.style.color = 'orange'; msg.textContent = 'Foto removida.'; }
-    });
-}
-
-async function carregarMinhasLicitacoes() {
-    const loadingEl = document.getElementById('bids-loading');
-    const emptyEl = document.getElementById('bids-empty');
-    const errorEl = document.getElementById('bids-error');
-    const listEl = document.getElementById('profile-bids-list');
-    if (!listEl) return;
-
-    const token = localStorage.getItem('token');
-    if (!token) {
-        if (loadingEl) loadingEl.hidden = true;
-        if (errorEl) {
-            errorEl.textContent = 'Sessão inválida. Faz login novamente.';
-            errorEl.hidden = false;
-        }
-        return;
     }
 
-    try {
-        const res = await fetch(`${BASE_URL}/api/bids/my_bids.php?limit=50`, {
-            headers: { 'Authorization': `Bearer ${token}` }
-        });
-        const data = await res.json();
+    function renderProfile(p) {
+        setText('pf-name',      p.usr_name);
+        setText('pf-location',  p.usr_location  || '—');
+        setText('pf-created',   fmtDate(p.usr_created_at));
+        setText('pf-bio',       p.usr_bio        || '');
+        setText('pf-id',        p.usr_id);
+        setText('pf-vendidos',  p.total_sold     ?? 0);
+        setText('pf-licitacoes',p.total_bids     ?? 0);
+        setText('pf-leiloes',   p.active_auctions ?? 0);
 
-        if (loadingEl) loadingEl.hidden = true;
+        const bal = Number(p.usr_balance ?? 0);
+        setText('pf-balance', bal.toLocaleString('pt-PT', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
 
-        if (data.status !== 'success') {
-            if (errorEl) {
-                errorEl.textContent = data.message || 'Erro ao carregar licitações.';
-                errorEl.hidden = false;
+        const rating = p.avg_rating != null ? Number(p.avg_rating).toFixed(1) + ' / 5' : '—';
+        setText('pf-rating', rating);
+
+        renderXP(p.usr_xp ?? 0);
+        renderAvatar(p.usr_photo);
+    }
+
+    function renderXP(xp) {
+        // Simple level formula: level = floor(sqrt(xp/100)) + 1
+        const level    = Math.floor(Math.sqrt((xp || 0) / 100)) + 1;
+        const xpForCur = Math.pow(level - 1, 2) * 100;
+        const xpForNxt = Math.pow(level, 2) * 100;
+        const progress = xpForNxt > xpForCur
+            ? ((xp - xpForCur) / (xpForNxt - xpForCur)) * 100
+            : 100;
+
+        setText('pf-xp',    xp);
+        setText('pf-level', level);
+        setText('pf-xp-next', `${xp} / ${xpForNxt} XP`);
+
+        const fill = document.getElementById('pf-xp-fill');
+        if (fill) fill.style.width = Math.min(100, progress).toFixed(1) + '%';
+    }
+
+    // ─────────────────────────────────────────────────────────────
+    //  Avatar
+    // ─────────────────────────────────────────────────────────────
+
+    function renderAvatar(photoPath) {
+        const img = document.getElementById('pf-avatar-img');
+        if (!img) return;
+        if (photoPath) {
+            const clean = String(photoPath).replace(/^\/+/, '');
+            img.src = clean.startsWith('http') ? clean : `${NB.BASE_URL}/${clean}`;
+        } else {
+            const u = NB.getCurrentUser();
+            img.src = NB.avatarUrl(u);
+        }
+    }
+
+    function initAvatarUploader() {
+        const fileEl  = document.getElementById('pf-avatar-file');
+        const rmBtn   = document.getElementById('pf-avatar-remove');
+        const msgEl   = document.getElementById('pf-avatar-msg');
+        const user    = NB.getCurrentUser();
+
+        if (!fileEl || !user) return;
+
+        fileEl.addEventListener('change', async () => {
+            const file = fileEl.files?.[0];
+            if (!file) return;
+            if (file.size > 2 * 1024 * 1024) {
+                setMsg(msgEl, 'Imagem demasiado grande (máx 2 MB).', 'var(--danger)');
+                fileEl.value = '';
+                return;
             }
-            return;
-        }
 
-        const bids = data.bids || [];
-        listEl.innerHTML = '';
+            const fd = new FormData();
+            fd.append('photo', file);
 
-        if (!bids.length) {
-            if (emptyEl) emptyEl.hidden = false;
-            return;
-        }
-
-        bids.forEach(b => {
-            const li = document.createElement('li');
-            const winning = !!b.is_winning;
-            const amount = Number(b.bid_amount || 0).toFixed(2);
-            const highest = Number(b.current_highest || 0).toFixed(2);
-            const status = winning ? 'A vencer' : 'Coberto';
-            const date = formatBidDate(b.bid_created_at);
-            const prdName = escHtmlLocal(b.prd_name || 'Leilão');
-            const prdStatus = escHtmlLocal(b.prd_status || '');
-            const prdId = parseInt(b.prd_id, 10) || 0;
-
-            li.innerHTML =
-                `<strong>${prdName}</strong> — ` +
-                `A minha oferta: ${amount}€ | Atual: ${highest}€ — ` +
-                `<em>${status}</em> ` +
-                `<small>(${date} · leilão: ${prdStatus})</small> ` +
-                (prdId ? `<a href="../LL active/LeilaoAtivox.html?id=${prdId}">Ver leilão</a>` : '');
-            listEl.appendChild(li);
-        });
-    } catch (err) {
-        if (loadingEl) loadingEl.hidden = true;
-        if (errorEl) {
-            errorEl.textContent = 'Erro de rede ao carregar licitações.';
-            errorEl.hidden = false;
-        }
-        console.error('Erro ao carregar licitações:', err);
-    }
-}
-
-function escHtmlLocal(str) {
-    return String(str || '').replace(/[&<>"']/g, c => (
-        { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]
-    ));
-}
-
-function formatBidDate(dt) {
-    if (!dt) return '—';
-    const d = new Date(String(dt).replace(' ', 'T'));
-    if (isNaN(d)) return dt;
-    return d.toLocaleString('pt-PT');
-}
-
-async function carregarPerfil(userId) {
-    try {
-        const token = localStorage.getItem('token');
-        const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
-        const res = await fetch(`${BASE_URL}/api/user/profile.php?user_id=${userId}`, { headers });
-        const data = await res.json();
-
-        if (data.status === 'success') {
-            const p = data.data;
-            setProfileField('profile-id', p.usr_id);
-            setProfileField('profile-nome', p.usr_name);
-            setProfileField('profile-email', p.usr_email);
-            setProfileField('profile-role', p.usr_role);
-            setProfileField('profile-location', p.usr_location);
-            setProfileField('profile-birthdate', formatDateOnly(p.usr_birthdate));
-            setProfileField('profile-created', formatDateOnly(p.usr_created_at));
-            setProfileField('profile-bio', p.usr_bio);
-            setProfileField('profile-balance', p.usr_balance != null ? Number(p.usr_balance).toFixed(2) + '€' : '—');
-            setProfileField('profile-xp', p.usr_xp != null ? p.usr_xp : '0');
-            setProfileField('profile-rating', p.avg_rating != null ? Number(p.avg_rating).toFixed(2) + ' / 5' : 'Sem avaliações');
-            setProfileField('profile-leiloes', p.active_auctions != null ? p.active_auctions : '0');
-            setProfileField('profile-licitacoes', p.total_bids != null ? p.total_bids : '0');
-            setProfileField('profile-vendidos', p.total_sold != null ? p.total_sold : '0');
-
-            prefillEditForm(p);
-        }
-    } catch (err) {
-        console.error('Erro ao carregar perfil:', err);
-    }
-}
-
-function setProfileField(id, value) {
-    const el = document.getElementById(id);
-    if (!el) return;
-    el.textContent = (value === null || value === undefined || value === '') ? '—' : String(value);
-}
-
-function formatDateOnly(dt) {
-    if (!dt) return '';
-    const d = new Date(String(dt).replace(' ', 'T'));
-    if (isNaN(d)) return dt;
-    return d.toLocaleDateString('pt-PT');
-}
-
-function prefillEditForm(p) {
-    const nameEl = document.getElementById('edit-name');
-    const emailEl = document.getElementById('edit-email');
-    const locationEl = document.getElementById('edit-location');
-    const bioEl = document.getElementById('edit-bio');
-    if (nameEl && !nameEl.value) nameEl.placeholder = p.usr_name || nameEl.placeholder;
-    if (emailEl && !emailEl.value) emailEl.placeholder = p.usr_email || emailEl.placeholder;
-    if (locationEl && !locationEl.value) locationEl.placeholder = p.usr_location || locationEl.placeholder;
-    if (bioEl && !bioEl.value && p.usr_bio) bioEl.placeholder = p.usr_bio;
-}
-
-document.getElementById('form-atualizar')?.addEventListener('submit', async function (e) {
-    e.preventDefault();
-
-    const user = JSON.parse(localStorage.getItem('user') || 'null');
-    if (!user) return;
-
-    const name = document.getElementById('edit-name')?.value.trim() || '';
-    const email = document.getElementById('edit-email')?.value.trim() || '';
-    const password = document.getElementById('edit-password')?.value || '';
-    const location = document.getElementById('edit-location')?.value.trim() || '';
-    const bio = document.getElementById('edit-bio')?.value.trim() || '';
-
-    const payload = { user_id: user.id };
-    if (name) payload.name = name;
-    if (email) payload.email = email;
-    if (password) payload.password = password;
-    if (location) payload.location = location;
-    if (bio) payload.bio = bio;
-
-    try {
-        const token = localStorage.getItem('token');
-        const headers = { 'Content-Type': 'application/json' };
-        if (token) headers['Authorization'] = `Bearer ${token}`;
-        const res = await fetch(`${BASE_URL}/api/user/update_profile.php`, {
-            method: 'POST',
-            headers,
-            body: JSON.stringify(payload)
-        });
-
-        const data = await res.json();
-        const msgEl = document.getElementById('perfil-msg');
-        if (msgEl) {
-            msgEl.style.color = data.status === 'success' ? 'green' : 'red';
-            msgEl.textContent = data.message || (data.status === 'success' ? 'Perfil atualizado!' : 'Erro ao atualizar.');
-        }
-
-        if (data.status === 'success') {
-            if (name || email) {
-                const stored = JSON.parse(localStorage.getItem('user') || 'null');
-                if (stored) {
-                    if (name) stored.name = name;
-                    if (email) stored.email = email;
-                    delete stored.token;
-                    localStorage.setItem('user', JSON.stringify(stored));
+            try {
+                const res = await NB.apiPost('/api/user/update_photo.php', fd, { auth: true });
+                if (res.status === 'success') {
+                    setMsg(msgEl, 'Foto atualizada!', 'var(--success)');
+                    // Update avatar in localStorage so navbar refreshes
+                    const stored = NB.getCurrentUser();
+                    if (stored && res.photo_url) {
+                        stored.avatar = `${NB.BASE_URL}/${res.photo_url.replace(/^\/+/, '')}`;
+                        localStorage.setItem('user', JSON.stringify(stored));
+                    }
+                    loadProfile(user.id);
+                } else {
+                    setMsg(msgEl, res.message || 'Erro ao atualizar foto.', 'var(--danger)');
                 }
+            } catch {
+                setMsg(msgEl, 'Erro de rede.', 'var(--danger)');
             }
-            document.getElementById('edit-password').value = '';
-            carregarPerfil(user.id);
-        }
-    } catch (err) {
-        console.error('Erro ao atualizar perfil:', err);
-    }
-});
+            fileEl.value = '';
+        });
 
-document.getElementById('btn-logout')?.addEventListener('click', function () {
-    localStorage.removeItem('user');
-    localStorage.removeItem('token');
-    //window.location.href = "auth/Login.html";
-});
+        rmBtn?.addEventListener('click', () => {
+            const stored = NB.getCurrentUser();
+            if (stored) {
+                delete stored.avatar;
+                localStorage.setItem('user', JSON.stringify(stored));
+            }
+            renderAvatar(null);
+            setMsg(msgEl, 'Foto removida.', 'var(--text-muted)');
+        });
+    }
+
+    // ─────────────────────────────────────────────────────────────
+    //  Bids
+    // ─────────────────────────────────────────────────────────────
+
+    async function loadBids() {
+        const loadingEl = document.getElementById('pf-bids-loading');
+        const emptyEl   = document.getElementById('pf-bids-empty');
+        const errorEl   = document.getElementById('pf-bids-error');
+        const listEl    = document.getElementById('pf-bids-list');
+
+        try {
+            const data = await NB.apiGet('/api/bids/my_bids.php?limit=50');
+
+            if (loadingEl) loadingEl.hidden = true;
+
+            if (data.status !== 'success') {
+                if (errorEl) { errorEl.textContent = data.message || 'Erro ao carregar licitações.'; errorEl.hidden = false; }
+                return;
+            }
+
+            const bids = data.bids || [];
+            if (!bids.length) { if (emptyEl) emptyEl.hidden = false; return; }
+
+            listEl.innerHTML = '';
+            bids.forEach(b => {
+                const li      = document.createElement('li');
+                li.className  = 'pf-bid-item';
+                const winning = !!b.is_winning;
+                const amount  = Number(b.bid_amount  || 0).toLocaleString('pt-PT', { minimumFractionDigits: 2 });
+                const highest = Number(b.current_highest || 0).toLocaleString('pt-PT', { minimumFractionDigits: 2 });
+                const prdId   = parseInt(b.prd_id, 10) || 0;
+                const badgeCls = winning ? 'pf-bid-badge pf-bid-badge--winning' : 'pf-bid-badge pf-bid-badge--covered';
+                const badgeTxt = winning ? 'A vencer' : 'Coberto';
+
+                li.innerHTML = `
+                    <div class="pf-bid-item__info">
+                        <p class="pf-bid-item__name">${NB.escHtml(b.prd_name || 'Leilão')}</p>
+                        <p class="pf-bid-item__detail">
+                            A minha oferta: <strong>${amount}€</strong> ·
+                            Atual: ${highest}€ ·
+                            <small>${NB.escHtml(b.prd_status || '')}</small>
+                        </p>
+                        <p class="pf-bid-item__date">${fmtDateTime(b.bid_created_at)}</p>
+                    </div>
+                    <div class="pf-bid-item__right">
+                        <span class="${badgeCls}">${badgeTxt}</span>
+                        ${prdId ? `<a class="btn btn--ghost btn--sm" href="LL active/LeilaoAtivox.html?id=${prdId}">Ver leilão</a>` : ''}
+                    </div>`;
+                listEl.appendChild(li);
+            });
+        } catch (err) {
+            if (loadingEl) loadingEl.hidden = true;
+            if (errorEl)   { errorEl.textContent = 'Erro de rede.'; errorEl.hidden = false; }
+            console.error(err);
+        }
+    }
+
+    // ─────────────────────────────────────────────────────────────
+    //  Update form
+    // ─────────────────────────────────────────────────────────────
+
+    function prefillForm(p) {
+        setVal('pf-edit-name',     p.usr_name     || '');
+        setVal('pf-edit-email',    p.usr_email    || '');
+        setVal('pf-edit-location', p.usr_location || '');
+        setVal('pf-edit-bio',      p.usr_bio      || '');
+    }
+
+    function initUpdateForm(user) {
+        const form  = document.getElementById('pf-form-update');
+        const msgEl = document.getElementById('pf-update-msg');
+        if (!form) return;
+
+        form.addEventListener('submit', async e => {
+            e.preventDefault();
+            const payload = { user_id: user.id };
+            const name     = getVal('pf-edit-name');
+            const email    = getVal('pf-edit-email');
+            const password = getVal('pf-edit-password');
+            const location = getVal('pf-edit-location');
+            const bio      = getVal('pf-edit-bio');
+
+            if (name)     payload.name     = name;
+            if (email)    payload.email    = email;
+            if (password) payload.password = password;
+            if (location) payload.location = location;
+            if (bio)      payload.bio      = bio;
+
+            setMsg(msgEl, 'A guardar…', 'var(--text-muted)');
+
+            try {
+                const res = await NB.apiPost('/api/user/update_profile.php', payload, { auth: true });
+                if (res.status === 'success') {
+                    setMsg(msgEl, 'Perfil atualizado!', 'var(--success)');
+                    setVal('pf-edit-password', '');
+                    // Sync localStorage
+                    const stored = NB.getCurrentUser();
+                    if (stored) {
+                        if (name)  stored.name  = name;
+                        if (email) stored.email = email;
+                        localStorage.setItem('user', JSON.stringify(stored));
+                    }
+                    loadProfile(user.id);
+                } else {
+                    setMsg(msgEl, res.message || 'Erro ao atualizar.', 'var(--danger)');
+                }
+            } catch {
+                setMsg(msgEl, 'Erro de rede.', 'var(--danger)');
+            }
+        });
+    }
+
+    // ─────────────────────────────────────────────────────────────
+    //  Tabs
+    // ─────────────────────────────────────────────────────────────
+
+    function initTabs() {
+        const tabs = document.querySelectorAll('.pf-tab');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => t.classList.remove('pf-tab--active'));
+                tab.classList.add('pf-tab--active');
+
+                const target = tab.dataset.tab;
+                document.querySelectorAll('.pf-panel').forEach(p => { p.hidden = true; });
+                const panel = document.getElementById(`pf-panel-${target}`);
+                if (panel) panel.hidden = false;
+            });
+        });
+    }
+
+    function initEditTrigger() {
+        document.getElementById('pf-edit-trigger')?.addEventListener('click', () => {
+            document.querySelectorAll('.pf-tab').forEach(t => {
+                const active = t.dataset.tab === 'settings';
+                t.classList.toggle('pf-tab--active', active);
+            });
+            document.querySelectorAll('.pf-panel').forEach(p => { p.hidden = true; });
+            const panel = document.getElementById('pf-panel-settings');
+            if (panel) { panel.hidden = false; panel.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+        });
+    }
+
+    // ─────────────────────────────────────────────────────────────
+    //  Wallet + logout
+    // ─────────────────────────────────────────────────────────────
+
+    function initWallet() {
+        document.getElementById('pf-add-funds')?.addEventListener('click', () => {
+            if (typeof NB.openWalletModal === 'function') NB.openWalletModal();
+        });
+    }
+
+    function initLogout() {
+        document.getElementById('pf-logout-btn')?.addEventListener('click', () => {
+            NB.confirmLogout();
+        });
+    }
+
+    // ─────────────────────────────────────────────────────────────
+    //  Utilities
+    // ─────────────────────────────────────────────────────────────
+
+    function setText(id, val) {
+        const el = document.getElementById(id);
+        if (el) el.textContent = val ?? '—';
+    }
+    function setVal(id, val) {
+        const el = document.getElementById(id);
+        if (el) el.value = val ?? '';
+    }
+    function getVal(id) {
+        return (document.getElementById(id)?.value || '').trim();
+    }
+    function setMsg(el, text, color) {
+        if (!el) return;
+        el.textContent = text;
+        el.style.color = color || '';
+    }
+    function fmtDate(dt) {
+        if (!dt) return '—';
+        const d = new Date(String(dt).replace(' ', 'T'));
+        return isNaN(d) ? dt : d.toLocaleDateString('pt-PT');
+    }
+    function fmtDateTime(dt) {
+        if (!dt) return '—';
+        const d = new Date(String(dt).replace(' ', 'T'));
+        return isNaN(d) ? dt : d.toLocaleString('pt-PT');
+    }
+})();
