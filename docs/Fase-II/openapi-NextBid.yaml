@@ -1,0 +1,960 @@
+openapi: 3.0.0
+info:
+  title: NextBid API - Documentação Completa
+  description: Documentação Final da API do NextBid, incluindo todos os endpoints, parâmetros e exemplos de resposta.
+  version: 1.0.0
+
+servers:
+  - url: http://localhost/NextBid/backend/api
+    description: Servidor Local
+paths:
+  
+  /auth/login.php:
+    post:
+      tags:
+        - Autenticação
+      summary: Realizar Login
+      description: Autentica o utilizador e devolve um token de acesso.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email: { type: string, format: email, example: "dexx@nextbid.pt" }
+                password: { type: string, format: password, example: "senhaSegura123" }
+      responses:
+        '200':
+          description: Login com sucesso
+          content:
+            application/json:
+              example: { status: "success", user: { id: 1, nome: "DexX", token: "token_exemplo_123" } }
+        '401':
+          description: Erro - Credenciais inválidas
+        '405':
+          description: Erro - Método não permitido (deve ser POST)
+
+  /auth/register.php:
+    post:
+      tags:
+        - Autenticação
+      summary: Registar novo utilizador
+      description: Cria uma nova conta com validação de idade (+18) e atribui XP de bónus.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name, email, password, gender, birthdate, bio, location]
+              properties:
+                name: { type: string, minLength: 2, maxLength: 80, example: "DexX" }
+                email: { type: string, format: email, example: "dexx@nextbid.pt" }
+                password: { type: string, minLength: 8, maxLength: 72, example: "Jddi123" }
+                gender: { type: string, enum: [M, F, O], example: "M" }
+                birthdate: { type: string, format: date, example: "2000-01-01" }
+                bio: { type: string, minLength: 10, maxLength: 500, example: "Farm infinito de money!" }
+                location: { type: string, maxLength: 120, example: "Lisboa" }
+      responses:
+        '200':
+          description: Registo efetuado com sucesso.
+        '400':
+          description: Erro de validação (idade, formato de dados ou email já existente).
+
+  /auth/logout.php:
+    post:
+      tags:
+        - Autenticação
+      summary: Terminar sessão atual
+      responses:
+        '200':
+          description: Sessão terminada.
+  
+  /auth/logout_all.php:
+    post:
+      tags:
+        - Autenticação
+      summary: Terminar todas as sessões do DexX
+      description: Encerra todas as sessões ativas em todos os dispositivos.
+      responses:
+        '200':
+          description: Todas as sessões terminadas com sucesso.
+  /auctions/attributes/get.php:
+    get:
+      tags:
+        - Atributos
+      summary: Listar atributos de um produto
+      description: Retorna todas as características técnicas de um produto específico.
+      parameters:
+        - name: product_id
+          in: query
+          required: true
+          schema:
+            type: integer
+          example: 10
+      responses:
+        '200':
+          description: Lista de atributos enviada.
+          content:
+            application/json:
+              example:
+                status: "success"
+                product_id: 10
+                count: 2
+                attributes: 
+                  - { atr_id: 1, atr_name: "Cor", atr_value: "Preto" }
+                  - { atr_id: 2, atr_name: "Estado", atr_value: "Novo" }
+
+  /auctions/attributes/add.php:
+    post:
+      tags:
+        - Atributos
+      summary: Adicionar atributos ao produto
+      description: Permite ao DexX (ou ao dono do produto) adicionar uma ou várias características.
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                product_id: { type: integer, example: 10 }
+                name: { type: string, example: "Material" }
+                value: { type: string, example: "Alumínio" }
+                attributes:
+                  type: array
+                  description: Opcional. Permite adicionar vários de uma vez.
+                  items:
+                    type: object
+                    properties:
+                      name: { type: string }
+                      value: { type: string }
+      responses:
+        '200':
+          description: Atributo(s) adicionado(s) com sucesso.
+        '403':
+          description: Erro - Só o vendedor ou admin podem fazer esta alteração.
+        '405':
+          description: Erro - Método não permitido (deve ser POST).
+
+  /auctions/attributes/delete.php:
+    post:
+      tags:
+        - Atributos
+      summary: Remover um atributo
+      description: Remove uma característica específica de um produto.
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                attribute_id: { type: integer, example: 1 }
+      responses:
+        '200':
+          description: Atributo removido.
+        '403':
+          description: Sem permissão para apagar este atributo.
+  /bids/place_bid.php:
+    post:
+      tags:
+        - Licitações
+      summary: Efetua uma nova licitação
+      description: Permite ao DexX licitar num produto. O sistema verifica automaticamente se o valor é superior à licitação atual.
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [product_id, amount]
+              properties:
+                product_id: { type: integer, example: 10 }
+                amount: { type: number, format: float, example: 150.50 }
+      responses:
+        '200':
+          description: Resultado da licitação (sucesso ou valor insuficiente).
+          content:
+            application/json:
+              example: { status: "success", message: "Licitação efetuada com sucesso!" }
+        '405':
+          description: Erro - Método não permitido.
+
+  /bids/get_by_user.php:
+    get:
+      tags:
+        - Licitações
+      summary: Listar licitações do DexX
+      description: Retorna o histórico de licitações feitas pelo utilizador autenticado.
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: limit
+          in: query
+          description: Número máximo de registos a retornar.
+          schema:
+            type: integer
+            default: 50
+      responses:
+        '200':
+          description: Lista de licitações do utilizador.
+          content:
+            application/json:
+              example:
+                status: "success"
+                count: 1
+                bids: 
+                  - { bid_id: 50, bid_amount: 150.50, prd_title: "PlayStation 5" }
+
+  /bids/get_by_product.php:
+    get:
+      tags:
+        - Licitações
+      summary: Histórico de licitações de um produto
+      description: Mostra todas as licitações feitas num leilão específico (público).
+      parameters:
+        - name: product_id
+          in: query
+          required: true
+          schema: { type: integer }
+          example: 10
+        - name: limit
+          in: query
+          schema: { type: integer, default: 20 }
+      responses:
+        '200':
+          description: Lista de licitações do produto.
+
+  /categories/get_all.php:
+    get:
+      tags:
+        - Categorias
+      summary: Listar todas as categorias
+      description: Retorna a lista de categorias disponíveis para os leilões (Público).
+      responses:
+        '200':
+          description: Lista de categorias retornada com sucesso.
+          content:
+            application/json:
+              example:
+                status: "success"
+                count: 3
+                categories: 
+                  - { cat_id: 1, cat_name: "Tecnologia" }
+                  - { cat_id: 2, cat_name: "Veículos" }
+                  - { cat_id: 3, cat_name: "Imóveis" }
+
+  /categories/create.php:
+    post:
+      tags:
+        - Categorias
+      summary: Criar nova categoria (Apenas Admin)
+      description: Adiciona uma nova categoria ao sistema. Requer privilégios de administrador.
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name]
+              properties:
+                name: { type: string, example: "Colecionáveis" }
+      responses:
+        '200':
+          description: Categoria criada.
+        '403':
+          description: Erro - Apenas administradores podem criar categorias.
+
+  /categories/update.php:
+    post:
+      tags:
+        - Categorias
+      summary: Atualizar categoria (Apenas Admin)
+      description: Altera o nome de uma categoria existente.
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [category_id, name]
+              properties:
+                category_id: { type: integer, example: 1 }
+                name: { type: string, example: "Informática e Gadgets" }
+      responses:
+        '200':
+          description: Categoria atualizada.
+        '403':
+          description: Permissão negada.
+
+  /categories/delete.php:
+    post:
+      tags:
+        - Categorias
+      summary: Remover categoria (Apenas Admin)
+      description: Apaga uma categoria do sistema através do seu ID.
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [category_id]
+              properties:
+                category_id: { type: integer, example: 3 }
+      responses:
+        '200':
+          description: Categoria removida com sucesso.
+  /chat/get_by_product.php:
+    get:
+      tags:
+        - Chat
+      summary: Ver histórico de mensagens
+      description: Recupera as mensagens trocadas no chat de um leilão específico. Útil para o DexX acompanhar as discussões sobre um item.
+      parameters:
+        - name: product_id
+          in: query
+          required: true
+          schema:
+            type: integer
+          example: 10
+        - name: limit
+          in: query
+          description: Quantidade de mensagens a carregar.
+          schema:
+            type: integer
+            default: 100
+      responses:
+        '200':
+          description: Mensagens carregadas com sucesso.
+          content:
+            application/json:
+              example:
+                status: "success"
+                count: 2
+                messages: 
+                  - { msg_id: 1, msg_content: "Este item ainda está disponível?", msg_user_name: "DexX", msg_date: "2026-04-19 22:00:00" }
+                  - { msg_id: 2, msg_content: "Sim, DexX! O leilão termina amanhã.", msg_user_name: "Admin", msg_date: "2026-04-19 22:05:00" }
+
+  /chat/send.php:
+    post:
+      tags:
+        - Chat
+      summary: Enviar mensagem
+      description: Envia uma nova mensagem para o chat de um produto. Requer autenticação.
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [product_id, content]
+              properties:
+                product_id: { type: integer, example: 10 }
+                content: { type: string, example: "DexX na área! Aceitam licitações em grupo?" }
+      responses:
+        '200':
+          description: Mensagem enviada com sucesso.
+        '405':
+          description: Erro - Método não permitido (deve ser POST).
+  /reviews/get_for_seller.php:
+    get:
+      tags:
+        - Reviews
+      summary: Ver avaliações de um vendedor
+      description: Retorna a média de classificação e todas as reviews de um vendedor específico.
+      parameters:
+        - name: seller_id
+          in: query
+          required: true
+          schema:
+            type: integer
+          example: 5
+      responses:
+        '200':
+          description: Dados de avaliação carregados.
+          content:
+            application/json:
+              example:
+                status: "success"
+                seller_id: 5
+                avg_rating: 4.5
+                total: 10
+                reviews: 
+                  - { rev_id: 1, rev_rating: 5, rev_user_name: "DexX", rev_date: "2026-04-19" }
+
+  /reviews/create.php:
+    post:
+      tags:
+        - Reviews
+      summary: Avaliar um vendedor/produto
+      description: Permite que o DexX deixe uma classificação (rating) após uma transação.
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [product_id, rating]
+              properties:
+                product_id: { type: integer, example: 10 }
+                rating: { type: integer, minimum: 1, maximum: 5, example: 5 }
+      responses:
+        '200':
+          description: Avaliação criada com sucesso.
+        '405':
+          description: Erro - Método não permitido.
+  /transactions/get_balance.php:
+    get:
+      tags:
+        - Financeiro
+      summary: Consultar saldo atual
+      description: Retorna o saldo disponível na conta do DexX.
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Saldo retornado com sucesso.
+          content:
+            application/json:
+              example:
+                status: "success"
+                user_id: 1
+                balance: 250.75
+
+  /transactions/deposit.php:
+    post:
+      tags:
+        - Financeiro
+      summary: Carregar saldo
+      description: Permite ao DexX adicionar fundos à sua conta para poder licitar.
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [amount]
+              properties:
+                amount: { type: number, format: float, example: 50.00 }
+                description: { type: string, example: "Depósito via MBWay" }
+      responses:
+        '200':
+          description: Depósito realizado com sucesso.
+        '405':
+          description: Erro - Método não permitido.
+
+  /transactions/get_history.php:
+    get:
+      tags:
+        - Financeiro
+      summary: Ver histórico de transações
+      description: Lista todos os depósitos e gastos feitos pelo DexX.
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 50
+      responses:
+        '200':
+          description: Histórico de transações carregado.
+          content:
+            application/json:
+              example:
+                status: "success"
+                count: 2
+                transactions: 
+                  - { tx_id: 1, amount: 50.00, type: "deposit", description: "Depósito Inicial", date: "2026-04-19" }
+                  - { tx_id: 2, amount: -15.50, type: "bid_payment", description: "Pagamento Leilão #10", date: "2026-04-20" }
+  /gamification/get_nearby.php:
+    get:
+      tags:
+        - Gamification
+      summary: Listar pontos de interesse próximos
+      description: Retorna locais de interesse (tesouros/pontos) perto da localização GPS do DexX.
+      parameters:
+        - name: lat
+          in: query
+          required: true
+          schema: { type: number, format: float }
+          example: 38.7071
+        - name: lng
+          in: query
+          required: true
+          schema: { type: number, format: float }
+          example: -9.1355
+        - name: radius
+          in: query
+          description: Raio de busca em KM.
+          schema: { type: integer, default: 10 }
+      responses:
+        '200':
+          description: Pontos encontrados com sucesso.
+
+  /gamification/join_hunt.php:
+    post:
+      tags:
+        - Gamification
+      summary: Participar numa caça ao tesouro
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                point_id: { type: integer, example: 5 }
+      responses:
+        '200':
+          description: DexX entrou na caça ao tesouro!
+
+  /gamification/claim_point.php:
+    post:
+      tags:
+        - Gamification
+      summary: Reclamar ponto por localização
+      description: Valida se o DexX está perto o suficiente do ponto para ganhar o prémio.
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [point_id, lat, lng]
+              properties:
+                point_id: { type: integer, example: 5 }
+                lat: { type: number, example: 38.7071 }
+                lng: { type: number, example: -9.1355 }
+      responses:
+        '200':
+          description: Ponto reclamado e XP atribuído!
+
+  /gamification/claim_with_code.php:
+    post:
+      tags:
+        - Gamification
+      summary: Reclamar ponto com código secreto
+      description: Para quando o ponto exige um código físico (ex. QR Code no local).
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [point_id, lat, lng, code]
+              properties:
+                point_id: { type: integer }
+                lat: { type: number }
+                lng: { type: number }
+                code: { type: string, example: "TREASURE_2026" }
+      responses:
+        '200':
+          description: Código validado!
+
+  /gamification/get_claimed.php:
+    get:
+      tags:
+        - Gamification
+      summary: Ver conquistas do DexX
+      description: Lista todos os tesouros e pontos que o utilizador já conquistou.
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Lista de conquistas retornada.
+
+  /gamification/create_event.php:
+    post:
+      tags:
+        - Gamification
+      summary: Criar Evento de Caça (Admin)
+      description: Permite criar novos pontos de interesse no mapa.
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              example: { name: "Evento Especial Lisboa", lat: 38.7, lng: -9.1, xp_reward: 100 }
+      responses:
+        '200':
+          description: Evento criado com sucesso.
+  /auctions/create.php:
+    post:
+      tags:
+        - Leilões
+      summary: Criar um novo leilão (com imagens)
+      description: |
+        Endpoint principal para o DexX criar leilões. 
+        **Regras:** Mínimo 3 fotos, preço entre 1€ e 1.000.000€, duração entre 1h e 7 dias.
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [name, description, startPrice, categoryId, ends_at]
+              properties:
+                images[]:
+                  type: array
+                  items: { type: string, format: binary }
+                  description: Enviar entre 3 a 15 ficheiros de imagem (JPG/PNG).
+                name: { type: string, example: "Relógio Vintage DexX" }
+                description: { type: string, example: "Peça única da coleção pessoal." }
+                condition: { type: string, enum: [new, like new, good, used], default: used }
+                startPrice: { type: number, minimum: 1, maximum: 1000000, example: 50.0 }
+                location: { type: string, example: "Porto" }
+                latitude: { type: number, example: 41.15 }
+                longitude: { type: number, example: -8.61 }
+                categoryId: { type: integer, example: 2 }
+                ends_at: { type: string, format: date-time, example: "2026-04-26T22:00:00Z" }
+                size: { type: string, example: "XL" }
+                currency: { type: string, enum: [EUR, USD, GBP, CHF], default: EUR }
+      responses:
+        '200':
+          description: Leilão criado com sucesso.
+        '405':
+          description: Erro - Deve ser usado POST.
+
+  /auctions/get_active.php:
+    get:
+      tags:
+        - Leilões
+      summary: Listar leilões ativos por GPS
+      description: Retorna leilões ativos num raio de quilómetros a partir da posição do DexX.
+      parameters:
+        - name: lat
+          in: query
+          required: true
+          schema: { type: number }
+        - name: lng
+          in: query
+          required: true
+          schema: { type: number }
+        - name: radius
+          in: query
+          schema: { type: integer, default: 50 }
+      responses:
+        '200':
+          description: Lista de leilões ativos encontrada.
+
+  /auctions/get_by_id.php:
+    get:
+      tags:
+        - Leilões
+      summary: Ver detalhes de um leilão
+      parameters:
+        - name: product_id
+          in: query
+          required: true
+          schema: { type: integer }
+      responses:
+        '200':
+          description: Dados detalhados do produto.
+        '404':
+          description: Leilão não encontrado.
+
+  /auctions/get_by_seller.php:
+    get:
+      tags:
+        - Leilões
+      summary: Ver meus leilões (DexX Vendedor)
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: status
+          in: query
+          schema: { type: string, enum: [active, sold, ended, expired] }
+      responses:
+        '200':
+          description: Lista dos teus leilões.
+
+  /auctions/get_by_winner.php:
+    get:
+      tags:
+        - Leilões
+      summary: Leilões ganhos pelo DexX
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Lista de troféus ganhos em leilões.
+
+  /auctions/cancel.php:
+    post:
+      tags:
+        - Leilões
+      summary: Cancelar um leilão
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                product_id: { type: integer }
+      responses:
+        '200':
+          description: Leilão cancelado.
+  /auctions/images/get.php:
+    get:
+      tags:
+        - Imagens
+      summary: Listar todas as imagens de um produto
+      parameters:
+        - name: product_id
+          in: query
+          required: true
+          schema: { type: integer }
+          example: 10
+      responses:
+        '200':
+          description: Lista de imagens retornada.
+          content:
+            application/json:
+              example:
+                status: "success"
+                count: 3
+                images: 
+                  - { img_id: 1, img_path: "uploads/products/foto1.jpg", img_is_primary: 1 }
+                  - { img_id: 2, img_path: "uploads/products/foto2.jpg", img_is_primary: 0 }
+
+  /auctions/images/add.php:
+    post:
+      tags:
+        - Imagens
+      summary: Adicionar uma nova imagem ao leilão
+      description: Permite ao DexX carregar mais uma foto para um leilão ativo. Máximo 5MB (JPG/PNG/WebP).
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [product_id, image]
+              properties:
+                product_id: { type: integer, example: 10 }
+                image: { type: string, format: binary }
+                is_primary: { type: boolean, example: false }
+      responses:
+        '200':
+          description: Imagem carregada e associada ao produto.
+        '403':
+          description: Erro - Sem permissão para alterar este leilão.
+
+  /auctions/images/set_primary.php:
+    post:
+      tags:
+        - Imagens
+      summary: Definir imagem principal
+      description: Altera qual das fotos será a capa do leilão que o DexX está a gerir.
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [product_id, image_id]
+              properties:
+                product_id: { type: integer, example: 10 }
+                image_id: { type: integer, example: 2 }
+      responses:
+        '200':
+          description: Imagem principal atualizada.
+
+  /auctions/images/delete.php:
+    post:
+      tags:
+        - Imagens
+      summary: Remover uma imagem específica
+      description: |
+        Apaga uma foto do sistema. 
+        **Nota:** O sistema impede a remoção se for a última imagem do leilão (mínimo 1 obrigatória).
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [image_id]
+              properties:
+                image_id: { type: integer, example: 2 }
+      responses:
+        '200':
+          description: Imagem removida da base de dados e do servidor.
+        '403':
+          description: Erro de permissão.
+        '400':
+          description: Erro - Não podes apagar a última imagem.
+  /users/get_profile.php:
+    get:
+      tags: [Utilizadores]
+      summary: Ver perfil de um utilizador
+      parameters:
+        - name: user_id
+          in: query
+          required: true
+          schema: { type: integer }
+          example: 1
+      responses:
+        '200':
+          description: Dados do perfil do DexX ou outro utilizador.
+
+  /users/update_profile.php:
+    post:
+      tags: [Utilizadores]
+      summary: Atualizar dados do perfil
+      description: Permite ao DexX mudar o nome, email, password, bio ou localização.
+      security: [{ BearerAuth: [] }]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name: { type: string, example: "DexX Pro" }
+                email: { type: string, format: email }
+                password: { type: string, minLength: 8 }
+                bio: { type: string, example: "Novo mestre dos leilões." }
+                location: { type: string }
+      responses:
+        '200':
+          description: Perfil atualizado com sucesso.
+
+  /users/update_photo.php:
+    post:
+      tags: [Utilizadores]
+      summary: Atualizar foto de perfil (Avatar)
+      security: [{ BearerAuth: [] }]
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                photo: { type: string, format: binary }
+      responses:
+        '200':
+          description: Foto atualizada e antiga removida do servidor.
+
+  /users/get_xp_history.php:
+    get:
+      tags: [Utilizadores]
+      summary: Histórico de XP do DexX
+      security: [{ BearerAuth: [] }]
+      parameters:
+        - name: limit
+          in: query
+          schema: { type: integer, default: 50 }
+      responses:
+        '200':
+          description: Lista de ganhos de experiência (XP).
+
+  /users/get_level.php:
+    get:
+      tags: [Gamification]
+      summary: Ver nível e progresso
+      parameters:
+        - name: user_id
+          in: query
+          required: true
+          schema: { type: integer }
+      responses:
+        '200':
+          description: Retorna o nível atual e XP necessário para o próximo.
+
+  /users/get_leaderboard.php:
+    get:
+      tags: [Gamification]
+      summary: Ranking Global (Leaderboard)
+      description: Lista os melhores utilizadores do NextBid.
+      parameters:
+        - name: limit
+          in: query
+          schema: { type: integer, default: 10 }
+      responses:
+        '200':
+          description: Top de utilizadores retornado.
+
+  /notifications/get_all.php:
+    get:
+      tags: [Notificações]
+      summary: Todas as notificações do DexX
+      security: [{ BearerAuth: [] }]
+      parameters:
+        - name: limit
+          in: query
+          schema: { type: integer, default: 50 }
+      responses:
+        '200':
+          description: Lista de alertas, licitações e mensagens.
+
+  /notifications/mark_read.php:
+    post:
+      tags: [Notificações]
+      summary: Marcar notificação como lida
+      security: [{ BearerAuth: [] }]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                notificationId: { type: integer, example: 123 }
+      responses:
+        '200':
+          description: Estado atualizado.
+
+  /notifications/delete.php:
+    post:
+      tags: [Notificações]
+      summary: Apagar notificação
+      security: [{ BearerAuth: [] }]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                notificationId: { type: integer }
+      responses:
+        '200':
+          description: Notificação removida.
+      
