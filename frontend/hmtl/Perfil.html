@@ -3,90 +3,169 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Comaptible" content="IE=edge">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NextBid - Perfil</title>
+
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/navbar.css">
+    <link rel="stylesheet" href="../css/layout.css">
+    <link rel="stylesheet" href="../css/cards.css">
+    <link rel="stylesheet" href="../css/buttons.css">
+    <link rel="stylesheet" href="../css/stats.css">
+    <link rel="stylesheet" href="../css/tabs.css">
+    <link rel="stylesheet" href="../css/perfil.css">
 </head>
 
-<body>
-    <a href="index.html">Voltar</a>
-    <header>
-        <h1>Perfil de Usuário</h1>
+
+<body class="profile-page">
+
+    <header class="navbar">
+        <div class="navbar-logo">
+            <span class="logo-icon"></span>
+            <span class="logo-text">NEXTBID</span>
+        </div>
+
+        <nav class="navbar-menu">
+            <a href="index.html">Início</a>
+            <a href="Leiloes.html">Leilões</a>
+            <a href="CaçaAoTesouro.html">Caça ao Tesouro</a>
+            <a href="MeusLeiloes.html">Os Meus Leilões</a>
+        </nav>
+
+        <div class="navbar-user">
+            <span id="navbar-user-name">Utilizador</span>
+            <span class="navbar-balance" id="navbar-balance">0€</span>
+        </div>
     </header>
 
-    <main>
-        <section>
-            <h3>Foto de Perfil</h3>
-            <div id="avatar-preview"
-                 style="width:120px;height:120px;border-radius:50%;border:2px solid #888;overflow:hidden;background:linear-gradient(135deg,#2a2d36,#1a1d24);display:flex;align-items:center;justify-content:center;margin-bottom:10px;">
+    <main class="profile-container">
+
+        <section class="profile-hero-card">
+            <div class="profile-avatar-area">
+                <div id="avatar-preview" class="profile-avatar"></div>
+
+                <label for="avatar-file" class="avatar-upload-btn">📷</label>
+                <input type="file" id="avatar-file" accept="image/jpeg,image/png,image/webp" hidden>
+
+                <button type="button" id="avatar-remove" class="avatar-remove-btn">
+                    Remover foto
+                </button>
+
+                <p id="avatar-msg" class="profile-small-msg"></p>
             </div>
-            <input type="file" id="avatar-file" accept="image/jpeg,image/png,image/webp" />
-            <button type="button" id="avatar-remove">Remover foto</button>
-            <p id="avatar-msg" style="font-size:0.85rem;"></p>
-        </section>
-        <hr>
 
-        <h4>ID: <span id="profile-id"></span></h4>
-        <br>
-        <h4>Nome: <span id="profile-nome"></span></h4>
-        <br>
-        <h4>E-mail: <span id="profile-email"></span></h4>
-        <br>
-        <h4>Papel: <span id="profile-role"></span></h4>
-        <br>
-        <h4>Localização: <span id="profile-location"></span></h4>
-        <br>
-        <h4>Data de nascimento: <span id="profile-birthdate"></span></h4>
-        <br>
-        <h4>Membro desde: <span id="profile-created"></span></h4>
-        <br>
-        <h4>Bio: <span id="profile-bio"></span></h4>
-        <br>
-        <h4>Saldo: <span id="profile-balance"></span></h4>
-        <br>
-        <h4>XP: <span id="profile-xp"></span></h4>
-        <br>
-        <h4>Avaliação média: <span id="profile-rating"></span></h4>
-        <br>
-        <h4>Leilões ativos: <span id="profile-leiloes"></span></h4>
-        <br>
-        <h4>Total de licitações: <span id="profile-licitacoes"></span></h4>
-        <br>
-        <h4>Total vendido: <span id="profile-vendidos"></span></h4>
-        <br>
+            <div class="profile-main-info">
+                <h1 id="profile-nome">Nome do Utilizador</h1>
 
-        <hr>
-        <section>
-            <h3>Minhas licitações</h3>
-            <p id="bids-loading">A carregar licitações…</p>
-            <p id="bids-empty" hidden>Ainda não licitaste em nenhum leilão.</p>
-            <p id="bids-error" hidden></p>
-            <ul id="profile-bids-list"></ul>
+                <div class="profile-level">
+                    ⚡ Nível <span id="profile-level">1</span>
+                </div>
+
+                <div class="xp-info">
+                    <span><span id="profile-xp">0</span> XP</span>
+                    <span>Próximo nível</span>
+                </div>
+
+                <div class="xp-bar">
+                    <div class="xp-progress"></div>
+                </div>
+
+                <div class="profile-meta">
+                    <span> <span id="profile-rating">0</span> avaliação</span>
+                    <span> <span id="profile-location">Localização</span></span>
+                    <span> Membro desde <span id="profile-created">---</span></span>
+                </div>
+
+                <p class="profile-bio">
+                    <span id="profile-bio">Sem bio definida.</span>
+                </p>
+            </div>
+
+            <div class="profile-actions">
+                <button class="outline-button" type="button">Editar perfil</button>
+            </div>
         </section>
 
-        <hr>
-        <h3>Atualizar perfil</h3>
-        <form id="form-atualizar">
-            <input type="text" id="edit-name" placeholder="Novo nome (opcional, 2-80 chars)">
-            <br><br>
-            <input type="email" id="edit-email" placeholder="Novo e-mail (opcional)">
-            <br><br>
-            <input type="password" id="edit-password" placeholder="Nova password (opcional, mín. 8 chars)">
-            <br><br>
-            <input type="text" id="edit-location" placeholder="Localização (opcional, máx. 120 chars)">
-            <br><br>
-            <textarea id="edit-bio" placeholder="Bio (opcional, 10-500 chars)" rows="3"></textarea>
-            <br><br>
-            <button type="submit">Guardar alterações</button>
-        </form>
-        <p id="perfil-msg"></p>
+        <section class="wallet-card">
+            <div>
+                <p>Carteira NextBid</p>
+                <strong><span id="profile-balance">0</span> €</strong>
+            </div>
 
-        <br>
-        <button id="btn-logout">Terminar sessão</button>
+            <button class="gold-button" type="button">+ Adicionar saldo</button>
+        </section>
+
+        <section class="stats-grid">
+            <article class="stat-card">
+                <span class="stat-icon"></span>
+                <strong id="profile-vendidos">0</strong>
+                <p>Total vendido</p>
+            </article>
+
+            <article class="stat-card">
+                <span class="stat-icon"></span>
+                <strong id="profile-licitacoes">0</strong>
+                <p>Total de licitações</p>
+            </article>
+
+            <article class="stat-card">
+                <span class="stat-icon"></span>
+                <strong id="profile-leiloes">0</strong>
+                <p>Leilões ativos</p>
+            </article>
+
+            <article class="stat-card">
+                <span class="stat-icon"></span>
+                <strong id="profile-id">---</strong>
+                <p>ID de utilizador</p>
+            </article>
+        </section>
+
+        <section class="profile-tabs">
+            <button class="tab-btn active" type="button">Visão geral</button>
+            <button class="tab-btn" type="button">Participações</button>
+            <button class="tab-btn" type="button">Configurações</button>
+        </section>
+
+        <section class="profile-content-grid">
+
+            <article class="content-card">
+                <h2>Minhas licitações</h2>
+
+                <p id="bids-loading">A carregar licitações…</p>
+                <p id="bids-empty" hidden>Ainda não licitaste em nenhum leilão.</p>
+                <p id="bids-error" hidden></p>
+
+                <ul id="profile-bids-list" class="bids-list"></ul>
+            </article>
+
+            <article class="content-card">
+                <h2>Atualizar perfil</h2>
+
+                <form id="form-atualizar" class="profile-form">
+                    <input type="text" id="edit-name" placeholder="Novo nome">
+                    <input type="email" id="edit-email" placeholder="Novo e-mail">
+                    <input type="password" id="edit-password" placeholder="Nova password">
+                    <input type="text" id="edit-location" placeholder="Localização">
+                    <textarea id="edit-bio" placeholder="Bio" rows="3"></textarea>
+
+                    <button type="submit" class="gold-button">Guardar alterações</button>
+                </form>
+
+                <p id="perfil-msg" class="profile-small-msg"></p>
+
+                <button id="btn-logout" class="logout-button" type="button">
+                    Terminar sessão
+                </button>
+            </article>
+
+        </section>
+
     </main>
 
-    <footer>
-        <p>&copy; 2026 NextBid</p>
+    <footer class="footer">
+        <p>&copy; 2026 NextBid. Todos os direitos reservados.</p>
     </footer>
 
     <script src="../js/pages/Perfil.js"></script>
