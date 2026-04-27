@@ -53,6 +53,14 @@
         const bal = Number(p.usr_balance ?? 0);
         setText('pf-balance', bal.toLocaleString('pt-PT', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
 
+        const stored = NB.getCurrentUser();
+        if (stored && Number(stored.wallet ?? -1) !== bal) {
+            stored.wallet = bal;
+            delete stored.token;
+            localStorage.setItem('user', JSON.stringify(stored));
+            if (typeof NB.renderNavbar === 'function') NB.renderNavbar();
+        }
+
         const rating = p.avg_rating != null ? Number(p.avg_rating).toFixed(1) + ' / 5' : '—';
         setText('pf-rating', rating);
 

@@ -97,6 +97,50 @@ NB.confirmLogout = function () {
     document.getElementById('nb-logout-modal').classList.add('open');
 };
 
+NB._mountWelcomeModal = function (data) {
+    if (document.getElementById('nb-welcome-modal')) return;
+    const wrap = document.createElement('div');
+    wrap.innerHTML = `
+        <div class="modal-overlay" id="nb-welcome-modal" role="dialog" aria-modal="true">
+            <div class="modal modal--sm">
+                <div class="modal__header">
+                    <h2 class="modal__title">Conta criada!</h2>
+                    <button class="modal__close" aria-label="Fechar">✕</button>
+                </div>
+                <div class="modal__body">
+                    <p class="confirm-text">
+                        Olá, <strong>${NB.escHtml(data.name || '')}</strong>!<br>
+                        ${NB.escHtml(data.message || 'Bem-vindo ao NextBid!')}
+                    </p>
+                    <div class="confirm-actions" style="grid-template-columns: 1fr;">
+                        <button class="btn btn--primary btn--solid" id="nb-welcome-login">Fazer Login</button>
+                    </div>
+                </div>
+            </div>
+        </div>`;
+    document.body.appendChild(wrap.firstElementChild);
+
+    const modal = document.getElementById('nb-welcome-modal');
+    const close = () => modal.classList.remove('open');
+    modal.addEventListener('click', e => { if (e.target === modal) close(); });
+    modal.querySelector('.modal__close').addEventListener('click', close);
+    document.getElementById('nb-welcome-login').addEventListener('click', () => {
+        close();
+        window.location.href = NB._authPath('Login');
+    });
+};
+
+NB.showWelcomeIfPending = function () {
+    const raw = localStorage.getItem('welcome');
+    if (!raw) return;
+    let data;
+    try { data = JSON.parse(raw); }
+    catch (e) { data = { name: raw }; }
+    localStorage.removeItem('welcome');
+    NB._mountWelcomeModal(data);
+    document.getElementById('nb-welcome-modal')?.classList.add('open');
+};
+
 NB._path = function (rel) {
     const depth = (location.pathname.match(/\/hmtl\/(.+\/)/) || ['', ''])[1].split('/').length - 1;
     return '../'.repeat(depth) + rel;

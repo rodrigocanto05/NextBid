@@ -43,6 +43,11 @@ NB.mountWalletModal = function () {
         localStorage.setItem('user', JSON.stringify(user));
         close();
         NB.renderNavbar();
+
+        const pfBal = document.getElementById('pf-balance');
+        if (pfBal) {
+            pfBal.textContent = user.wallet.toLocaleString('pt-PT', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
     };
 
     document.getElementById('wallet-grid').addEventListener('click', e => {

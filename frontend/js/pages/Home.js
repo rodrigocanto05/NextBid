@@ -5,6 +5,7 @@
 
     document.addEventListener('DOMContentLoaded', () => {
         NB.renderNavbar();
+        NB.showWelcomeIfPending();
         NB.initHeroCarousel();
         NB.initTicker();
         loadFeatured();

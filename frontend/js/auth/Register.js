@@ -30,7 +30,11 @@ document.getElementById('RegisterPage').addEventListener('submit', async functio
         const data = await res.json();
 
         if (data.status === 'success') {
-            localStorage.setItem('welcome', name);
+            localStorage.setItem('welcome', JSON.stringify({
+                name: name,
+                message: data.message,
+                xp: data.xp
+            }));
             window.location.href = '../index.html';
         } else {
             mostrarErro(data.message || 'Erro ao registar');
