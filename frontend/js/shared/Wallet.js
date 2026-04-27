@@ -17,6 +17,11 @@ NB.mountWalletModal = function () {
                         ${[50,100,250,500,1000,2500].map(v =>
                             `<button class="wallet-amount" data-amount="${v}">${v}€</button>`).join('')}
                     </div>
+                    <div class="wallet-custom">
+                        <input type="number" id="wallet-custom-input" class="form-input"
+                               placeholder="Outro valor (€)" min="1" step="1" />
+                        <button class="btn btn--primary" id="wallet-custom-add">Adicionar</button>
+                    </div>
                     <button class="btn btn--ghost btn--full" id="wallet-cancel">Cancelar</button>
                 </div>
             </div>
@@ -29,10 +34,7 @@ NB.mountWalletModal = function () {
     document.getElementById('wallet-close').addEventListener('click', close);
     document.getElementById('wallet-cancel').addEventListener('click', close);
 
-    document.getElementById('wallet-grid').addEventListener('click', e => {
-        const btn = e.target.closest('[data-amount]');
-        if (!btn) return;
-        const amount = Number(btn.dataset.amount);
+    const applyAmount = (amount) => {
         const user = NB.getCurrentUser();
         if (!user) return;
         const current = Number(user.wallet ?? user.usr_balance ?? 0);
@@ -41,6 +43,28 @@ NB.mountWalletModal = function () {
         localStorage.setItem('user', JSON.stringify(user));
         close();
         NB.renderNavbar();
+    };
+
+    document.getElementById('wallet-grid').addEventListener('click', e => {
+        const btn = e.target.closest('[data-amount]');
+        if (!btn) return;
+        applyAmount(Number(btn.dataset.amount));
+    });
+
+    const customInput = document.getElementById('wallet-custom-input');
+    const customAdd   = document.getElementById('wallet-custom-add');
+    const submitCustom = () => {
+        const amount = Number(customInput.value);
+        if (!Number.isFinite(amount) || amount <= 0) {
+            customInput.focus();
+            return;
+        }
+        customInput.value = '';
+        applyAmount(amount);
+    };
+    customAdd.addEventListener('click', submitCustom);
+    customInput.addEventListener('keydown', e => {
+        if (e.key === 'Enter') { e.preventDefault(); submitCustom(); }
     });
 };
 

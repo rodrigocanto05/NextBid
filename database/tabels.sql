@@ -99,7 +99,7 @@ create table gamification (
     gme_xp_reward          int not null default 0,
     gme_prd_id             int not null,
     gme_latitude           decimal(10,7) not null,
-    gme_longitude          decimal(10,7) not null,
+    gme_longitude          decimal(11,7) not null,
     gme_radius             int not null default 30,
     gme_verification_code  varchar(10),
     gme_status             enum('scheduled','active','claimed','expired') not null default 'scheduled',

@@ -18,6 +18,10 @@
         initLogout();
         initWallet();
         initEditTrigger();
+
+        if (NB.NovoLeilao && typeof NB.NovoLeilao.init === 'function') {
+            NB.NovoLeilao.init(() => loadProfile(user.id));
+        }
     }
 
     // ─────────────────────────────────────────────────────────────
@@ -119,6 +123,7 @@
                         stored.avatar = `${NB.BASE_URL}/${res.photo_url.replace(/^\/+/, '')}`;
                         localStorage.setItem('user', JSON.stringify(stored));
                     }
+                    if (typeof NB.renderNavbar === 'function') NB.renderNavbar();
                     loadProfile(user.id);
                 } else {
                     setMsg(msgEl, res.message || 'Erro ao atualizar foto.', 'var(--danger)');
@@ -135,6 +140,7 @@
                 delete stored.avatar;
                 localStorage.setItem('user', JSON.stringify(stored));
             }
+            if (typeof NB.renderNavbar === 'function') NB.renderNavbar();
             renderAvatar(null);
             setMsg(msgEl, 'Foto removida.', 'var(--text-muted)');
         });

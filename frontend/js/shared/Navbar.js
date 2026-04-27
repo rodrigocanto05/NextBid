@@ -40,7 +40,6 @@ NB._navbarUser = function (user) {
                 </div>
                 <div class="dropdown" id="nb-dropdown">
                     <a href="${NB._path('Perfil.html')}" class="dropdown__item">👤 Ver Perfil</a>
-                    <a href="${NB._path('LL active/MeusLeiloes.html')}" class="dropdown__item">⚖️ Os Meus Leilões</a>
                     <button class="dropdown__item" id="nb-add-funds">💳 Adicionar Fundos</button>
                 </div>
             </div>
