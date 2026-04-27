@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Wireframe — Perfil</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #000;
+    display: flex; flex-direction: column; align-items: center;
+    padding: 0 0 40px;
+  }
+  .top-label {
+    width: 100%; background: #fff;
+    text-align: center; padding: 14px 0;
+    font-size: 12px; font-weight: 700; letter-spacing: .18em; color: #222;
+    border-bottom: 1px solid #ddd;
+  }
+  .frame { width: 1280px; background: #d6d6d6; display: flex; flex-direction: column; }
+
+  /* navbar */
+  .nav { height: 80px; background: #888; display: flex; align-items: center; padding: 0 40px; gap: 0; }
+  .nav-brand { display: flex; align-items: center; gap: 10px; margin-right: auto; }
+  .nav-logo { width: 48px; height: 48px; background: #aaa; border: 2px solid #ccc; }
+  .nav-brand-text { width: 110px; height: 14px; background: #bbb; }
+  .nav-links { display: flex; gap: 40px; margin-right: auto; }
+  .nav-item { display: flex; flex-direction: column; align-items: center; gap: 5px; }
+  .nav-icon { width: 26px; height: 26px; background: #aaa; }
+  .nav-line { width: 40px; height: 3px; background: #aaa; }
+  .nav-auth { display: flex; align-items: center; gap: 8px; }
+  .nav-av { width: 36px; height: 36px; border-radius: 50%; background: #aaa; }
+  .nav-ub { width: 80px; height: 28px; background: #aaa; }
+
+  /* page */
+  .body { padding: 28px 40px 40px; background: #d6d6d6; display: flex; flex-direction: column; gap: 14px; }
+
+  /* generic card */
+  .card { background: #c8c8c8; border-radius: 4px; overflow: hidden; }
+  .card-hdr { height: 32px; background: #b8b8b8; }
+  .card-body { padding: 16px; }
+
+  /* block helper */
+  .blk { background: #b0b0b0; border-radius: 2px; }
+
+  /* ── HERO ── */
+  .hero {
+    background: #c8c8c8; border-radius: 4px; padding: 22px 28px;
+    display: grid; grid-template-columns: 160px 1fr auto;
+    gap: 24px; align-items: center;
+  }
+  .av-col { display: flex; flex-direction: column; align-items: center; gap: 9px; }
+  .avatar { width: 110px; height: 110px; border-radius: 50%; background: #aaa; border: 3px solid #999; }
+  .av-btn { width: 110px; height: 26px; background: #b0b0b0; border-radius: 3px; border: 1px solid #a0a0a0; }
+
+  .info { display: flex; flex-direction: column; gap: 0; }
+  .info-name { width: 60%; height: 22px; background: #999; border-radius: 2px; margin-bottom: 10px; }
+  .level-pill {
+    display: inline-flex; align-items: center;
+    width: 90px; height: 22px; background: #b4a060; opacity: .5;
+    border-radius: 99px; margin-bottom: 12px;
+  }
+  .xp-row { display: flex; justify-content: space-between; width: 240px; margin-bottom: 5px; }
+  .xp-lbl { width: 60px; height: 8px; background: #aaa; border-radius: 2px; }
+  .xp-bar { width: 240px; height: 6px; background: #b8b8b8; border-radius: 99px; overflow: hidden; margin-bottom: 14px; }
+  .xp-fill { width: 65%; height: 100%; background: #b4a060; opacity: .6; }
+  .meta-row { display: flex; gap: 16px; margin-bottom: 10px; }
+  .meta-item { display: flex; align-items: center; gap: 5px; }
+  .meta-ic { width: 12px; height: 12px; background: #aaa; border-radius: 2px; }
+  .meta-ln { height: 9px; background: #bbb; border-radius: 2px; }
+  .bio { display: flex; flex-direction: column; gap: 5px; }
+  .bio-ln { height: 9px; background: #b8b8b8; border-radius: 2px; }
+
+  .hero-act { display: flex; flex-direction: column; gap: 8px; align-self: flex-start; }
+  .btn-ghost { width: 110px; height: 34px; background: transparent; border: 1.5px solid #aaa; border-radius: 4px; }
+
+  /* ── WALLET ── */
+  .wallet {
+    background: #c8c8c8; border-radius: 4px; padding: 16px 22px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .wallet-lbl { width: 100px; height: 9px; background: #b0b0b0; border-radius: 2px; margin-bottom: 6px; }
+  .wallet-amt { width: 130px; height: 24px; background: #b4a060; opacity: .45; border-radius: 3px; }
+  .btn-gold { width: 130px; height: 36px; background: #b4a060; opacity: .6; border-radius: 4px; }
+
+  /* ── STATS ── */
+  .stats { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; }
+  .stat { background: #c8c8c8; border-radius: 4px; padding: 16px; }
+  .stat-ic { width: 20px; height: 20px; background: #aaa; border-radius: 3px; margin-bottom: 10px; }
+  .stat-v { width: 55%; height: 20px; background: #999; border-radius: 3px; margin-bottom: 7px; }
+  .stat-l { width: 75%; height: 8px; background: #b8b8b8; border-radius: 2px; }
+
+  /* ── TABS ── */
+  .tabs {
+    background: #c8c8c8; border-radius: 4px;
+    display: grid; grid-template-columns: repeat(2,1fr); overflow: hidden;
+  }
+  .tab { height: 44px; background: #c0c0c0; display: flex; align-items: center; justify-content: center; }
+  .tab .tab-lbl { width: 70px; height: 10px; background: #aaa; border-radius: 2px; }
+  .tab.active { background: #a09050; opacity: .7; }
+  .tab.active .tab-lbl { background: #c8b870; }
+
+  /* ── PANEL BIDS ── */
+  .bids-list { display: flex; flex-direction: column; gap: 10px; }
+  .bid-row {
+    background: #bbb; border-radius: 3px; padding: 12px 14px;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .bid-info { flex: 1; display: flex; flex-direction: column; gap: 5px; }
+  .bid-title { height: 11px; width: 52%; background: #aaa; border-radius: 2px; }
+  .bid-detail { height: 9px; width: 72%; background: #b8b8b8; border-radius: 2px; }
+  .bid-date { height: 8px; width: 38%; background: #c0c0c0; border-radius: 2px; }
+  .bid-right { display: flex; flex-direction: column; align-items: flex-end; gap: 7px; flex-shrink: 0; }
+  .badge { width: 70px; height: 18px; border-radius: 99px; }
+  .badge.win { background: #88b888; opacity: .6; }
+  .badge.cov { background: #c08888; opacity: .5; }
+  .btn-sm-ghost { width: 72px; height: 26px; background: transparent; border: 1px solid #aaa; border-radius: 3px; }
+
+  /* ── PANEL SETTINGS (dimmed) ── */
+  .settings-panel { opacity: .35; }
+  .form { display: flex; flex-direction: column; gap: 13px; max-width: 460px; }
+  .form-group { display: flex; flex-direction: column; gap: 6px; }
+  .form-lbl { width: 70px; height: 8px; background: #aaa; border-radius: 2px; }
+  .form-input { height: 36px; background: #c0c0c0; border-radius: 4px; border: 1px solid #b0b0b0; }
+  .form-textarea { height: 70px; }
+  .divider { height: 1px; background: #b8b8b8; margin: 16px 0; }
+  .btn-save { width: 150px; height: 36px; background: #a09050; opacity: .6; border-radius: 4px; }
+  .btn-logout { width: 130px; height: 36px; background: #b08080; opacity: .5; border-radius: 4px; }
+
+  /* footer */
+  .footer { height: 50px; background: #888; display: flex; align-items: center; justify-content: center; }
+  .footer-line { width: 200px; height: 9px; background: #999; border-radius: 2px; }
+</style>
+</head>
+<body>
+
+<div class="top-label">WIREFRAME — NEXTBID · PERFIL · DESKTOP</div>
+
+<div class="frame">
+
+  <!-- Navbar -->
+  <div class="nav">
+    <div class="nav-brand">
+      <div class="nav-logo"></div>
+      <div class="nav-brand-text"></div>
+    </div>
+    <div class="nav-links">
+      <div class="nav-item">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><rect x="2" y="3" width="20" height="18" rx="2" fill="#aaa"/></svg>
+        <div class="nav-line"></div>
+      </div>
+      <div class="nav-item">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><rect x="2" y="3" width="20" height="18" rx="2" fill="#aaa"/></svg>
+        <div class="nav-line"></div>
+      </div>
+      <div class="nav-item">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><rect x="2" y="3" width="20" height="18" rx="2" fill="#aaa"/></svg>
+        <div class="nav-line"></div>
+      </div>
+      <div class="nav-item">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><rect x="2" y="3" width="20" height="18" rx="2" fill="#aaa"/></svg>
+        <div class="nav-line"></div>
+      </div>
+    </div>
+    <div class="nav-auth">
+      <div class="nav-av"></div>
+      <div class="nav-ub"></div>
+    </div>
+  </div>
+
+  <!-- Body -->
+  <div class="body">
+
+    <!-- HERO -->
+    <div class="hero">
+      <div class="av-col">
+        <div class="avatar"></div>
+        <div class="av-btn"></div>
+        <div class="av-btn"></div>
+      </div>
+      <div class="info">
+        <div class="info-name"></div>
+        <div class="level-pill"></div>
+        <div class="xp-row">
+          <div class="xp-lbl"></div>
+          <div class="xp-lbl" style="width:80px"></div>
+        </div>
+        <div class="xp-bar"><div class="xp-fill"></div></div>
+        <div class="meta-row">
+          <div class="meta-item"><div class="meta-ic"></div><div class="meta-ln" style="width:55px"></div></div>
+          <div class="meta-item"><div class="meta-ic"></div><div class="meta-ln" style="width:45px"></div></div>
+          <div class="meta-item"><div class="meta-ic"></div><div class="meta-ln" style="width:80px"></div></div>
+        </div>
+        <div class="bio">
+          <div class="bio-ln" style="width:68%"></div>
+          <div class="bio-ln" style="width:48%"></div>
+        </div>
+      </div>
+      <div class="hero-act">
+        <div class="btn-ghost"></div>
+      </div>
+    </div>
+
+    <!-- WALLET -->
+    <div class="wallet">
+      <div>
+        <div class="wallet-lbl"></div>
+        <div class="wallet-amt"></div>
+      </div>
+      <div class="btn-gold"></div>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats">
+      <div class="stat"><div class="stat-ic"></div><div class="stat-v"></div><div class="stat-l"></div></div>
+      <div class="stat"><div class="stat-ic"></div><div class="stat-v"></div><div class="stat-l"></div></div>
+      <div class="stat"><div class="stat-ic"></div><div class="stat-v"></div><div class="stat-l"></div></div>
+      <div class="stat"><div class="stat-ic"></div><div class="stat-v"></div><div class="stat-l"></div></div>
+    </div>
+
+    <!-- TABS -->
+    <div class="tabs">
+      <div class="tab active"><div class="tab-lbl"></div></div>
+      <div class="tab"><div class="tab-lbl"></div></div>
+    </div>
+
+    <!-- PANEL: Licitações (active) -->
+    <div class="card">
+      <div class="card-hdr"></div>
+      <div class="card-body">
+        <div class="bids-list">
+          <div class="bid-row">
+            <div class="bid-info">
+              <div class="bid-title"></div>
+              <div class="bid-detail"></div>
+              <div class="bid-date"></div>
+            </div>
+            <div class="bid-right">
+              <div class="badge win"></div>
+              <div class="btn-sm-ghost"></div>
+            </div>
+          </div>
+          <div class="bid-row">
+            <div class="bid-info">
+              <div class="bid-title"></div>
+              <div class="bid-detail"></div>
+              <div class="bid-date"></div>
+            </div>
+            <div class="bid-right">
+              <div class="badge cov"></div>
+              <div class="btn-sm-ghost"></div>
+            </div>
+          </div>
+          <div class="bid-row">
+            <div class="bid-info">
+              <div class="bid-title"></div>
+              <div class="bid-detail"></div>
+              <div class="bid-date"></div>
+            </div>
+            <div class="bid-right">
+              <div class="badge win"></div>
+              <div class="btn-sm-ghost"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PANEL: Configurações (hidden / dimmed) -->
+    <div class="card settings-panel">
+      <div class="card-hdr"></div>
+      <div class="card-body">
+        <div class="form">
+          <div class="form-group"><div class="form-lbl"></div><div class="form-input"></div></div>
+          <div class="form-group"><div class="form-lbl"></div><div class="form-input"></div></div>
+          <div class="form-group"><div class="form-lbl"></div><div class="form-input"></div></div>
+          <div class="form-group"><div class="form-lbl"></div><div class="form-input form-textarea"></div></div>
+          <div class="btn-save"></div>
+        </div>
+        <div class="divider"></div>
+        <div class="btn-logout"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div class="footer-line"></div>
+  </div>
+
+</div>
+</body>
+</html>
