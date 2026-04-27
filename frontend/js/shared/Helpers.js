@@ -1,6 +1,11 @@
 ﻿// Shared helpers (API, formatting, escaping)
 window.NB = window.NB || {};
-NB.BASE_URL = 'http://localhost/backend';
+NB.BASE_URL = (function () {
+    const { protocol, host, pathname } = window.location;
+    const idx = pathname.indexOf('/frontend/');
+    const root = idx >= 0 ? pathname.substring(0, idx) : '';
+    return `${protocol}//${host}${root}/backend`;
+})();
 
 NB.formatCurrency = function (amount) {
     return new Intl.NumberFormat('pt-PT', {

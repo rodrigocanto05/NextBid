@@ -1,4 +1,9 @@
-const BASE_URL = 'http://localhost/backend';
+const BASE_URL = (function () {
+    const { protocol, host, pathname } = window.location;
+    const idx = pathname.indexOf('/frontend/');
+    const root = idx >= 0 ? pathname.substring(0, idx) : '';
+    return `${protocol}//${host}${root}/backend`;
+})();
 
 document.getElementById('RegisterPage').addEventListener('submit', async function (e) {
     e.preventDefault();
