@@ -17,11 +17,10 @@ A solução baseia-se numa separação clara entre frontend e backend, garantind
 ---
 ## 3 - Objetivos da Fase II
 - Elaborar em UML os Casos de Uso e o Modelo de Domínio do sistema.
-- Desenvolver os Mockups de alta fidelidade e interfaces na plataforma Figma.
+- Desenvolver os Mockups e interfaces na plataforma Figma.
 - Criar e documentar os UI Assets e o Web Design System da plataforma.
 - Implementar a infraestrutura de backend (PHP e Base de Dados) para as funcionalidades core.
 - Desenvolver a versão Alfa/Protótipo do projeto, validando a integração Frontend ↔ Backend.
-- Validar a Arquitetura de Informação através de testes com utilizadores.
   
 ---
 
