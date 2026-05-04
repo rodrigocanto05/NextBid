@@ -1,3 +1,6 @@
+// chat.js — NextBid Live Chat Module
+// Integração com Firebase Realtime Database
+
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import {
     getDatabase,
@@ -10,13 +13,14 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
 const firebaseConfig = {
-    apiKey: "AIzaSy...",
+    apiKey: "AIzaSyDKL1xP7KhVNSjoggElcOnvLRhnQuiDrYA",
     authDomain: "nextbid-chat.firebaseapp.com",
-    databaseURL: "https://nextbid-chat-default-rtdb.firebaseio.com",
+    databaseURL: "https://nextbid-chat-default-rtdb.europe-west1.firebasedatabase.app",
     projectId: "nextbid-chat",
-    storageBucket: "nextbid-chat.appspot.com",
-    messagingSenderId: "123456789",
-    appId: "1:123456789:web:abcdef",
+    storageBucket: "nextbid-chat.firebasestorage.app",
+    messagingSenderId: "646254556760",
+    appId: "1:646254556760:web:e0624dc453f4061057bc2d",
+    measurementId: "G-19WJJ2PR8S"
 };
 function getCurrentUser() {
     const savedUser = localStorage.getItem("nextbid_user");
@@ -55,7 +59,6 @@ function initChat(auctionIdParam) {
     listenForMessages();
     updateOnlineStatus();
 }
-
 function renderChatUI() {
     const container = document.getElementById("auction-chat");
     if (!container) {
@@ -78,7 +81,7 @@ function renderChatUI() {
 
       <div class="nb-chat__user-bar">
         A participar como: <strong id="chat-username">${escapeHtml(currentUser)}</strong>
-        <button class="nb-chat__change-name" id="btn-change-name" title="Alterar nome">✏️</button>
+        <button class="nb-chat__change-name" id="btn-change-name" title="Alterar nome"></button>
       </div>
 
       <div class="nb-chat__messages" id="chat-messages" role="log" aria-live="polite" aria-label="Mensagens do chat">
@@ -119,6 +122,7 @@ function renderChatUI() {
 
 function listenForMessages() {
     if (!chatRef) return;
+
     const recentQuery = query(chatRef, orderByChild("timestamp"), limitToLast(50));
 
     onChildAdded(recentQuery, (snapshot) => {
@@ -160,7 +164,6 @@ function appendMessage(msg) {
     const emptyEl = document.getElementById("chat-empty");
 
     if (!messagesEl) return;
-
     if (emptyEl) emptyEl.remove();
 
     const isOwn = msg.user === currentUser;
@@ -189,7 +192,6 @@ function changeName() {
         if (usernameEl) usernameEl.textContent = currentUser;
     }
 }
-
 function setStatus(state) {
     const dot = document.getElementById("chat-status-dot");
     const text = document.getElementById("chat-status-text");
@@ -229,26 +231,3 @@ function showToast(msg) {
     setTimeout(() => toast.remove(), 3000);
 }
 export { initChat };
-
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-
-const firebaseConfig = {
-    apiKey: "AIzaSyDKL1xP7KhVNSjoggElcOnvLRhnQuiDrYA",
-    authDomain: "nextbid-chat.firebaseapp.com",
-    databaseURL: "https://nextbid-chat-default-rtdb.europe-west1.firebasedatabase.app",
-    projectId: "nextbid-chat",
-    storageBucket: "nextbid-chat.firebasestorage.app",
-    messagingSenderId: "646254556760",
-    appId: "1:646254556760:web:e0624dc453f4061057bc2d",
-    measurementId: "G-19WJJ2PR8S"
-};
-
-
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-
-import { initChat } from 'NextBid/frontend/js/chat/chat.js';
-
-const auctionId = urlParams.get('id');
-initChat(auctionId);
