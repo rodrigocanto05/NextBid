@@ -1,7 +1,18 @@
-##Relatório Indivudual 
+# Mini Relatório Semanal
 
-Durante esta semana, estive focado no desenvolvimento das mid wireframes do nosso projeto. Esta fase consistiu na criação de versões intermédias das interfaces, permitindo estruturar melhor a organização dos elementos, fluxos de navegação e funcionalidades principais.
+## Descrição das Atividades
 
-Foram definidos os layouts das principais páginas, garantindo coerência visual e uma melhor experiência de utilização. Além disso, houve uma preocupação em alinhar as wireframes com os requisitos previamente estabelecidos, assegurando que todas as funcionalidades essenciais estão contempladas.
+Durante esta semana, estive focado no desenvolvimento das mid wireframes do nosso projeto. Esta fase consistiu na criação de versões intermédias das interfaces, permitindo estruturar de forma mais clara a organização dos elementos, os fluxos de navegação e as funcionalidades principais.
 
-Este trabalho servirá como base para as próximas etapas do projeto, nomeadamente o refinamento do design e posterior desenvolvimento.
+## Trabalho Realizado
+
+- Desenvolvimento da mid wireframe da página de leilões  
+- Desenvolvimento da mid wireframe da página “Meus Leilões”  
+- Criação da mid wireframe da tela de registo  
+- Criação da mid wireframe da tela de adicionar fundos  
+- Estruturação dos fluxos de navegação entre estas páginas  
+- Alinhamento com os requisitos definidos para o projeto  
+
+## Conclusão
+
+O trabalho realizado permitiu consolidar a estrutura base de várias áreas importantes da aplicação, servindo como suporte para as próximas fases de refinamento do design e implementação.
