@@ -1,34 +1,33 @@
 <!DOCTYPE html>
 <html lang="pt">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>NextBid — Caça ao Tesouro</title>
-
-  <!-- CSS shared (sem ficheiros novos) -->
-  <link rel="stylesheet" href="../css/reset.css" />
-  <link rel="stylesheet" href="../css/layout.css" />
-  <link rel="stylesheet" href="../css/buttons.css" />
-  <link rel="stylesheet" href="../css/navbar.css" />
-  <link rel="stylesheet" href="../css/dropdown.css" />
-  <link rel="stylesheet" href="../css/modal.css" />
-  <link rel="stylesheet" href="../css/forms.css" />
-  <link rel="stylesheet" href="../css/footer.css" />
-  <link rel="stylesheet" href="../css/utils.css" />
-
-  <!-- Leaflet (mapa open-source, sem API key) -->
+  <link rel="stylesheet" href="../css/main.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
+
 
   <style>
-    /* Garantir que a navbar fica por cima do mapa Leaflet */
-    .navbar { z-index: 1100 !important; }
-    #caca-map { z-index: 1; }
+    .navbar {
+      z-index: 1100 !important;
+    }
+
+    #caca-map {
+      z-index: 1;
+    }
+
     #caca-map .leaflet-pane,
     #caca-map .leaflet-top,
-    #caca-map .leaflet-bottom { z-index: 400; }
+    #caca-map .leaflet-bottom {
+      z-index: 400;
+    }
   </style>
 </head>
+
 <body class="page">
 
   <!-- NAVBAR -->
@@ -40,16 +39,39 @@
       </a>
       <nav class="navbar__links">
         <a href="index.html" class="navbar__link">
-          <span class="navbar__link-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>Início
+          <span class="navbar__link-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+              <polyline points="9 22 9 12 15 12 15 22" />
+            </svg></span>Início
         </a>
         <a href="LL active/LeiloesAtivos.html" class="navbar__link">
-          <span class="navbar__link-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m14.5 12.5-8 8a2.12 2.12 0 1 1-3-3l8-8"/><path d="m16 16 6-6"/><path d="m8 8 6-6"/><path d="m9 7 8 8"/><path d="m21 11-8-8"/></svg></span>Leilões
+          <span class="navbar__link-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="m14.5 12.5-8 8a2.12 2.12 0 1 1-3-3l8-8" />
+              <path d="m16 16 6-6" />
+              <path d="m8 8 6-6" />
+              <path d="m9 7 8 8" />
+              <path d="m21 11-8-8" />
+            </svg></span>Leilões
         </a>
         <a href="CaçaAoTesouro.html" class="navbar__link navbar__link--active">
-          <span class="navbar__link-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12l4 6-10 13L2 9Z"/><path d="M11 3 8 9l4 13 4-13-3-6"/><path d="M2 9h20"/></svg></span>Caça ao Tesouro
+          <span class="navbar__link-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 3h12l4 6-10 13L2 9Z" />
+              <path d="M11 3 8 9l4 13 4-13-3-6" />
+              <path d="M2 9h20" />
+            </svg></span>Caça ao Tesouro
         </a>
         <a href="LL active/MeusLeiloes.html" class="navbar__link">
-          <span class="navbar__link-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg></span>Os Meus Leilões
+          <span class="navbar__link-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z" />
+              <path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z" />
+              <path d="M7 21h10" />
+              <path d="M12 3v18" />
+              <path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2" />
+            </svg></span>Os Meus Leilões
         </a>
       </nav>
       <div class="navbar__auth" id="navbar-auth"></div>
@@ -66,20 +88,20 @@
 
         <!-- Mapa -->
         <div id="caca-map"
-             style="height:560px;border-radius:12px;border:1px solid rgba(212,175,55,0.35);background:#0a0e1a;"></div>
+          style="height:560px;border-radius:12px;border:1px solid rgba(212,175,55,0.35);background:#0a0e1a;"></div>
 
         <!-- Painel lateral -->
         <aside style="display:flex;flex-direction:column;gap:16px;">
 
           <!-- Estado -->
           <div id="caca-status"
-               style="padding:14px;border-radius:10px;border:1px solid rgba(212,175,55,0.25);background:rgba(10,14,26,0.6);color:#d6d9e0;font-size:0.9rem;">
+            style="padding:14px;border-radius:10px;border:1px solid rgba(212,175,55,0.25);background:rgba(10,14,26,0.6);color:#d6d9e0;font-size:0.9rem;">
             A obter localização…
           </div>
 
           <!-- Info do tesouro selecionado (sempre mistério) -->
           <div id="caca-info"
-               style="padding:16px;border-radius:10px;border:1px solid rgba(212,175,55,0.35);background:rgba(10,14,26,0.6);display:none;">
+            style="padding:16px;border-radius:10px;border:1px solid rgba(212,175,55,0.35);background:rgba(10,14,26,0.6);display:none;">
             <h3 style="margin:0 0 6px;color:#d4af37;font-family:var(--font-heading);">Tesouro Misterioso</h3>
             <p style="margin:0 0 10px;color:#b7bbc4;font-size:0.88rem;">
               O conteúdo só é revelado quando for reclamado com o código correto.
@@ -93,15 +115,15 @@
 
           <!-- Formulário do código -->
           <form id="caca-code-form"
-                style="padding:16px;border-radius:10px;border:1px solid rgba(212,175,55,0.35);background:rgba(10,14,26,0.6);">
+            style="padding:16px;border-radius:10px;border:1px solid rgba(212,175,55,0.35);background:rgba(10,14,26,0.6);">
             <label for="caca-code" style="display:block;font-size:0.82rem;color:#8a8f9c;margin-bottom:6px;">
               Código do tesouro
             </label>
             <input id="caca-code" name="code" type="text" maxlength="32" autocomplete="off"
-                   placeholder="Insere o código secreto"
-                   style="width:100%;padding:10px 12px;background:rgba(10,14,26,0.8);border:1px solid rgba(212,175,55,0.4);border-radius:6px;color:#fff;font-family:inherit;" />
-            <button type="submit" class="btn btn--primary"
-                    style="width:100%;margin-top:10px;" disabled id="caca-submit">
+              placeholder="Insere o código secreto"
+              style="width:100%;padding:10px 12px;background:rgba(10,14,26,0.8);border:1px solid rgba(212,175,55,0.4);border-radius:6px;color:#fff;font-family:inherit;" />
+            <button type="submit" class="btn btn--primary" style="width:100%;margin-top:10px;" disabled
+              id="caca-submit">
               Validar Código
             </button>
             <p id="caca-msg" style="margin:10px 0 0;font-size:0.85rem;min-height:1.2em;"></p>
@@ -109,7 +131,7 @@
 
           <!-- Produtos encontrados (histórico do user) -->
           <div id="caca-found"
-               style="padding:16px;border-radius:10px;border:1px solid rgba(212,175,55,0.35);background:rgba(10,14,26,0.6);">
+            style="padding:16px;border-radius:10px;border:1px solid rgba(212,175,55,0.35);background:rgba(10,14,26,0.6);">
             <h3 style="margin:0 0 10px;color:#d4af37;font-family:var(--font-heading);font-size:1rem;">
               🏆 Produtos Encontrados
             </h3>
@@ -124,16 +146,18 @@
 
       <!-- Banner de vitória (escondido por default) -->
       <div id="caca-winner"
-           style="display:none;margin-top:20px;padding:20px;border-radius:12px;background:linear-gradient(135deg,rgba(212,175,55,0.25),rgba(212,175,55,0.05));border:1px solid #d4af37;color:#fff;text-align:center;">
+        style="display:none;margin-top:20px;padding:20px;border-radius:12px;background:linear-gradient(135deg,rgba(212,175,55,0.25),rgba(212,175,55,0.05));border:1px solid #d4af37;color:#fff;text-align:center;">
         <h2 style="margin:0 0 6px;color:#d4af37;font-family:var(--font-heading);">🏆 Caça terminada!</h2>
         <p id="caca-winner-msg" style="margin:0;"></p>
       </div>
     </section>
   </main>
 
-  <footer class="footer"><div class="footer__inner">
-    <p class="footer__copy">© 2026 NextBid. Todos os direitos reservados.</p>
-  </div></footer>
+  <footer class="footer">
+    <div class="footer__inner">
+      <p class="footer__copy">© 2026 NextBid. Todos os direitos reservados.</p>
+    </div>
+  </footer>
 
   <!-- Scripts shared -->
   <script src="../js/shared/Helpers.js"></script>
@@ -143,9 +167,10 @@
 
   <!-- Leaflet -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-          integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
   <!-- Página -->
   <script src="../js/pages/CacaAoTesouro.js"></script>
 </body>
+
 </html>
