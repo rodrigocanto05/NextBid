@@ -23,6 +23,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
 
     if ($name === '' || $prdId <= 0 || $lat == 0 || $lng == 0 || $startsAt === '' || $endsAt === '') {
         $msg = 'Preenche todos os campos obrigatórios.';
+    } elseif ($lat < -90 || $lat > 90) {
+        $msg = 'Latitude inválida (deve estar entre -90 e 90).';
+    } elseif ($lng < -180 || $lng > 180) {
+        $msg = 'Longitude inválida (deve estar entre -180 e 180).';
     } else {
         $startsTs = strtotime($startsAt);
         $endsTs   = strtotime($endsAt);
@@ -180,11 +184,11 @@ $products = $pdo->query("SELECT prd_id, prd_name FROM product WHERE prd_status =
                 <div class="form-grid three" style="margin-top: 12px;">
                     <div class="form-group">
                         <label>Latitude *</label>
-                        <input type="number" step="0.0000001" name="latitude" placeholder="38.7169" required>
+                        <input type="number" step="0.0000001" min="-90" max="90" name="latitude" placeholder="38.7169" required>
                     </div>
                     <div class="form-group">
                         <label>Longitude *</label>
-                        <input type="number" step="0.0000001" name="longitude" placeholder="-9.1399" required>
+                        <input type="number" step="0.0000001" min="-180" max="180" name="longitude" placeholder="-9.1399" required>
                     </div>
                     <div class="form-group">
                         <label>Raio (metros)</label>

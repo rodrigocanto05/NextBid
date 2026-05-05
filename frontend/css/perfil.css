@@ -1,0 +1,347 @@
+/* ==============================
+   Profile Page Styles
+   ============================== */
+
+.pf-page { background: var(--bg-base); }
+
+.pf-main { padding-top: 120px; padding-bottom: 60px; }
+
+.pf-wrapper {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 24px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* ── Hero card ─────────────────────────────────────────────── */
+.pf-hero {
+    background: var(--bg-card);
+    border: 1px solid var(--gold-soft);
+    border-radius: var(--radius-xl);
+    padding: 28px 32px;
+    display: grid;
+    grid-template-columns: 160px 1fr auto;
+    gap: 28px;
+    align-items: center;
+}
+
+/* Avatar */
+.pf-avatar-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+.pf-avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 3px solid var(--gold);
+    overflow: hidden;
+    background: var(--bg-deep);
+    flex-shrink: 0;
+}
+.pf-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.pf-avatar-btn {
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+}
+.pf-small-msg {
+    font-size: 0.76rem;
+    text-align: center;
+    min-height: 1em;
+}
+
+/* Main info */
+.pf-info__name {
+    font-size: 1.8rem;
+    color: var(--text-white);
+    margin-bottom: 10px;
+    letter-spacing: 0.02em;
+}
+.pf-level-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: rgba(212, 175, 55, 0.1);
+    border: 1px solid var(--gold-border);
+    border-radius: var(--radius-full);
+    padding: 5px 14px;
+    color: var(--gold);
+    font-size: 0.82rem;
+    font-weight: 600;
+    margin-bottom: 14px;
+}
+
+/* XP bar */
+.pf-xp-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    width: 260px;
+    margin-bottom: 6px;
+}
+.pf-xp-val { color: var(--text-soft); font-weight: 600; }
+.pf-xp-bar {
+    width: 260px;
+    height: 6px;
+    background: var(--bg-deep);
+    border-radius: var(--radius-full);
+    overflow: hidden;
+    margin-bottom: 14px;
+}
+.pf-xp-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--gold), var(--gold-hover));
+    border-radius: var(--radius-full);
+    transition: width 0.6s ease;
+}
+
+/* Meta row */
+.pf-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 10px;
+}
+.pf-meta__item {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+}
+.pf-meta__item svg { stroke: var(--text-faint); flex-shrink: 0; }
+
+.pf-bio {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    max-width: 560px;
+    line-height: 1.6;
+}
+
+/* Hero actions */
+.pf-hero-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-self: flex-start;
+}
+
+/* ── Wallet ────────────────────────────────────────────────── */
+.pf-wallet {
+    background: var(--bg-card);
+    border: 1px solid var(--gold-soft);
+    border-radius: var(--radius-xl);
+    padding: 22px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.pf-wallet__label {
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+}
+.pf-wallet__amount {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: 0.02em;
+}
+
+/* ── Stats ─────────────────────────────────────────────────── */
+.pf-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+}
+.pf-stat {
+    background: var(--bg-card);
+    border: 1px solid var(--gold-soft);
+    border-radius: var(--radius-xl);
+    padding: 22px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+.pf-stat__icon {
+    width: 24px;
+    height: 24px;
+    stroke: var(--gold);
+    margin-bottom: 6px;
+}
+.pf-stat strong {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--text-white);
+    line-height: 1;
+}
+.pf-stat p {
+    font-size: 0.74rem;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--text-muted);
+}
+
+/* ── Tabs ──────────────────────────────────────────────────── */
+.pf-tabs {
+    background: var(--bg-card);
+    border: 1px solid var(--gold-soft);
+    border-radius: var(--radius-xl);
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    overflow: hidden;
+}
+.pf-tab {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    padding: 16px;
+    font-family: inherit;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: color var(--t-fast), background var(--t-fast);
+    letter-spacing: 0.03em;
+}
+.pf-tab:hover { color: var(--text-white); background: var(--gold-faint); }
+.pf-tab--active {
+    background: var(--gold);
+    color: var(--bg-base);
+    font-weight: 700;
+}
+
+/* ── Panels ────────────────────────────────────────────────── */
+.pf-panel {
+    background: var(--bg-card);
+    border: 1px solid var(--gold-soft);
+    border-radius: var(--radius-xl);
+    padding: 28px 32px;
+}
+.pf-panel__title {
+    font-size: 1.05rem;
+    color: var(--text-white);
+    margin-bottom: 20px;
+    letter-spacing: 0.02em;
+}
+.pf-panel__loading,
+.pf-panel__empty {
+    color: var(--text-faint);
+    font-size: 0.88rem;
+    padding: 12px 0;
+}
+.pf-panel__error { color: var(--danger); font-size: 0.88rem; }
+
+/* Bids list */
+.pf-bids-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+
+.pf-bid-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    background: var(--bg-deep);
+    border: 1px solid var(--gold-soft);
+    border-radius: var(--radius-lg);
+    padding: 14px 18px;
+}
+.pf-bid-item__info { flex: 1; min-width: 0; }
+.pf-bid-item__name {
+    font-weight: 600;
+    color: var(--text-white);
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.pf-bid-item__detail {
+    font-size: 0.83rem;
+    color: var(--text-muted);
+    margin-bottom: 3px;
+}
+.pf-bid-item__detail strong { color: var(--text-white); }
+.pf-bid-item__date { font-size: 0.74rem; color: var(--text-faint); }
+
+.pf-bid-item__right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.pf-bid-badge {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    padding: 3px 10px;
+    border-radius: var(--radius-full);
+}
+.pf-bid-badge--winning {
+    background: rgba(46, 204, 113, 0.15);
+    color: var(--success);
+    border: 1px solid rgba(46, 204, 113, 0.3);
+}
+.pf-bid-badge--covered {
+    background: rgba(231, 76, 60, 0.1);
+    color: var(--danger);
+    border: 1px solid rgba(231, 76, 60, 0.3);
+}
+
+/* Form */
+.pf-form { display: grid; gap: 16px; max-width: 560px; }
+.pf-form__group { display: flex; flex-direction: column; gap: 6px; }
+.pf-form__label {
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--text-muted);
+}
+.pf-form__input {
+    background: var(--bg-deep);
+    border: 1px solid var(--gold-border);
+    border-radius: var(--radius-md);
+    color: var(--text-white);
+    padding: 10px 14px;
+    font-family: inherit;
+    font-size: 0.92rem;
+    transition: border-color var(--t-fast);
+}
+.pf-form__input:focus { outline: none; border-color: var(--gold); }
+.pf-form__input::placeholder { color: var(--text-faint); }
+.pf-form__textarea { resize: vertical; min-height: 80px; }
+.pf-form__actions { margin-top: 4px; }
+
+.pf-divider {
+    border: none;
+    border-top: 1px solid var(--gold-soft);
+    margin: 28px 0;
+}
+
+/* ── Responsive ────────────────────────────────────────────── */
+@media (max-width: 900px) {
+    .pf-hero { grid-template-columns: 1fr; text-align: center; }
+    .pf-avatar-wrap { align-items: center; }
+    .pf-meta { justify-content: center; }
+    .pf-xp-row, .pf-xp-bar { width: 100%; }
+    .pf-hero-actions { align-self: center; }
+    .pf-wallet { flex-direction: column; gap: 16px; align-items: flex-start; }
+    .pf-stats { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 600px) {
+    .pf-wrapper { padding: 14px; }
+    .pf-hero { padding: 20px; }
+    .pf-stats { grid-template-columns: 1fr 1fr; }
+    .pf-bid-item { flex-direction: column; align-items: flex-start; }
+    .pf-bid-item__right { flex-direction: row; align-items: center; }
+}

@@ -1,4 +1,9 @@
-const BASE_URL = 'http://localhost/NextBid/backend';
+const BASE_URL = (function () {
+    const { protocol, host, pathname } = window.location;
+    const idx = pathname.indexOf('/frontend/');
+    const root = idx >= 0 ? pathname.substring(0, idx) : '';
+    return `${protocol}//${host}${root}/backend`;
+})();
 
 const params = new URLSearchParams(window.location.search);
 const productId = params.get('product_id');
@@ -31,13 +36,13 @@ async function carregarInfoLeilao() {
 }
 
 function mostrarInfoLeilao(leilao) {
-    const nomeEl   = document.getElementById('produto-nome');
-    const descEl   = document.getElementById('produto-descricao');
-    const precoEl  = document.getElementById('lance-minimo');
-    const timerEl  = document.getElementById('cronometro');
+    const nomeEl = document.getElementById('produto-nome');
+    const descEl = document.getElementById('produto-descricao');
+    const precoEl = document.getElementById('lance-minimo');
+    const timerEl = document.getElementById('cronometro');
 
-    if (nomeEl)  nomeEl.textContent  = leilao.prd_name;
-    if (descEl)  descEl.textContent  = leilao.prd_description || '';
+    if (nomeEl) nomeEl.textContent = leilao.prd_name;
+    if (descEl) descEl.textContent = leilao.prd_description || '';
     if (precoEl) precoEl.textContent = parseFloat(leilao.prd_start_price).toFixed(2) + ' €';
     if (timerEl && leilao.prd_ends_at) iniciarCronometro(leilao.prd_ends_at, timerEl);
 }
@@ -48,7 +53,7 @@ document.getElementById('form-licitar')?.addEventListener('submit', async functi
     const user = JSON.parse(localStorage.getItem('user') || 'null');
     if (!user) {
         alert('Tens de fazer login para licitar.');
-        window.location.href = '/NextBid/frontend/hmtl/auth/Login.html';
+        //window.location.href = "auth/Login.html";
         return;
     }
 

@@ -64,6 +64,27 @@
 }
 .wallet-amount:hover { background: var(--gold-faint); border-color: var(--gold); transform: translateY(-1px); }
 
+.wallet-custom {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+.wallet-custom #wallet-custom-input {
+    flex: 1;
+    padding: 12px 14px;
+    background: var(--bg-panel);
+    border: 1px solid var(--gold-border);
+    border-radius: var(--radius-md);
+    color: var(--text-white);
+    font-family: inherit;
+    font-size: 1rem;
+}
+.wallet-custom #wallet-custom-input:focus {
+    outline: none;
+    border-color: var(--gold);
+}
+.wallet-custom #wallet-custom-add { white-space: nowrap; }
+
 .modal__header {
     padding: 20px 24px;
     display: flex;

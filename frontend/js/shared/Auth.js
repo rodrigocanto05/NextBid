@@ -16,7 +16,7 @@ NB.getCurrentUser = function () {
 NB.logout = function () {
     localStorage.removeItem('user');
     localStorage.removeItem('token');
-    window.location.reload();
+    window.location.href = NB._path('index.html');
 };
 
 NB.requireAuth = function (redirectUrl) {

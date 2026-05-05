@@ -1,4 +1,9 @@
-const BASE_URL = 'http://localhost/NextBid/backend';
+const BASE_URL = (function () {
+    const { protocol, host, pathname } = window.location;
+    const idx = pathname.indexOf('/frontend/');
+    const root = idx >= 0 ? pathname.substring(0, idx) : '';
+    return `${protocol}//${host}${root}/backend`;
+})();
 
 document.getElementById('RegisterPage').addEventListener('submit', async function (e) {
     e.preventDefault();
@@ -25,7 +30,11 @@ document.getElementById('RegisterPage').addEventListener('submit', async functio
         const data = await res.json();
 
         if (data.status === 'success') {
-            localStorage.setItem('welcome', name);
+            localStorage.setItem('welcome', JSON.stringify({
+                name: name,
+                message: data.message,
+                xp: data.xp
+            }));
             window.location.href = '../index.html';
         } else {
             mostrarErro(data.message || 'Erro ao registar');

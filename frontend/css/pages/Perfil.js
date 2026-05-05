@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const user = JSON.parse(localStorage.getItem('user') || 'null');
 
     if (!user) {
-        window.location.href = '/NextBid/frontend/hmtl/auth/Login.html';
+        window.location.href = "auth/Login.html";
         return;
     }
 
@@ -15,9 +15,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
 function initAvatarUploader() {
     const preview = document.getElementById('avatar-preview');
-    const fileEl  = document.getElementById('avatar-file');
-    const rmBtn   = document.getElementById('avatar-remove');
-    const msg     = document.getElementById('avatar-msg');
+    const fileEl = document.getElementById('avatar-file');
+    const rmBtn = document.getElementById('avatar-remove');
+    const msg = document.getElementById('avatar-msg');
     if (!preview || !fileEl) return;
 
     const renderAvatar = () => {
@@ -26,7 +26,7 @@ function initAvatarUploader() {
         const img = document.createElement('img');
         img.src = (u && u.avatar) ? u.avatar : (window.NB && NB.defaultAvatarUrl ? NB.defaultAvatarUrl() : '../img/avatar-placeholder.png');
         img.alt = u?.name || '';
-        img.style.width  = '100%';
+        img.style.width = '100%';
         img.style.height = '100%';
         img.style.objectFit = 'cover';
         preview.appendChild(img);
@@ -68,9 +68,9 @@ function initAvatarUploader() {
 
 async function carregarMinhasLicitacoes() {
     const loadingEl = document.getElementById('bids-loading');
-    const emptyEl   = document.getElementById('bids-empty');
-    const errorEl   = document.getElementById('bids-error');
-    const listEl    = document.getElementById('profile-bids-list');
+    const emptyEl = document.getElementById('bids-empty');
+    const errorEl = document.getElementById('bids-error');
+    const listEl = document.getElementById('profile-bids-list');
     if (!listEl) return;
 
     const token = localStorage.getItem('token');
@@ -110,13 +110,13 @@ async function carregarMinhasLicitacoes() {
         bids.forEach(b => {
             const li = document.createElement('li');
             const winning = !!b.is_winning;
-            const amount  = Number(b.bid_amount || 0).toFixed(2);
+            const amount = Number(b.bid_amount || 0).toFixed(2);
             const highest = Number(b.current_highest || 0).toFixed(2);
-            const status  = winning ? 'A vencer' : 'Coberto';
-            const date    = formatBidDate(b.bid_created_at);
+            const status = winning ? 'A vencer' : 'Coberto';
+            const date = formatBidDate(b.bid_created_at);
             const prdName = escHtmlLocal(b.prd_name || 'Leilão');
             const prdStatus = escHtmlLocal(b.prd_status || '');
-            const prdId  = parseInt(b.prd_id, 10) || 0;
+            const prdId = parseInt(b.prd_id, 10) || 0;
 
             li.innerHTML =
                 `<strong>${prdName}</strong> — ` +
@@ -138,7 +138,7 @@ async function carregarMinhasLicitacoes() {
 
 function escHtmlLocal(str) {
     return String(str || '').replace(/[&<>"']/g, c => (
-        { '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]
+        { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]
     ));
 }
 
@@ -158,20 +158,20 @@ async function carregarPerfil(userId) {
 
         if (data.status === 'success') {
             const p = data.data;
-            setProfileField('profile-id',          p.usr_id);
-            setProfileField('profile-nome',        p.usr_name);
-            setProfileField('profile-email',       p.usr_email);
-            setProfileField('profile-role',        p.usr_role);
-            setProfileField('profile-location',    p.usr_location);
-            setProfileField('profile-birthdate',   formatDateOnly(p.usr_birthdate));
-            setProfileField('profile-created',     formatDateOnly(p.usr_created_at));
-            setProfileField('profile-bio',         p.usr_bio);
-            setProfileField('profile-balance',     p.usr_balance != null ? Number(p.usr_balance).toFixed(2) + '€' : '—');
-            setProfileField('profile-xp',          p.usr_xp != null ? p.usr_xp : '0');
-            setProfileField('profile-rating',      p.avg_rating != null ? Number(p.avg_rating).toFixed(2) + ' / 5' : 'Sem avaliações');
-            setProfileField('profile-leiloes',     p.active_auctions != null ? p.active_auctions : '0');
-            setProfileField('profile-licitacoes',  p.total_bids != null ? p.total_bids : '0');
-            setProfileField('profile-vendidos',    p.total_sold != null ? p.total_sold : '0');
+            setProfileField('profile-id', p.usr_id);
+            setProfileField('profile-nome', p.usr_name);
+            setProfileField('profile-email', p.usr_email);
+            setProfileField('profile-role', p.usr_role);
+            setProfileField('profile-location', p.usr_location);
+            setProfileField('profile-birthdate', formatDateOnly(p.usr_birthdate));
+            setProfileField('profile-created', formatDateOnly(p.usr_created_at));
+            setProfileField('profile-bio', p.usr_bio);
+            setProfileField('profile-balance', p.usr_balance != null ? Number(p.usr_balance).toFixed(2) + '€' : '—');
+            setProfileField('profile-xp', p.usr_xp != null ? p.usr_xp : '0');
+            setProfileField('profile-rating', p.avg_rating != null ? Number(p.avg_rating).toFixed(2) + ' / 5' : 'Sem avaliações');
+            setProfileField('profile-leiloes', p.active_auctions != null ? p.active_auctions : '0');
+            setProfileField('profile-licitacoes', p.total_bids != null ? p.total_bids : '0');
+            setProfileField('profile-vendidos', p.total_sold != null ? p.total_sold : '0');
 
             prefillEditForm(p);
         }
@@ -194,14 +194,14 @@ function formatDateOnly(dt) {
 }
 
 function prefillEditForm(p) {
-    const nameEl     = document.getElementById('edit-name');
-    const emailEl    = document.getElementById('edit-email');
+    const nameEl = document.getElementById('edit-name');
+    const emailEl = document.getElementById('edit-email');
     const locationEl = document.getElementById('edit-location');
-    const bioEl      = document.getElementById('edit-bio');
-    if (nameEl && !nameEl.value)         nameEl.placeholder     = p.usr_name     || nameEl.placeholder;
-    if (emailEl && !emailEl.value)       emailEl.placeholder    = p.usr_email    || emailEl.placeholder;
+    const bioEl = document.getElementById('edit-bio');
+    if (nameEl && !nameEl.value) nameEl.placeholder = p.usr_name || nameEl.placeholder;
+    if (emailEl && !emailEl.value) emailEl.placeholder = p.usr_email || emailEl.placeholder;
     if (locationEl && !locationEl.value) locationEl.placeholder = p.usr_location || locationEl.placeholder;
-    if (bioEl && !bioEl.value && p.usr_bio) bioEl.placeholder   = p.usr_bio;
+    if (bioEl && !bioEl.value && p.usr_bio) bioEl.placeholder = p.usr_bio;
 }
 
 document.getElementById('form-atualizar')?.addEventListener('submit', async function (e) {
@@ -210,18 +210,18 @@ document.getElementById('form-atualizar')?.addEventListener('submit', async func
     const user = JSON.parse(localStorage.getItem('user') || 'null');
     if (!user) return;
 
-    const name     = document.getElementById('edit-name')?.value.trim()     || '';
-    const email    = document.getElementById('edit-email')?.value.trim()    || '';
-    const password = document.getElementById('edit-password')?.value         || '';
+    const name = document.getElementById('edit-name')?.value.trim() || '';
+    const email = document.getElementById('edit-email')?.value.trim() || '';
+    const password = document.getElementById('edit-password')?.value || '';
     const location = document.getElementById('edit-location')?.value.trim() || '';
-    const bio      = document.getElementById('edit-bio')?.value.trim()       || '';
+    const bio = document.getElementById('edit-bio')?.value.trim() || '';
 
     const payload = { user_id: user.id };
-    if (name)     payload.name     = name;
-    if (email)    payload.email    = email;
+    if (name) payload.name = name;
+    if (email) payload.email = email;
     if (password) payload.password = password;
     if (location) payload.location = location;
-    if (bio)      payload.bio      = bio;
+    if (bio) payload.bio = bio;
 
     try {
         const token = localStorage.getItem('token');
@@ -244,7 +244,7 @@ document.getElementById('form-atualizar')?.addEventListener('submit', async func
             if (name || email) {
                 const stored = JSON.parse(localStorage.getItem('user') || 'null');
                 if (stored) {
-                    if (name)  stored.name  = name;
+                    if (name) stored.name = name;
                     if (email) stored.email = email;
                     delete stored.token;
                     localStorage.setItem('user', JSON.stringify(stored));
@@ -261,5 +261,5 @@ document.getElementById('form-atualizar')?.addEventListener('submit', async func
 document.getElementById('btn-logout')?.addEventListener('click', function () {
     localStorage.removeItem('user');
     localStorage.removeItem('token');
-    window.location.href = '/NextBid/frontend/hmtl/auth/Login.html';
+    window.location.href = "auth/Login.html";
 });
