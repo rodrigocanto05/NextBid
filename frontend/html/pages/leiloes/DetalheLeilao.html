@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>NextBid — Leilão</title>
-  <link rel="stylesheet" href="../css/main.css" />
+  <link rel="stylesheet" href="../../../css/main.css" />
 
 </head>
 
@@ -15,7 +15,7 @@
   <header class="navbar">
     <div class="navbar__inner">
       <a href="../index.html" class="navbar__brand">
-        <img class="navbar__logo-img" src="../../img/logo-NextBid.png" alt="NextBid" />
+        <img class="navbar__logo-img" src="../../../img/logo-NextBid.png" alt="NextBid" />
         <span>NEXTBID</span>
       </a>
       <nav class="navbar__links">
@@ -40,7 +40,7 @@
           </span>
           Leilões
         </a>
-        <a href="../caca-ao-tesouro.html" class="navbar__link">
+        <a href="../CaçaAoTesouro.html" class="navbar__link">
           <span class="navbar__link-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
               <path d="M6 3h12l4 6-10 13L2 9Z" />
@@ -186,7 +186,7 @@
 
                 <!-- State messages -->
                 <p id="la-bid-required-auth" class="la-bid-info-msg" hidden>
-                  <a href="../auth/Login.html">Inicia sessão</a> para licitar neste leilão.
+                  <a href="../../auth/Login.html">Inicia sessão</a> para licitar neste leilão.
                 </p>
                 <p id="la-bid-owner-msg" class="la-bid-info-msg" hidden>
                   Não podes licitar no teu próprio leilão.
@@ -255,7 +255,7 @@
                 </form>
 
                 <p id="la-chat-auth-msg" class="la-chat__auth" hidden>
-                  <a href="../auth/Login.html">Inicia sessão</a> para participar no chat.
+                  <a href="../../auth/Login.html">Inicia sessão</a> para participar no chat.
                 </p>
               </div>
             </div>
@@ -299,14 +299,14 @@
   </footer>
 
   <!-- Shared scripts -->
-  <script src="../../js/shared/Helpers.js"></script>
-  <script src="../../js/shared/Auth.js"></script>
-  <script src="../../js/shared/Wallet.js"></script>
-  <script src="../../js/shared/Navbar.js"></script>
-  <script src="../../js/shared/Cronometro.js"></script>
+  <script src="../../../js/shared/Helpers.js"></script>
+  <script src="../../../js/shared/Auth.js"></script>
+  <script src="../../../css/components/wallet/Wallet.js"></script>
+  <script src="../../../css/components/navbar/Navbar.js"></script>
+  <script src="../../../css/components/cronometro/Cronometro.js"></script>
 
   <!-- Page script -->
-  <script src="../../js/pages/LeilaoAtivox.js"></script>
+  <script src="../../../js/pages/DetalheLeilao.js"></script>
 </body>
 
 </html>

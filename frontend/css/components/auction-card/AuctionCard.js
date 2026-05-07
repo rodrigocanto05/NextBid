@@ -19,7 +19,7 @@ NB.createCard = function (leilao, opts = {}) {
         ? `${NB.BASE_URL}/${String(leilao.main_image).replace(/^\/+/, '')}`
         : '';
 
-    const detailLink = NB._path(`LL active/LeilaoAtivox.html?id=${leilao.prd_id}`);
+    const detailLink = NB._path(`leiloes/DetalheLeilao.html?id=${leilao.prd_id}`);
     const card = document.createElement('article');
     card.className = 'auction-card';
 
@@ -52,6 +52,15 @@ NB.createCard = function (leilao, opts = {}) {
 
     const wrapCls = imgUrl ? 'auction-card__img-wrap' : 'auction-card__img-wrap auction-card__img-wrap--empty';
 
+    const locationStr = leilao.prd_location ? `
+        <p class="auction-card__location">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                <circle cx="12" cy="10" r="3"/>
+            </svg>
+            ${NB.escHtml(leilao.prd_location)}
+        </p>` : '';
+
     card.innerHTML = `
         <div class="${wrapCls}">
             ${imgWrapInner}
@@ -61,6 +70,7 @@ NB.createCard = function (leilao, opts = {}) {
         </div>
         <div class="auction-card__body">
             <h3 class="auction-card__title">${NB.escHtml(leilao.prd_name)}</h3>
+            ${locationStr}
             ${bottom}
         </div>
         <div class="auction-card__footer">

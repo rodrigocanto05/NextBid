@@ -44,10 +44,9 @@ NB.NovoLeilao.setDatetimeLimits = function () {
 
     const now = new Date();
     const min = new Date(now.getTime() + 60 * 60 * 1000);
-    const max = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
 
     dateEl.min = fmtDate(min);
-    dateEl.max = fmtDate(max);
+    dateEl.removeAttribute('max');
 
     const syncHidden = () => {
         if (dateEl.value && timeEl.value) hidden.value = `${dateEl.value}T${timeEl.value}`;

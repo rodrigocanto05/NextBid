@@ -200,7 +200,7 @@
                     </div>
                     <div class="pf-bid-item__right">
                         <span class="${badgeCls}">${badgeTxt}</span>
-                        ${prdId ? `<a class="btn btn--ghost btn--sm" href="LL active/LeilaoAtivox.html?id=${prdId}">Ver leilão</a>` : ''}
+                        ${prdId ? `<a class="btn btn--ghost btn--sm" href="leiloes/DetalheLeilao.html?id=${prdId}">Ver leilão</a>` : ''}
                     </div>`;
                 listEl.appendChild(li);
             });

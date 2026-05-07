@@ -207,17 +207,32 @@
         const msgEl  = document.getElementById('la-bid-msg');
         const amount = Number(document.getElementById('la-bid-amount').value);
 
-        setFeedback(msgEl, '', '');
+        msgEl.innerHTML = '';
         setFeedback(msgEl, 'A enviar licitação…', 'var(--text-muted)');
 
         if (!amount || amount <= 0) { setFeedback(msgEl, 'Valor inválido.', 'var(--danger)'); return; }
+
+        // Client-side balance pre-check for fast UX (server still validates)
+        const cachedBalance = Number(NB.getCurrentUser()?.wallet ?? 0);
+        if (cachedBalance < amount) {
+            renderInsufficientFunds(msgEl, cachedBalance, amount);
+            return;
+        }
 
         try {
             const res = await NB.apiPost('/api/bids/place.php', { product_id: productId, amount }, { auth: true });
             if (res.status === 'success') {
                 setFeedback(msgEl, res.message || 'Licitação aceite!', 'var(--success)');
+
+                // Server returns the post-bid balance — patch local cache + visible counters in place.
+                if (typeof res.new_balance === 'number') {
+                    syncBalance(res.new_balance);
+                }
+
                 await loadAuction();
                 await loadBids();
+            } else if (res.code === 'insufficient_funds') {
+                renderInsufficientFunds(msgEl, Number(res.balance ?? 0), Number(res.required ?? amount));
             } else {
                 setFeedback(msgEl, res.message || 'Licitação rejeitada.', 'var(--danger)');
             }
@@ -226,11 +241,42 @@
         }
     }
 
+    function syncBalance(newBal) {
+        const u = NB.getCurrentUser();
+        if (u) {
+            u.wallet = newBal;
+            delete u.token;
+            localStorage.setItem('user', JSON.stringify(u));
+        }
+        // Patch DOM counters in place — never re-render the navbar (would wipe listeners)
+        const fmt = NB.formatCurrency(newBal);
+        setText('la-user-balance',      fmt);
+        setText('la-user-balance-stat', fmt);
+        const navBal = document.querySelector('.user-card__balance');
+        if (navBal) navBal.textContent = `💳 ${newBal.toLocaleString('pt-PT')}€`;
+    }
+
+    function renderInsufficientFunds(msgEl, balance, required) {
+        const missing = Math.max(0, required - balance);
+        msgEl.innerHTML = `
+            <span style="color:var(--danger);display:block;margin-bottom:6px;">
+                Saldo insuficiente — tens <strong>${NB.formatCurrency(balance)}</strong>
+                e precisas de <strong>${NB.formatCurrency(required)}</strong>
+                (faltam ${NB.formatCurrency(missing)}).
+            </span>
+            <a href="#" class="btn btn--primary btn--sm" id="la-bid-add-funds">+ Adicionar Fundos</a>`;
+        document.getElementById('la-bid-add-funds')?.addEventListener('click', e => {
+            e.preventDefault();
+            if (typeof NB.openWalletModal === 'function') {
+                NB.openWalletModal();
+            }
+        });
+    }
+
     function wireAddFunds() {
         document.getElementById('la-add-funds').addEventListener('click', () => {
             if (typeof NB.openWalletModal === 'function') {
                 NB.openWalletModal();
-                setTimeout(updateBalanceDisplay, 600);
             }
         });
     }

@@ -61,7 +61,8 @@ class UserManager
                     'role'     => $user['usr_role'],
                     'xp'       => (int) $user['usr_xp'],
                     'photo'    => $user['usr_photo'],
-                    'location' => $user['usr_location']
+                    'location' => $user['usr_location'],
+                    'wallet'   => (float) ($user['usr_balance'] ?? 0)
                 ]
             ];
         } catch (Exception $e) {

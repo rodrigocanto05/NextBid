@@ -34,13 +34,21 @@ $name        = trim($_POST['name'] ?? '');
 $description = trim($_POST['description'] ?? '');
 $condition   = $_POST['condition'] ?? 'used';
 $price       = (float) ($_POST['startPrice'] ?? 0);
-$location    = $_POST['location'] ?? '';
+$location    = trim($_POST['location'] ?? '');
 $lat         = (float) ($_POST['latitude'] ?? 0);
 $lng         = (float) ($_POST['longitude'] ?? 0);
 $categoryId  = (int) ($_POST['categoryId'] ?? 0);
 $endsAt      = $_POST['ends_at'] ?? '';
 $size        = trim($_POST['size'] ?? '');
 $currency    = trim($_POST['currency'] ?? 'EUR');
+
+// If no explicit location, fall back to the seller's profile location (district),
+// so other users can see where the listing originates.
+if ($location === '') {
+    $stmt = $pdo->prepare("SELECT usr_location FROM userss WHERE usr_id = ?");
+    $stmt->execute([$userId]);
+    $location = trim((string) ($stmt->fetchColumn() ?: ''));
+}
 
 if ($name === '' || $description === '' || $categoryId <= 0 || empty($endsAt)) {
     exit(json_encode(['status' => 'error', 'message' => 'Preenche todos os campos obrigatórios.']));
@@ -64,9 +72,6 @@ if ($endsTimestamp === false) {
 }
 if ($endsTimestamp < time() + 3600) {
     exit(json_encode(['status' => 'error', 'message' => 'O leilão tem de durar pelo menos 1 hora.']));
-}
-if ($endsTimestamp > time() + (7 * 24 * 3600)) {
-    exit(json_encode(['status' => 'error', 'message' => 'O leilão não pode durar mais de 7 dias.']));
 }
 
 // ─── Upload images ────────────────────────────────────────────────────────

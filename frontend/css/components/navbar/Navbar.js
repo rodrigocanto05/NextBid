@@ -11,6 +11,16 @@ NB.renderNavbar = function () {
     if (user) NB._wireUserCard();
     if (typeof NB.mountWalletModal === 'function') NB.mountWalletModal();
     NB._mountLogoutModal();
+
+    // Pull persisted balance from DB into the localStorage cache (best-effort,
+    // patches the balance text in place so listeners stay attached).
+    // Only run once per renderNavbar — refreshWallet itself does NOT call
+    // renderNavbar back, otherwise the dropdown/logout buttons would be wiped
+    // before a click could land.
+    if (user && typeof NB.refreshWallet === 'function' && !NB._walletSyncedThisLoad) {
+        NB._walletSyncedThisLoad = true;
+        NB.refreshWallet();
+    }
 };
 
 NB._navbarGuest = function () {
@@ -141,11 +151,16 @@ NB.showWelcomeIfPending = function () {
     document.getElementById('nb-welcome-modal')?.classList.add('open');
 };
 
+NB._htmlDepth = function () {
+    const m = location.pathname.match(/\/html\/(.+\/)/);
+    return m ? m[1].split('/').length - 1 : 0;
+};
+
 NB._path = function (rel) {
-    const depth = (location.pathname.match(/\/hmtl\/(.+\/)/) || ['', ''])[1].split('/').length - 1;
-    return '../'.repeat(depth) + rel;
+    return '../'.repeat(NB._htmlDepth()) + 'pages/' + rel;
 };
 
 NB._authPath = function (page) {
-    return NB._path(`auth/${page}.html`);
+    const file = page.charAt(0).toUpperCase() + page.slice(1).toLowerCase();
+    return '../'.repeat(NB._htmlDepth()) + 'auth/' + file + '.html';
 };

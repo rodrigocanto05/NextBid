@@ -1,7 +1,3 @@
-/* ==============================
-   Auction Detail Page Styles
-   ============================== */
-
 .la-main {
     flex: 1;
     padding-top: 120px;
@@ -25,7 +21,10 @@
     margin-bottom: 22px;
     transition: color var(--t-fast);
 }
-.la-back:hover { color: var(--gold); }
+
+.la-back:hover {
+    color: var(--gold);
+}
 
 /* Status loading/error */
 .la-loading-state,
@@ -35,18 +34,23 @@
     color: var(--text-muted);
     font-size: 0.95rem;
 }
-.la-error-state { color: var(--danger); }
+
+.la-error-state {
+    color: var(--danger);
+}
 
 /* Page header */
 .la-header {
     margin-bottom: 24px;
 }
+
 .la-header__title {
     font-size: 1.75rem;
     color: var(--text-white);
     margin-bottom: 10px;
     letter-spacing: 0.02em;
 }
+
 .la-header__meta {
     display: flex;
     align-items: center;
@@ -55,7 +59,10 @@
     font-size: 0.82rem;
     color: var(--text-muted);
 }
-.la-header__sep { color: var(--gold-border); }
+
+.la-header__sep {
+    color: var(--gold-border);
+}
 
 .la-badge {
     display: inline-block;
@@ -65,23 +72,26 @@
     font-weight: 600;
     letter-spacing: 0.04em;
 }
+
 .la-badge--active {
     background: rgba(46, 204, 113, 0.15);
     color: var(--success);
     border: 1px solid rgba(46, 204, 113, 0.3);
 }
+
 .la-badge--ended {
     background: rgba(231, 76, 60, 0.12);
     color: var(--danger);
     border: 1px solid rgba(231, 76, 60, 0.3);
 }
+
 .la-badge--pending {
     background: rgba(212, 175, 55, 0.12);
     color: var(--gold);
     border: 1px solid var(--gold-border);
 }
 
-/* Two-column grid */
+
 .la-grid {
     display: grid;
     grid-template-columns: 1fr 400px;
@@ -89,7 +99,7 @@
     align-items: start;
 }
 
-/* ---- Shared card base ---- */
+/* LiveCard */
 .la-card {
     background: var(--bg-card);
     border: 1px solid var(--gold-soft);
@@ -97,7 +107,10 @@
     padding: 22px 24px;
     margin-bottom: 20px;
 }
-.la-card:last-child { margin-bottom: 0; }
+
+.la-card:last-child {
+    margin-bottom: 0;
+}
 
 .la-card__title {
     font-size: 0.78rem;
@@ -109,7 +122,7 @@
     border-bottom: 1px solid var(--gold-soft);
 }
 
-/* ---- Gallery ---- */
+/* Galeria */
 .la-gallery {
     background: var(--bg-card);
     border: 1px solid var(--gold-soft);
@@ -117,6 +130,7 @@
     overflow: hidden;
     margin-bottom: 20px;
 }
+
 .la-gallery__main {
     aspect-ratio: 4/3;
     background: #07090f;
@@ -125,12 +139,14 @@
     justify-content: center;
     overflow: hidden;
 }
+
 .la-gallery__main img {
     width: 100%;
     height: 100%;
     object-fit: contain;
     transition: opacity var(--t-base);
 }
+
 .la-gallery__thumbs {
     display: flex;
     gap: 8px;
@@ -140,8 +156,16 @@
     scrollbar-width: thin;
     scrollbar-color: var(--gold-soft) transparent;
 }
-.la-gallery__thumbs::-webkit-scrollbar { height: 3px; }
-.la-gallery__thumbs::-webkit-scrollbar-thumb { background: var(--gold-soft); border-radius: 2px; }
+
+.la-gallery__thumbs::-webkit-scrollbar {
+    height: 3px;
+}
+
+.la-gallery__thumbs::-webkit-scrollbar-thumb {
+    background: var(--gold-soft);
+    border-radius: 2px;
+}
+
 .la-gallery__thumb {
     width: 70px;
     height: 70px;
@@ -153,16 +177,29 @@
     transition: border-color var(--t-fast), opacity var(--t-fast);
     opacity: 0.65;
 }
-.la-gallery__thumb:hover { opacity: 0.9; }
-.la-gallery__thumb--active { border-color: var(--gold); opacity: 1; }
-.la-gallery__thumb img { width: 100%; height: 100%; object-fit: cover; }
 
-/* ---- Seller ---- */
+.la-gallery__thumb:hover {
+    opacity: 0.9;
+}
+
+.la-gallery__thumb--active {
+    border-color: var(--gold);
+    opacity: 1;
+}
+
+.la-gallery__thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Seller */
 .la-seller {
     display: flex;
     align-items: center;
     gap: 14px;
 }
+
 .la-seller__photo {
     width: 46px;
     height: 46px;
@@ -172,15 +209,25 @@
     flex-shrink: 0;
     background: var(--bg-deep);
 }
-.la-seller__photo img { width: 100%; height: 100%; object-fit: cover; }
+
+.la-seller__photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
 .la-seller__name {
     font-weight: 600;
     color: var(--text-white);
     margin-bottom: 3px;
 }
-.la-seller__rating { font-size: 0.82rem; color: var(--text-muted); }
 
-/* ---- Description ---- */
+.la-seller__rating {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+}
+
+/* Descrição */
 .la-description {
     color: var(--text-soft);
     font-size: 0.93rem;
@@ -188,19 +235,24 @@
     white-space: pre-wrap;
 }
 
-/* ---- Attributes table ---- */
+/* Tabela de Atributos */
 .la-attrs-table {
     width: 100%;
     border-collapse: collapse;
     font-size: 0.86rem;
 }
+
 .la-attrs-table td {
     padding: 8px 10px;
     border-bottom: 1px solid var(--gold-soft);
     color: var(--text-soft);
     vertical-align: top;
 }
-.la-attrs-table tr:last-child td { border-bottom: none; }
+
+.la-attrs-table tr:last-child td {
+    border-bottom: none;
+}
+
 .la-attrs-table td:first-child {
     color: var(--text-muted);
     width: 38%;
@@ -209,7 +261,7 @@
     letter-spacing: 0.06em;
 }
 
-/* ---- Auction panel (right column top) ---- */
+/* Painel de Leilão */
 .la-auction-panel {
     background: var(--bg-card);
     border: 1px solid var(--gold-soft);
@@ -217,11 +269,13 @@
     overflow: hidden;
     margin-bottom: 20px;
 }
+
 .la-auction-panel__header {
     padding: 20px 24px 16px;
-    background: linear-gradient(135deg, rgba(20,18,40,0.9), rgba(15,20,40,0.9));
+    background: linear-gradient(135deg, rgba(20, 18, 40, 0.9), rgba(15, 20, 40, 0.9));
     border-bottom: 1px solid var(--gold-soft);
 }
+
 .la-countdown-label {
     font-size: 0.72rem;
     text-transform: uppercase;
@@ -229,6 +283,7 @@
     color: var(--text-muted);
     margin-bottom: 4px;
 }
+
 .la-countdown {
     font-size: 2.2rem;
     font-weight: 700;
@@ -236,6 +291,7 @@
     font-variant-numeric: tabular-nums;
     letter-spacing: 0.04em;
 }
+
 .la-ends-at {
     font-size: 0.76rem;
     color: var(--text-faint);
@@ -252,6 +308,7 @@
     gap: 14px;
     margin-bottom: 20px;
 }
+
 .la-stat-item__label {
     font-size: 0.72rem;
     text-transform: uppercase;
@@ -259,14 +316,18 @@
     color: var(--text-muted);
     margin-bottom: 4px;
 }
+
 .la-stat-item__value {
     font-size: 1.25rem;
     font-weight: 700;
     color: var(--text-white);
 }
-.la-stat-item__value--gold { color: var(--gold); }
 
-/* ---- Bid form ---- */
+.la-stat-item__value--gold {
+    color: var(--gold);
+}
+
+/* Mensagem de Informação sobre Lance */
 .la-bid-info-msg {
     font-size: 0.84rem;
     color: var(--text-muted);
@@ -276,7 +337,11 @@
     border-radius: var(--radius-md);
     border-left: 3px solid var(--gold-border);
 }
-.la-bid-info-msg a { color: var(--gold); }
+
+.la-bid-info-msg a {
+    color: var(--gold);
+}
+
 .la-bid-info-msg--danger {
     color: var(--danger);
     border-left-color: rgba(231, 76, 60, 0.5);
@@ -290,6 +355,7 @@
     color: var(--text-muted);
     margin-bottom: 12px;
 }
+
 .la-balance-val {
     color: var(--text-white);
     font-weight: 600;
@@ -300,13 +366,18 @@
     color: var(--text-muted);
     margin-bottom: 8px;
 }
-.la-bid-min-label strong { color: var(--gold); font-size: 0.9rem; }
+
+.la-bid-min-label strong {
+    color: var(--gold);
+    font-size: 0.9rem;
+}
 
 .la-bid-input-row {
     display: flex;
     gap: 8px;
     margin-bottom: 10px;
 }
+
 .la-bid-input {
     flex: 1;
     background: var(--bg-deep);
@@ -318,8 +389,15 @@
     font-family: inherit;
     transition: border-color var(--t-fast);
 }
-.la-bid-input:focus { outline: none; border-color: var(--gold); }
-.la-bid-input::placeholder { color: var(--text-faint); }
+
+.la-bid-input:focus {
+    outline: none;
+    border-color: var(--gold);
+}
+
+.la-bid-input::placeholder {
+    color: var(--text-faint);
+}
 
 .la-presets {
     display: flex;
@@ -327,6 +405,7 @@
     flex-wrap: wrap;
     margin-bottom: 12px;
 }
+
 .la-preset-btn {
     background: var(--gold-faint);
     border: 1px solid var(--gold-border);
@@ -338,7 +417,10 @@
     font-family: inherit;
     transition: background var(--t-fast);
 }
-.la-preset-btn:hover { background: var(--gold-soft); }
+
+.la-preset-btn:hover {
+    background: var(--gold-soft);
+}
 
 .la-bid-feedback {
     font-size: 0.84rem;
@@ -346,7 +428,7 @@
     margin-top: 8px;
 }
 
-/* ---- Chat panel ---- */
+/* Chat */
 .la-chat {
     background: var(--bg-card);
     border: 1px solid var(--gold-soft);
@@ -356,6 +438,7 @@
     height: 440px;
     margin-bottom: 20px;
 }
+
 .la-chat__header {
     padding: 14px 18px;
     border-bottom: 1px solid var(--gold-soft);
@@ -363,8 +446,9 @@
     align-items: center;
     gap: 8px;
     flex-shrink: 0;
-    background: linear-gradient(135deg, rgba(20,18,40,0.6), transparent);
+    background: linear-gradient(135deg, rgba(20, 18, 40, 0.6), transparent);
 }
+
 .la-chat__title {
     font-size: 0.78rem;
     color: var(--gold);
@@ -372,6 +456,7 @@
     letter-spacing: 0.1em;
     flex: 1;
 }
+
 .la-chat__dot {
     width: 7px;
     height: 7px;
@@ -379,10 +464,21 @@
     background: var(--success);
     animation: nb-pulse 2s ease infinite;
 }
+
 @keyframes nb-pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50%       { opacity: 0.4; transform: scale(0.8); }
+
+    0%,
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.4;
+        transform: scale(0.8);
+    }
 }
+
 .la-chat__count {
     font-size: 0.72rem;
     color: var(--text-faint);
@@ -400,9 +496,19 @@
     gap: 10px;
     scroll-behavior: smooth;
 }
-.la-chat__messages::-webkit-scrollbar { width: 3px; }
-.la-chat__messages::-webkit-scrollbar-track { background: transparent; }
-.la-chat__messages::-webkit-scrollbar-thumb { background: var(--gold-soft); border-radius: 2px; }
+
+.la-chat__messages::-webkit-scrollbar {
+    width: 3px;
+}
+
+.la-chat__messages::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.la-chat__messages::-webkit-scrollbar-thumb {
+    background: var(--gold-soft);
+    border-radius: 2px;
+}
 
 .la-chat__empty {
     color: var(--text-faint);
@@ -413,13 +519,16 @@
     margin: auto 0;
 }
 
-/* Chat message bubbles */
+/* Mensagem de Chat */
 .la-msg {
     display: flex;
     gap: 8px;
     align-items: flex-start;
 }
-.la-msg--own { flex-direction: row-reverse; }
+
+.la-msg--own {
+    flex-direction: row-reverse;
+}
 
 .la-msg__avatar {
     width: 28px;
@@ -430,15 +539,23 @@
     border: 1px solid var(--gold-border);
     background: var(--bg-deep);
 }
-.la-msg__avatar img { width: 100%; height: 100%; object-fit: cover; }
 
-.la-msg__content { max-width: calc(100% - 44px); }
+.la-msg__avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.la-msg__content {
+    max-width: calc(100% - 44px);
+}
 
 .la-msg__bubble {
     background: var(--bg-panel);
     border-radius: 2px var(--radius-md) var(--radius-md) var(--radius-md);
     padding: 8px 11px;
 }
+
 .la-msg--own .la-msg__bubble {
     background: rgba(212, 175, 55, 0.1);
     border: 1px solid var(--gold-border);
@@ -451,7 +568,10 @@
     margin-bottom: 3px;
     font-weight: 600;
 }
-.la-msg--own .la-msg__name { text-align: right; }
+
+.la-msg--own .la-msg__name {
+    text-align: right;
+}
 
 .la-msg__text {
     font-size: 0.86rem;
@@ -459,13 +579,17 @@
     line-height: 1.45;
     word-break: break-word;
 }
+
 .la-msg__time {
     font-size: 0.68rem;
     color: var(--text-faint);
     margin-top: 4px;
     display: block;
 }
-.la-msg--own .la-msg__time { text-align: right; }
+
+.la-msg--own .la-msg__time {
+    text-align: right;
+}
 
 /* Chat footer */
 .la-chat__footer {
@@ -473,11 +597,13 @@
     border-top: 1px solid var(--gold-soft);
     flex-shrink: 0;
 }
+
 .la-chat__input-row {
     display: flex;
     gap: 8px;
     align-items: flex-end;
 }
+
 .la-chat__textarea {
     flex: 1;
     background: var(--bg-deep);
@@ -493,8 +619,15 @@
     overflow-y: auto;
     transition: border-color var(--t-fast);
 }
-.la-chat__textarea:focus { outline: none; border-color: var(--gold); }
-.la-chat__textarea::placeholder { color: var(--text-faint); }
+
+.la-chat__textarea:focus {
+    outline: none;
+    border-color: var(--gold);
+}
+
+.la-chat__textarea::placeholder {
+    color: var(--text-faint);
+}
 
 .la-chat__send-btn {
     width: 34px;
@@ -510,8 +643,15 @@
     border: none;
     transition: background var(--t-fast), transform var(--t-fast);
 }
-.la-chat__send-btn:hover { background: var(--gold-hover); transform: scale(1.05); }
-.la-chat__send-btn:active { transform: scale(0.95); }
+
+.la-chat__send-btn:hover {
+    background: var(--gold-hover);
+    transform: scale(1.05);
+}
+
+.la-chat__send-btn:active {
+    transform: scale(0.95);
+}
 
 .la-chat__auth {
     font-size: 0.8rem;
@@ -519,7 +659,10 @@
     text-align: center;
     padding: 6px 0;
 }
-.la-chat__auth a { color: var(--gold); }
+
+.la-chat__auth a {
+    color: var(--gold);
+}
 
 .la-chat__send-msg {
     font-size: 0.76rem;
@@ -528,7 +671,7 @@
     color: var(--danger);
 }
 
-/* ---- Bids history ---- */
+/* Histórico de Lances */
 .la-bids-list {
     list-style: none;
     padding: 0;
@@ -541,8 +684,15 @@
     scrollbar-width: thin;
     scrollbar-color: var(--gold-soft) transparent;
 }
-.la-bids-list::-webkit-scrollbar { width: 3px; }
-.la-bids-list::-webkit-scrollbar-thumb { background: var(--gold-soft); border-radius: 2px; }
+
+.la-bids-list::-webkit-scrollbar {
+    width: 3px;
+}
+
+.la-bids-list::-webkit-scrollbar-thumb {
+    background: var(--gold-soft);
+    border-radius: 2px;
+}
 
 .la-bid-item {
     display: flex;
@@ -553,6 +703,7 @@
     padding: 10px 12px;
     font-size: 0.83rem;
 }
+
 .la-bid-item__rank {
     width: 18px;
     font-size: 0.72rem;
@@ -561,8 +712,16 @@
     text-align: center;
     font-weight: 700;
 }
-.la-bid-item__rank--gold { color: var(--gold); }
-.la-bid-item__info { flex: 1; min-width: 0; }
+
+.la-bid-item__rank--gold {
+    color: var(--gold);
+}
+
+.la-bid-item__info {
+    flex: 1;
+    min-width: 0;
+}
+
 .la-bid-item__name {
     color: var(--text-white);
     font-weight: 500;
@@ -570,8 +729,18 @@
     overflow: hidden;
     text-overflow: ellipsis;
 }
-.la-bid-item__date { font-size: 0.72rem; color: var(--text-faint); margin-top: 1px; }
-.la-bid-item__amount { font-weight: 700; color: var(--gold); flex-shrink: 0; }
+
+.la-bid-item__date {
+    font-size: 0.72rem;
+    color: var(--text-faint);
+    margin-top: 1px;
+}
+
+.la-bid-item__amount {
+    font-weight: 700;
+    color: var(--gold);
+    flex-shrink: 0;
+}
 
 .la-bids-empty {
     text-align: center;
@@ -580,7 +749,7 @@
     padding: 18px 0;
 }
 
-/* ---- Owner actions ---- */
+/* Cartão do Proprietário */
 .la-owner-card {
     background: rgba(231, 76, 60, 0.05);
     border: 1px solid rgba(231, 76, 60, 0.25);
@@ -588,6 +757,7 @@
     padding: 20px 24px;
     margin-bottom: 20px;
 }
+
 .la-owner-card__title {
     font-size: 0.78rem;
     color: var(--danger);
@@ -595,28 +765,49 @@
     letter-spacing: 0.1em;
     margin-bottom: 8px;
 }
+
 .la-owner-card__desc {
     font-size: 0.83rem;
     color: var(--text-muted);
     margin-bottom: 16px;
 }
+
 .la-delete-msg {
     font-size: 0.84rem;
     margin-top: 10px;
     min-height: 1.2em;
 }
 
-/* ---- Responsive ---- */
 @media (max-width: 1100px) {
-    .la-grid { grid-template-columns: 1fr 360px; }
+    .la-grid {
+        grid-template-columns: 1fr 360px;
+    }
 }
+
 @media (max-width: 900px) {
-    .la-grid { grid-template-columns: 1fr; }
-    .la-chat { height: 360px; }
-    .la-main { padding-top: 110px; }
+    .la-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .la-chat {
+        height: 360px;
+    }
+
+    .la-main {
+        padding-top: 110px;
+    }
 }
+
 @media (max-width: 600px) {
-    .la-wrapper { padding: 16px; }
-    .la-header__title { font-size: 1.3rem; }
-    .la-countdown { font-size: 1.7rem; }
+    .la-wrapper {
+        padding: 16px;
+    }
+
+    .la-header__title {
+        font-size: 1.3rem;
+    }
+
+    .la-countdown {
+        font-size: 1.7rem;
+    }
 }

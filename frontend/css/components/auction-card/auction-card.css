@@ -190,6 +190,16 @@
     font-size: 0.85rem;
 }
 
+.auction-card__location {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--text-muted);
+    font-size: 0.82rem;
+    margin: -4px 0 0;
+}
+.auction-card__location svg { stroke: var(--gold); flex-shrink: 0; }
+
 .auction-card__bid-row {
     display: flex;
     justify-content: space-between;

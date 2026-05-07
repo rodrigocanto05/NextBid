@@ -11,7 +11,7 @@ const productId = params.get('product_id');
 document.addEventListener('DOMContentLoaded', function () {
     if (!productId) {
         const main = document.querySelector('main');
-        if (main) main.innerHTML = '<p>Leilão não encontrado. <a href="/frontend/hmtl/LL active/LeiloesAtivos.html">Ver leilões</a></p>';
+        if (main) main.innerHTML = '<p>Leilão não encontrado. <a href="/frontend/html/pages/leiloes/LeiloesAtivos.html">Ver leilões</a></p>';
         return;
     }
     carregarInfoLeilao();

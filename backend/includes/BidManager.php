@@ -32,39 +32,107 @@ class BidManager
                 return ['status' => 'error', 'message' => 'Não podes licitar no teu próprio leilão.'];
             }
 
-            $stmt = $this->pdo->prepare("SELECT MAX(bid_amount) as max_bid FROM bid WHERE bid_prd_id = ?");
+            // ─── Find current highest bid (the one currently in escrow) ──
+            $stmt = $this->pdo->prepare(
+                "SELECT bid_usr_id, bid_amount
+                   FROM bid
+                  WHERE bid_prd_id = ?
+                  ORDER BY bid_amount DESC, bid_id DESC
+                  LIMIT 1"
+            );
             $stmt->execute([$productId]);
-            $currentMax = $stmt->fetch()['max_bid'];
-            $minimoNecessario = $currentMax ?? $product['prd_start_price'];
+            $prevHighest = $stmt->fetch(PDO::FETCH_ASSOC); // false if no bids yet
+
+            $minimoNecessario = $prevHighest
+                ? (float) $prevHighest['bid_amount']
+                : (float) $product['prd_start_price'];
 
             if ($amount <= $minimoNecessario) {
                 $this->pdo->rollBack();
                 return ['status' => 'error', 'message' => 'A tua licitação deve ser superior a ' . number_format($minimoNecessario, 2) . '€'];
             }
 
+            // ─── Wallet balance check (with self-refund factored in) ────
+            $stmt = $this->pdo->prepare("SELECT usr_balance FROM userss WHERE usr_id = ? FOR UPDATE");
+            $stmt->execute([$userId]);
+            $balance = (float) $stmt->fetchColumn();
+
+            // If the user is already the current highest bidder, their previous
+            // amount will be returned to them, so it counts toward what they can spend.
+            $selfRefund = 0.0;
+            if ($prevHighest && (int) $prevHighest['bid_usr_id'] === $userId) {
+                $selfRefund = (float) $prevHighest['bid_amount'];
+            }
+            $effectiveBalance = $balance + $selfRefund;
+
+            if ($effectiveBalance < $amount) {
+                $this->pdo->rollBack();
+                return [
+                    'status'   => 'error',
+                    'code'     => 'insufficient_funds',
+                    'message'  => 'Saldo insuficiente. Tens ' . number_format($effectiveBalance, 2) . '€ disponíveis mas a licitação é de ' . number_format($amount, 2) . '€.',
+                    'balance'  => $effectiveBalance,
+                    'required' => $amount
+                ];
+            }
+
+            // ─── Insert new bid ─────────────────────────────────────────
             $stmt = $this->pdo->prepare("INSERT INTO bid (bid_amount, bid_usr_id, bid_prd_id) VALUES (?, ?, ?)");
             $stmt->execute([$amount, $userId, $productId]);
+
+            // ─── Escrow movement: refund previous, debit current ────────
+            $depositLog = $this->pdo->prepare(
+                "INSERT INTO transactions (tra_usr_id, tra_type, tra_amount, tra_description) VALUES (?, 'deposit', ?, ?)"
+            );
+            $debitLog = $this->pdo->prepare(
+                "INSERT INTO transactions (tra_usr_id, tra_type, tra_amount, tra_description) VALUES (?, 'debit', ?, ?)"
+            );
+            $balanceUpd = $this->pdo->prepare("UPDATE userss SET usr_balance = usr_balance + ? WHERE usr_id = ?");
+
+            // Refund the previous highest bidder (could be the same user re-bidding higher)
+            if ($prevHighest) {
+                $prevId  = (int) $prevHighest['bid_usr_id'];
+                $prevAmt = (float) $prevHighest['bid_amount'];
+                $balanceUpd->execute([$prevAmt, $prevId]);
+                $depositLog->execute([
+                    $prevId,
+                    $prevAmt,
+                    $prevId === $userId
+                        ? "Reembolso da licitação anterior no leilão #$productId"
+                        : "Reembolso por ter sido coberto no leilão #$productId"
+                ]);
+            }
+
+            // Debit the current bidder
+            $balanceUpd->execute([-$amount, $userId]);
+            $debitLog->execute([$userId, $amount, "Licitação no leilão #$productId"]);
 
             require_once __DIR__ . '/functions.php';
             atribuirXPAleatorio($this->pdo, $userId, "Licitação no produto #$productId");
 
+            // Read final balance for the bidder so the frontend can update without a refetch
+            $stmt = $this->pdo->prepare("SELECT usr_balance FROM userss WHERE usr_id = ?");
+            $stmt->execute([$userId]);
+            $newBalance = (float) $stmt->fetchColumn();
+
             $this->pdo->commit();
 
-            $stmt = $this->pdo->prepare("SELECT bid_usr_id FROM bid WHERE bid_prd_id = ? AND bid_usr_id != ? ORDER BY bid_amount DESC LIMIT 1 OFFSET 1");
-            $stmt->execute([$productId, $userId]);
-            $previousBidder = $stmt->fetchColumn();
-
-            if ($previousBidder) {
+            // Notify the previous bidder (if it was a different user) AFTER commit
+            if ($prevHighest && (int) $prevHighest['bid_usr_id'] !== $userId) {
                 require_once __DIR__ . '/NotificationManager.php';
                 $notif = new NotificationManager($this->pdo);
                 $notif->create(
-                    (int) $previousBidder,
-                    "Alguém cobriu a tua oferta em '{$product['prd_name']}'! Nova licitação de " . number_format($amount, 2) . "€.",
+                    (int) $prevHighest['bid_usr_id'],
+                    "Alguém cobriu a tua oferta em '{$product['prd_name']}'! Nova licitação de " . number_format($amount, 2) . "€. O teu saldo foi reembolsado.",
                     'bid_outbid'
                 );
             }
 
-            return ['status' => 'success', 'message' => 'Licitação aceite!'];
+            return [
+                'status'      => 'success',
+                'message'     => 'Licitação aceite!',
+                'new_balance' => $newBalance
+            ];
 
         } catch (Exception $e) {
             if ($this->pdo->inTransaction()) {

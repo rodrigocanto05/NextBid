@@ -39,15 +39,16 @@ function executarLazyCronLeiloes(PDO $pdo): void
 
                 $pdo->commit();
 
-                $transfer = $tx->transfer($winnerId, $sellerId, $amount, "Leilão #$id - $name");
+                // The winner's bid amount was already debited from their wallet
+                // when they placed the bid (escrow). Here we only credit the seller.
+                $deposit = $tx->deposit($sellerId, $amount, "Venda do leilão #$id - $name");
 
-                if ($transfer['status'] === 'success') {
+                if ($deposit['status'] === 'success') {
                     $notif->create($winnerId, "Parabéns! Ganhaste o leilão de $name por " . number_format($amount, 2) . "€!", 'auction_won');
                     $notif->create($sellerId, "O teu leilão de $name foi vendido por " . number_format($amount, 2) . "€!", 'auction_sold');
                     atribuirXPAleatorio($pdo, $winnerId, "Vitória no leilão #$id");
                 } else {
-                    $notif->create($winnerId, "Ganhaste o leilão de $name mas não tens saldo suficiente. Carrega a carteira e contacta o vendedor.", 'auction_payment_failed');
-                    $notif->create($sellerId, "O leilão de $name terminou mas o vencedor não tem saldo suficiente.", 'auction_payment_failed');
+                    $notif->create($sellerId, "O leilão de $name terminou mas houve um erro a creditar o pagamento. Contacta o suporte.", 'auction_payment_failed');
                 }
             } else {
                 $pdo->prepare("UPDATE product SET prd_status = 'expired' WHERE prd_id = ?")->execute([$id]);

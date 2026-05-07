@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>NextBid — Os Meus Leilões</title>
-  <link rel="stylesheet" href="../css/main.css" />
+  <link rel="stylesheet" href="../../../css/main.css" />
 </head>
 
 <body class="page">
@@ -13,7 +13,7 @@
   <header class="navbar">
     <div class="navbar__inner">
       <a href="../index.html" class="navbar__brand">
-        <img class="navbar__logo-img" src="../../img/logo-NextBid.png" alt="NextBid" />
+        <img class="navbar__logo-img" src="../../../img/logo-NextBid.png" alt="NextBid" />
         <span>NEXTBID</span>
       </a>
       <nav class="navbar__links">
@@ -30,7 +30,7 @@
               <path d="m9 7 8 8" />
               <path d="m21 11-8-8" />
             </svg></span>Leilões</a>
-        <a href="../caca-ao-tesouro.html" class="navbar__link"><span class="navbar__link-icon"><svg viewBox="0 0 24 24"
+        <a href="../CaçaAoTesouro.html" class="navbar__link"><span class="navbar__link-icon"><svg viewBox="0 0 24 24"
               fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
               <path d="M6 3h12l4 6-10 13L2 9Z" />
               <path d="M11 3 8 9l4 13 4-13-3-6" />
@@ -112,7 +112,7 @@
     <div class="login-prompt" id="login-prompt" style="display:none">
       <h2>Sessão Necessária</h2>
       <p>Inicia sessão para ver os teus leilões.</p>
-      <a href="../auth/login.html" class="btn btn--primary">Iniciar Sessão</a>
+      <a href="../../auth/Login.html" class="btn btn--primary">Iniciar Sessão</a>
     </div>
   </main>
 
@@ -186,6 +186,8 @@
             <button type="button" class="quick-dur__chip is-active" data-hours="24">1 dia</button>
             <button type="button" class="quick-dur__chip" data-hours="72">3 dias</button>
             <button type="button" class="quick-dur__chip" data-hours="168">7 dias</button>
+            <button type="button" class="quick-dur__chip" data-hours="336">14 dias</button>
+            <button type="button" class="quick-dur__chip" data-hours="720">30 dias</button>
           </div>
           <div class="form-row">
             <div class="form-group form-group--nested">
@@ -226,20 +228,20 @@
     </div>
   </footer>
 
-  <script src="../../js/shared/Helpers.js"></script>
-  <script src="../../js/shared/Auth.js"></script>
-  <script src="../../js/shared/Wallet.js"></script>
-  <script src="../../js/shared/Navbar.js"></script>
-  <script src="../../js/shared/Cronometro.js"></script>
-  <script src="../../js/shared/Ticker.js"></script>
-  <script src="../../js/shared/AuctionCard.js"></script>
-  <script src="../../js/shared/FilterBar.js"></script>
-  <script src="../../js/novo-leilao/Modal.js"></script>
-  <script src="../../js/novo-leilao/AutoSuggest.js"></script>
-  <script src="../../js/novo-leilao/Upload.js"></script>
-  <script src="../../js/novo-leilao/Submit.js"></script>
-  <script src="../../js/novo-leilao/Init.js"></script>
-  <script src="../../js/pages/MeusLeiloes.js"></script>
+  <script src="../../../js/shared/Helpers.js"></script>
+  <script src="../../../js/shared/Auth.js"></script>
+  <script src="../../../css/components/wallet/Wallet.js"></script>
+  <script src="../../../css/components/navbar/Navbar.js"></script>
+  <script src="../../../css/components/cronometro/Cronometro.js"></script>
+  <script src="../../../css/components/ticker/Ticker.js"></script>
+  <script src="../../../css/components/auction-card/AuctionCard.js"></script>
+  <script src="../../../css/components/filter-bar/FilterBar.js"></script>
+  <script src="../../../css/components/novo-leilao/Modal.js"></script>
+  <script src="../../../css/components/novo-leilao/AutoSuggest.js"></script>
+  <script src="../../../css/components/novo-leilao/Upload.js"></script>
+  <script src="../../../css/components/novo-leilao/Submit.js"></script>
+  <script src="../../../css/components/novo-leilao/Init.js"></script>
+  <script src="../../../js/pages/MeusLeiloes.js"></script>
 </body>
 
 </html>

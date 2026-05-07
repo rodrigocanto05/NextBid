@@ -23,7 +23,7 @@ document.getElementById('LoginPage').addEventListener('submit', async function (
         if (data.status === 'success') {
             localStorage.setItem('token', data.token);
             localStorage.setItem('user', JSON.stringify(data.user));
-            window.location.href = '../index.html';
+            window.location.href = '../pages/index.html';
         } else {
             mostrarErro(data.message || 'Credenciais inválidas');
         }

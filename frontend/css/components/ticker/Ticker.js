@@ -17,7 +17,7 @@ NB.initTicker = function () {
                 return;
             }
             const items = list.map(a => {
-                const href = NB._path(`LL active/LeilaoAtivox.html?id=${encodeURIComponent(a.prd_id)}`);
+                const href = NB._path(`leiloes/DetalheLeilao.html?id=${encodeURIComponent(a.prd_id)}`);
                 return `
                 <a class="ticker__item" href="${href}" aria-label="Ver leilão ${NB.escHtml(a.prd_name)}">
                     <span class="ticker__dot"></span>

@@ -1,20 +1,25 @@
+/* ─── Base ───────────────────────────────────── */
 @import url("./reset.css");
 @import url("./layout.css");
 @import url("./utils.css");
-@import url("./buttons.css");
-@import url("./cards.css");
-@import url("./dropdown.css");
-@import url("./fab.css");
-@import url("./filter-bar.css");
-@import url("./forms.css");
-@import url("./footer.css");
-@import url("./hero.css");
-@import url("./leilao-detail.css");
-@import url("./modal-novo-leilao.css");
-@import url("./modal.css");
-@import url("./my-auctions.css");
-@import url("./navbar.css");
-@import url("./perfil.css");
-@import url("./stats.css");
-@import url("./tabs.css");
-@import url("./ticker.css");
+
+/* ─── Components ─────────────────────────────── */
+@import url("./components/buttons/buttons.css");
+@import url("./components/forms/forms.css");
+@import url("./components/dropdown/dropdown.css");
+@import url("./components/fab/fab.css");
+@import url("./components/footer/footer.css");
+@import url("./components/navbar/navbar.css");
+@import url("./components/hero/hero.css");
+@import url("./components/ticker/ticker.css");
+@import url("./components/auction-card/auction-card.css");
+@import url("./components/filter-bar/filter-bar.css");
+@import url("./components/modal/modal.css");
+@import url("./components/novo-leilao/novo-leilao.css");
+@import url("./components/stats/stats.css");
+@import url("./components/tabs/tabs.css");
+
+/* ─── Page-specific ──────────────────────────── */
+@import url("./pages/leilao-detail.css");
+@import url("./pages/my-auctions.css");
+@import url("./pages/perfil.css");
