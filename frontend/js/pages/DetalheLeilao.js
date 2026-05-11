@@ -27,9 +27,11 @@
 
         wireBidForm();
         wireChatForm();
+        wireChatDevForm();
         wireDelete();
         wireAddFunds();
         wireChatTextarea();
+        renderChatUI();
     }
 
     // ─────────────────────────────────────────────────────────────
@@ -414,14 +416,56 @@
     }
 
     function renderChatUI() {
-        const form    = document.getElementById('la-chat-form');
-        const authMsg = document.getElementById('la-chat-auth-msg');
-        form.hidden    = !currentUser;
-        authMsg.hidden = !!currentUser;
+        const form      = document.getElementById('la-chat-form');
+        const authMsg   = document.getElementById('la-chat-auth-msg');
+        const devPanel  = document.getElementById('la-chat-dev');
+
+        form.hidden     = !currentUser;
+        authMsg.hidden  = !!currentUser;
+        if (devPanel) devPanel.hidden = !!currentUser;
     }
 
     function wireChatForm() {
         document.getElementById('la-chat-form').addEventListener('submit', handleChatSubmit);
+    }
+
+    function wireChatDevForm() {
+        const devForm = document.getElementById('la-chat-dev-form');
+        if (!devForm) return;
+        devForm.addEventListener('submit', handleChatDevSubmit);
+    }
+
+    async function handleChatDevSubmit(e) {
+        e.preventDefault();
+        const input   = document.getElementById('la-chat-dev-input');
+        const msgEl   = document.getElementById('la-chat-dev-msg');
+        const content = input.value.trim();
+
+        if (!content) return;
+
+        msgEl.style.color = '';
+        msgEl.textContent = 'A enviar mensagem de teste…';
+
+        try {
+            const res = await NB.apiPost(
+                '/api/chat/send.php?debug=1',
+                { product_id: productId, content },
+                { auth: false }
+            );
+
+            if (res.status === 'success') {
+                input.value = '';
+                input.style.height = 'auto';
+                msgEl.style.color = 'var(--success)';
+                msgEl.textContent = 'Mensagem de teste enviada. Aguarda 2s para o SSE atualizar.';
+            } else {
+                msgEl.style.color = 'var(--danger)';
+                msgEl.textContent = res.message || 'Erro ao enviar mensagem de teste.';
+            }
+        } catch (err) {
+            msgEl.style.color = 'var(--danger)';
+            msgEl.textContent = 'Erro de rede ao enviar mensagem de teste.';
+        }
     }
 
     function wireChatTextarea() {

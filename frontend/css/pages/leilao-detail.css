@@ -664,6 +664,20 @@
     color: var(--gold);
 }
 
+.la-chat__dev {
+    display: block;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(255, 215, 0, 0.2);
+}
+
+.la-chat__dev-label {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+    display: block;
+}
+
 .la-chat__send-msg {
     font-size: 0.76rem;
     min-height: 1em;

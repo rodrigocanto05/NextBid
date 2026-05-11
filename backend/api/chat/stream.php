@@ -36,7 +36,6 @@ if ($productId <= 0) {
     exit;
 }
 
-$pdo     = getDB();
 $chatMgr = new ChatManager($pdo);
 
 // Release the session lock so other requests aren't blocked
@@ -83,7 +82,7 @@ while (time() < $deadline) {
     }
 }
 
-// ── Helper ───────────────────────────────────────────────────────────────────
+// Helper function to send an SSE event with JSON payload 
 function sendEvent(string $name, array $payload): void
 {
     $json = json_encode($payload, JSON_UNESCAPED_UNICODE);

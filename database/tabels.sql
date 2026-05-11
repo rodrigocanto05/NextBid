@@ -164,6 +164,18 @@ create table review (
     constraint chk_review_rating check (rev_rating between 1 and 5)
 );
 
+create table chat_message (
+    cht_id          int not null auto_increment,
+    cht_prd_id      int not null,
+    cht_usr_id      int not null,
+    cht_content     text not null,
+    cht_created_at  datetime not null default current_timestamp,
+    primary key (cht_id),
+    index idx_chat_message_prd_id (cht_prd_id),
+    index idx_chat_message_usr_id (cht_usr_id),
+    index idx_chat_message_prd_created (cht_prd_id, cht_created_at)
+);
+
 create index idx_product_usr_id on product(prd_usr_id);
 create index idx_product_cat_id on product(prd_cat_id);
 create index idx_product_winner_usr_id on product(prd_winner_usr_id);
@@ -255,4 +267,14 @@ on delete cascade;
 alter table notifications
 add constraint notifications_fk_user
 foreign key (not_usr_id) references userss(usr_id)
+on delete cascade;
+
+alter table chat_message
+add constraint chat_message_fk_product
+foreign key (cht_prd_id) references product(prd_id)
+on delete cascade;
+
+alter table chat_message
+add constraint chat_message_fk_user
+foreign key (cht_usr_id) references userss(usr_id)
 on delete cascade;

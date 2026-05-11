@@ -305,3 +305,7 @@ values (1, 'bid', 'Your bid on PlayStation 5 was placed.', false, str_to_date('2
 
 insert into review (rev_usr_id, rev_reviewed_usr_id, rev_prd_id, rev_rating, rev_created_at)
 values (7, 3, 5, 5, str_to_date('2025.01.11','%Y.%m.%d'));   # rev_id = 1
+
+insert into chat_message (cht_prd_id, cht_usr_id, cht_content, cht_created_at) 
+values (1, 1, 'Teste de mensagem do chat - Sistema funcionando!', now());
+
