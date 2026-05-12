@@ -4,8 +4,10 @@ header('Content-Type: application/json');
 require_once '../../config/db.php';
 require_once '../../includes/ChatManager.php';
 
+$pdo = getDB();
+
 $productId = (int) ($_GET['product_id'] ?? 0);
-$limit     = (int) ($_GET['limit'] ?? 100);
+$limit     = (int) ($_GET['limit']      ?? 100);
 
 if ($productId <= 0) {
     exit(json_encode(['status' => 'error', 'message' => 'ID inválido.']));

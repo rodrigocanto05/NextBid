@@ -10,15 +10,21 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit(json_encode(['status' => 'error', 'message' => 'Use POST.']));
 }
 
+$pdo = getDB();
+
 $user   = AuthMiddleware::requireAuth($pdo);
 $userId = $user['id'];
 
 $body      = json_decode(file_get_contents('php://input'), true) ?? $_POST;
 $productId = (int) ($body['product_id'] ?? 0);
-$content   = (string) ($body['content'] ?? '');
+$content   = trim((string) ($body['content'] ?? ''));
 
 if ($productId <= 0) {
     exit(json_encode(['status' => 'error', 'message' => 'ID inválido.']));
+}
+
+if ($content === '') {
+    exit(json_encode(['status' => 'error', 'message' => 'Mensagem vazia.']));
 }
 
 $chat = new ChatManager($pdo);
