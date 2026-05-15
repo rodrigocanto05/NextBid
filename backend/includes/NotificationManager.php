@@ -12,6 +12,18 @@ class NotificationManager {
         return $stmt->execute([$userId, $message, $type]);
     }
 
+    public function createOnce(int $userId, string $message, string $type, string $dedupeKey, int $ttlSeconds = 86400): bool {
+        $stmt = $this->pdo->prepare(
+            "SELECT 1 FROM notifications
+             WHERE not_usr_id = ? AND not_type = ? AND not_message LIKE ?
+               AND not_created_at >= DATE_SUB(NOW(), INTERVAL ? SECOND)
+             LIMIT 1"
+        );
+        $stmt->execute([$userId, $type, '%' . $dedupeKey . '%', $ttlSeconds]);
+        if ($stmt->fetchColumn()) return false;
+        return $this->create($userId, $message, $type);
+    }
+
     public function getUnread(int $userId): array {
         $sql = "SELECT not_id, not_type, not_message, not_read, not_created_at
                 FROM notifications 

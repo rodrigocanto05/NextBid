@@ -8,6 +8,7 @@
         NB.showWelcomeIfPending();
         NB.initHeroCarousel();
         NB.initTicker();
+        NB.Favorites?.load();
         loadFeatured();
         refreshTimer = setInterval(loadFeatured, REFRESH_MS);
     });
@@ -15,8 +16,8 @@
     function loadFeatured() {
         NB.apiGet('/api/auctions/get_active.php')
             .then(data => {
-                const list = (data.auctions || []).slice(0, 8); // featured = first 8
-                NB.renderGrid('leiloes-container', list);
+                const list = (data.auctions || []).slice(0, 8);
+                NB.renderGrid('leiloes-container', list, { favoritable: true });
                 appendMoreCard();
             })
             .catch(() => {

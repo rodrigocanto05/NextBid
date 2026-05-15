@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>NextBid — Os Meus Leilões</title>
-  <link rel="stylesheet" href="../../../css/main.css" />
+  <link rel="stylesheet" href="../../../css/main.css?v=8" />
 </head>
 
 <body class="page">
@@ -88,6 +88,7 @@
       <nav class="tabs" role="tablist">
         <button class="tab tab--active" data-tab="ativo" role="tab" id="tab-ativo">Leilões Ativos (0)</button>
         <button class="tab" data-tab="passado" role="tab" id="tab-passado">Histórico (0)</button>
+        <button class="tab" data-tab="favoritos" role="tab" id="tab-favoritos">Favoritos (0)</button>
       </nav>
 
       <section id="panel-ativo" class="tab-panel active">
@@ -101,6 +102,15 @@
 
       <section id="panel-passado" class="tab-panel">
         <div class="auctions-grid auctions-grid--cols-3" id="grid-passado">
+          <div class="cards-loading">
+            <div class="spinner"></div>
+            <p>A carregar…</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="panel-favoritos" class="tab-panel">
+        <div class="auctions-grid auctions-grid--cols-3" id="grid-favoritos">
           <div class="cards-loading">
             <div class="spinner"></div>
             <p>A carregar…</p>
@@ -228,20 +238,23 @@
     </div>
   </footer>
 
-  <script src="../../../js/shared/Helpers.js"></script>
-  <script src="../../../js/shared/Auth.js"></script>
-  <script src="../../../css/components/wallet/Wallet.js"></script>
-  <script src="../../../css/components/navbar/Navbar.js"></script>
-  <script src="../../../css/components/cronometro/Cronometro.js"></script>
-  <script src="../../../css/components/ticker/Ticker.js"></script>
-  <script src="../../../css/components/auction-card/AuctionCard.js"></script>
-  <script src="../../../css/components/filter-bar/FilterBar.js"></script>
-  <script src="../../../css/components/novo-leilao/Modal.js"></script>
-  <script src="../../../css/components/novo-leilao/AutoSuggest.js"></script>
-  <script src="../../../css/components/novo-leilao/Upload.js"></script>
-  <script src="../../../css/components/novo-leilao/Submit.js"></script>
-  <script src="../../../css/components/novo-leilao/Init.js"></script>
-  <script src="../../../js/pages/MeusLeiloes.js"></script>
+  <script src="../../../js/shared/Helpers.js?v=8"></script>
+  <script src="../../../js/shared/Auth.js?v=8"></script>
+  <script src="../../../css/components/wallet/Wallet.js?v=8"></script>
+  <script src="../../../css/components/favorite-button/FavoriteButton.js?v=8"></script>
+  <script src="../../../css/components/notification-bell/NotificationBell.js?v=8"></script>
+
+  <script src="../../../css/components/navbar/Navbar.js?v=8"></script>
+  <script src="../../../css/components/cronometro/Cronometro.js?v=8"></script>
+  <script src="../../../css/components/ticker/Ticker.js?v=8"></script>
+  <script src="../../../css/components/auction-card/AuctionCard.js?v=8"></script>
+  <script src="../../../css/components/filter-bar/FilterBar.js?v=8"></script>
+  <script src="../../../css/components/novo-leilao/Modal.js?v=8"></script>
+  <script src="../../../css/components/novo-leilao/AutoSuggest.js?v=8"></script>
+  <script src="../../../css/components/novo-leilao/Upload.js?v=8"></script>
+  <script src="../../../css/components/novo-leilao/Submit.js?v=8"></script>
+  <script src="../../../css/components/novo-leilao/Init.js?v=8"></script>
+  <script src="../../../js/pages/MeusLeiloes.js?v=8"></script>
 </body>
 
 </html>

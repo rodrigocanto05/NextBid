@@ -61,11 +61,12 @@ NB.createCard = function (leilao, opts = {}) {
             ${NB.escHtml(leilao.prd_location)}
         </p>` : '';
 
+    const catBadgeCls = opts.favoritable ? 'auction-card__cat-badge auction-card__cat-badge--shifted' : 'auction-card__cat-badge';
     card.innerHTML = `
         <div class="${wrapCls}">
             ${imgWrapInner}
             ${liveBadge}
-            <span class="auction-card__cat-badge">${NB.escHtml(leilao.cat_name || '')}</span>
+            <span class="${catBadgeCls}">${NB.escHtml(leilao.cat_name || '')}</span>
             ${resultBadge}
         </div>
         <div class="auction-card__body">
@@ -76,6 +77,11 @@ NB.createCard = function (leilao, opts = {}) {
         <div class="auction-card__footer">
             <a href="${detailLink}" class="btn btn--primary btn--full">${opts.past ? 'Ver Detalhes' : 'Licitar'}</a>
         </div>`;
+
+    if (opts.favoritable && typeof NB.createFavoriteButton === 'function') {
+        const wrap = card.querySelector('.auction-card__img-wrap');
+        wrap.appendChild(NB.createFavoriteButton(leilao.prd_id));
+    }
 
     if (imgUrl) {
         const wrap = card.querySelector('.auction-card__img-wrap');

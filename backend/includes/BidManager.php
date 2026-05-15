@@ -118,13 +118,29 @@ class BidManager
             $this->pdo->commit();
 
             // Notify the previous bidder (if it was a different user) AFTER commit
+            require_once __DIR__ . '/NotificationManager.php';
+            $notif = new NotificationManager($this->pdo);
             if ($prevHighest && (int) $prevHighest['bid_usr_id'] !== $userId) {
-                require_once __DIR__ . '/NotificationManager.php';
-                $notif = new NotificationManager($this->pdo);
                 $notif->create(
                     (int) $prevHighest['bid_usr_id'],
                     "Alguém cobriu a tua oferta em '{$product['prd_name']}'! Nova licitação de " . number_format($amount, 2) . "€. O teu saldo foi reembolsado.",
                     'bid_outbid'
+                );
+            }
+
+            // Notify users who favorited this auction (skip the bidder and the
+            // previous highest — that one already got the outbid notification).
+            require_once __DIR__ . '/FavoriteManager.php';
+            $favMgr     = new FavoriteManager($this->pdo);
+            $watchers   = $favMgr->watchersOf($productId);
+            $skipIds    = [$userId];
+            if ($prevHighest) $skipIds[] = (int) $prevHighest['bid_usr_id'];
+            foreach ($watchers as $watcherId) {
+                if (in_array($watcherId, $skipIds, true)) continue;
+                $notif->create(
+                    $watcherId,
+                    "Novo lance em '{$product['prd_name']}' — agora em " . number_format($amount, 2) . "€.",
+                    'favorite_bid'
                 );
             }
 

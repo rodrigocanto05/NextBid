@@ -78,6 +78,16 @@
         configureBidSection(currentBid);
         configureOwnerSection();
         updateBalanceDisplay();
+        mountFavoriteButton();
+    }
+
+    function mountFavoriteButton() {
+        const host = document.querySelector('.la-gallery__main');
+        if (!host || !NB.getCurrentUser() || typeof NB.createFavoriteButton !== 'function') return;
+        host.querySelector('.fav-btn')?.remove();
+        NB.Favorites.load().then(() => {
+            host.appendChild(NB.createFavoriteButton(auction.prd_id));
+        });
     }
 
     function renderStatusBadge(status) {

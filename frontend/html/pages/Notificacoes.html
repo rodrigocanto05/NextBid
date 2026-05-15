@@ -1,17 +1,15 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt">
 
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NextBid — Leilões Premium</title>
+  <title>NextBid — Notificações</title>
   <link rel="stylesheet" href="../../css/main.css?v=8" />
-
 </head>
 
 <body class="page">
 
-  <!-- NAVBAR -->
   <header class="navbar">
     <div class="navbar__inner">
       <a href="index.html" class="navbar__brand">
@@ -19,7 +17,7 @@
         <span>NEXTBID</span>
       </a>
       <nav class="navbar__links">
-        <a href="index.html" class="navbar__link navbar__link--active">
+        <a href="index.html" class="navbar__link">
           <span class="navbar__link-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
               stroke-linecap="round" stroke-linejoin="round">
               <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
@@ -59,69 +57,53 @@
     </div>
   </header>
 
-  <!-- TICKER -->
   <div class="ticker">
     <div class="ticker__track" id="ticker-track"></div>
   </div>
 
-  <!-- HERO -->
   <main class="page__main">
-    <section class="hero">
-      <div class="hero__bg" id="hero-bg"></div>
-      <div class="hero__overlay"></div>
-      <button class="hero__arrow hero__arrow--prev" id="hero-prev" aria-label="Imagem anterior">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="15 18 9 12 15 6" />
-        </svg>
-      </button>
-      <button class="hero__arrow hero__arrow--next" id="hero-next" aria-label="Imagem seguinte">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="9 18 15 12 9 6" />
-        </svg>
-      </button>
-      <div class="hero__content">
-        <span class="hero__kicker">★ Leilões Premium</span>
-        <h1 class="hero__title">Descobre peças únicas em tempo real</h1>
-        <p class="hero__subtitle">Licitações ao vivo em relógios, arte, automóveis e colecionáveis raros.</p>
-        <div class="hero__ctas">
-          <a href="leiloes/LeiloesAtivos.html" class="btn btn--primary btn--lg">Explorar Leilões</a>
-          <a href="CaçaAoTesouro.html" class="btn btn--ghost btn--lg">Caça ao Tesouro</a>
-        </div>
+    <div id="auth-content">
+      <div class="page-header">
+        <h1 class="page-header__title">Notificações</h1>
+        <p class="page-header__sub">Mantém-te a par do que se passa nos teus leilões e favoritos</p>
       </div>
-      <div class="hero__dots" id="hero-dots"></div>
-    </section>
 
-    <!-- STATS -->
-    <section class="stats">
-      <div class="stats__inner">
-        <div>
-          <div class="stat__value">250+</div>
-          <div class="stat__label">Leilões ativos</div>
-        </div>
-        <div>
-          <div class="stat__value">24/7</div>
-          <div class="stat__label">Licitações</div>
-        </div>
-        <div>
-          <div class="stat__value">100%</div>
-          <div class="stat__label">Seguro</div>
-        </div>
-        <div>
-          <div class="stat__value">10K+</div>
-          <div class="stat__label">Utilizadores</div>
-        </div>
+      <div class="notifications-page">
+        <nav class="tabs" role="tablist">
+          <button class="tab tab--active" data-tab="todas" role="tab" id="tab-todas">Todas (0)</button>
+          <button class="tab" data-tab="favoritos" role="tab" id="tab-favoritos">Favoritos (0)</button>
+        </nav>
       </div>
-    </section>
 
-    <!-- FEATURED AUCTIONS -->
-    <section class="section">
-      <h2 class="section__title">Leilões em Destaque</h2>
-    </section>
-    <div class="auctions-grid" id="leiloes-container">
-      <div class="cards-loading" id="cards-loading">
-        <div class="spinner"></div>
-        <p>A carregar leilões…</p>
+      <div class="notif-toolbar" id="notif-toolbar">
+        <button class="btn btn--ghost btn--sm" id="btn-mark-all" disabled>Marcar todas como lidas</button>
       </div>
+
+      <div class="notifications-page">
+        <section id="panel-todas" class="tab-panel active">
+          <div class="notif-list" id="notif-list">
+            <div class="notif-empty">
+              <div class="notif-empty__icon">⏳</div>
+              <p class="notif-empty__title">A carregar…</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="panel-favoritos" class="tab-panel">
+          <div class="auctions-grid auctions-grid--cols-3" id="grid-favoritos">
+            <div class="cards-loading">
+              <div class="spinner"></div>
+              <p>A carregar favoritos…</p>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <div class="login-prompt" id="login-prompt" style="display:none">
+      <h2>Sessão Necessária</h2>
+      <p>Inicia sessão para ver as tuas notificações.</p>
+      <a href="../auth/Login.html" class="btn btn--primary">Iniciar Sessão</a>
     </div>
   </main>
 
@@ -136,14 +118,11 @@
   <script src="../../css/components/wallet/Wallet.js?v=8"></script>
   <script src="../../css/components/favorite-button/FavoriteButton.js?v=8"></script>
   <script src="../../css/components/notification-bell/NotificationBell.js?v=8"></script>
-
   <script src="../../css/components/navbar/Navbar.js?v=8"></script>
   <script src="../../css/components/cronometro/Cronometro.js?v=8"></script>
-  <script src="../../css/components/hero/HeroCarousel.js?v=8"></script>
   <script src="../../css/components/ticker/Ticker.js?v=8"></script>
   <script src="../../css/components/auction-card/AuctionCard.js?v=8"></script>
-  <script src="../../css/components/filter-bar/FilterBar.js?v=8"></script>
-  <script src="../../js/pages/Home.js?v=8"></script>
+  <script src="../../js/pages/Notificacoes.js?v=8"></script>
 </body>
 
 </html>

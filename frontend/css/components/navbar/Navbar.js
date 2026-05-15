@@ -11,12 +11,8 @@ NB.renderNavbar = function () {
     if (user) NB._wireUserCard();
     if (typeof NB.mountWalletModal === 'function') NB.mountWalletModal();
     NB._mountLogoutModal();
+    if (user && typeof NB.mountNotificationBell === 'function') NB.mountNotificationBell();
 
-    // Pull persisted balance from DB into the localStorage cache (best-effort,
-    // patches the balance text in place so listeners stay attached).
-    // Only run once per renderNavbar — refreshWallet itself does NOT call
-    // renderNavbar back, otherwise the dropdown/logout buttons would be wiped
-    // before a click could land.
     if (user && typeof NB.refreshWallet === 'function' && !NB._walletSyncedThisLoad) {
         NB._walletSyncedThisLoad = true;
         NB.refreshWallet();
@@ -35,6 +31,7 @@ NB._navbarUser = function (user) {
     const avatar = NB.avatarUrl(user);
     return `
         <div class="user-cluster">
+            <div id="nb-bell-slot"></div>
             <div class="dropdown-wrap">
                 <div class="user-card" id="nb-user-card">
                     <div class="user-card__avatar">
@@ -50,6 +47,8 @@ NB._navbarUser = function (user) {
                 </div>
                 <div class="dropdown" id="nb-dropdown">
                     <a href="${NB._path('Perfil.html')}" class="dropdown__item">👤 Ver Perfil</a>
+                    <a href="${NB._path('Notificacoes.html')}" class="dropdown__item">🔔 Notificações</a>
+                    <a href="${NB._path('leiloes/MeusLeiloes.html')}#favoritos" class="dropdown__item">❤ Favoritos</a>
                     <button class="dropdown__item" id="nb-add-funds">💳 Adicionar Fundos</button>
                 </div>
             </div>
@@ -63,9 +62,19 @@ NB._wireUserCard = function () {
     const card = document.getElementById('nb-user-card');
     const dd   = document.getElementById('nb-dropdown');
     if (!card || !dd) return;
-    card.addEventListener('click', e => { e.stopPropagation(); dd.classList.toggle('open'); });
+    card.addEventListener('click', e => {
+        e.stopPropagation();
+        const willOpen = !dd.classList.contains('open');
+        dd.classList.toggle('open', willOpen);
+        if (willOpen) {
+            document.dispatchEvent(new CustomEvent('nb:popover-open', { detail: 'user-card' }));
+        }
+    });
     document.addEventListener('click', e => {
         if (!card.contains(e.target) && !dd.contains(e.target)) dd.classList.remove('open');
+    });
+    document.addEventListener('nb:popover-open', e => {
+        if (e.detail !== 'user-card') dd.classList.remove('open');
     });
     document.getElementById('nb-add-funds')?.addEventListener('click', () => {
         dd.classList.remove('open');

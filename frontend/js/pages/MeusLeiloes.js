@@ -1,4 +1,3 @@
-// Os Meus Leilões — 3 stat cards + Ativo/Passado tabs
 (function () {
     document.addEventListener('DOMContentLoaded', () => {
         NB.renderNavbar();
@@ -9,28 +8,41 @@
 
         NB.NovoLeilao.init(() => { loadAll(); });
         bindTabs();
+        NB.Favorites?.onChange(renderFavoritesIfLoaded);
         loadAll();
+        activateTabFromHash();
+        window.addEventListener('hashchange', activateTabFromHash);
     });
 
     function bindTabs() {
         document.querySelectorAll('.tab').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const target = btn.dataset.tab;
-                document.querySelectorAll('.tab').forEach(t =>
-                    t.classList.toggle('tab--active', t === btn));
-                document.querySelectorAll('.tab-panel').forEach(p =>
-                    p.classList.toggle('active', p.id === `panel-${target}`));
-            });
+            btn.addEventListener('click', () => activateTab(btn.dataset.tab));
         });
+    }
+
+    function activateTab(target) {
+        document.querySelectorAll('.tab').forEach(t =>
+            t.classList.toggle('tab--active', t.dataset.tab === target));
+        document.querySelectorAll('.tab-panel').forEach(p =>
+            p.classList.toggle('active', p.id === `panel-${target}`));
+    }
+
+    function activateTabFromHash() {
+        const hash = (window.location.hash || '').replace('#', '');
+        if (hash && document.getElementById(`tab-${hash}`)) activateTab(hash);
     }
 
     function loadAll() {
         Promise.all([
             NB.apiGet('/api/auctions/my_selling.php').catch(() => ({ auctions: [] })),
-            NB.apiGet('/api/auctions/my_won.php').catch(() => ({ auctions: [] }))
-        ]).then(([sellingRes, wonRes]) => {
-            const selling = sellingRes.auctions || [];
-            const past    = wonRes.auctions || [];
+            NB.apiGet('/api/auctions/my_won.php').catch(() => ({ auctions: [] })),
+            NB.apiGet('/api/favorites/list.php').catch(() => ({ auctions: [] }))
+        ]).then(([sellingRes, wonRes, favRes]) => {
+            const selling   = sellingRes.auctions || [];
+            const past      = wonRes.auctions || [];
+            const favorites = favRes.auctions || [];
+
+            NB.Favorites?.seed(favorites.map(a => a.prd_id));
 
             const active = selling.filter(a => (a.prd_status || '').toLowerCase() === 'active');
             const sold   = selling.filter(a => (a.prd_status || '').toLowerCase() === 'sold');
@@ -41,11 +53,33 @@
             setText('stat-sold',   sold.length);
             setText('stat-total',  NB.formatCurrency(total));
 
-            setText('tab-ativo',   `Leilões Ativos (${active.length})`);
-            setText('tab-passado', `Histórico (${past.length})`);
+            setText('tab-ativo',     `Leilões Ativos (${active.length})`);
+            setText('tab-passado',   `Histórico (${past.length})`);
+            setText('tab-favoritos', `Favoritos (${favorites.length})`);
 
             renderGrid('grid-ativo', active, 'Ainda não tens leilões ativos.');
             renderPast('grid-passado', past);
+            renderFavorites(favorites);
+        });
+    }
+
+    function renderFavorites(list) {
+        const grid = document.getElementById('grid-favoritos');
+        if (!grid) return;
+        grid.innerHTML = '';
+        if (!list.length) {
+            grid.innerHTML = '<div class="cards-empty">Ainda não tens favoritos. Adiciona alguns na página de Leilões.</div>';
+            return;
+        }
+        list.forEach(a => grid.appendChild(NB.createCard(a, { favoritable: true })));
+    }
+
+    function renderFavoritesIfLoaded() {
+        NB.apiGet('/api/favorites/list.php').then(res => {
+            const list = res?.auctions || [];
+            NB.Favorites?.seed(list.map(a => a.prd_id));
+            setText('tab-favoritos', `Favoritos (${list.length})`);
+            renderFavorites(list);
         });
     }
 

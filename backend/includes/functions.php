@@ -7,6 +7,7 @@ function executarLazyCron(PDO $pdo): void
 {
     executarLazyCronLeiloes($pdo);
     executarLazyCronGamificacao($pdo);
+    executarLazyCronFavoritosTerminam($pdo);
 }
 
 function executarLazyCronLeiloes(PDO $pdo): void
@@ -94,6 +95,35 @@ function executarLazyCronGamificacao(PDO $pdo): void
         );
     } catch (Exception $e) {
         error_log("Erro no lazy cron de gamificação: " . $e->getMessage());
+    }
+}
+
+function executarLazyCronFavoritosTerminam(PDO $pdo): void
+{
+    try {
+        $stmt = $pdo->query(
+            "SELECT f.fav_usr_id, p.prd_id, p.prd_name, p.prd_ends_at
+             FROM product_favorite f
+             INNER JOIN product p ON f.fav_prd_id = p.prd_id
+             WHERE p.prd_status = 'active'
+               AND p.prd_ends_at BETWEEN NOW() AND DATE_ADD(NOW(), INTERVAL 1 HOUR)"
+        );
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        if (!$rows) return;
+
+        $notif = new NotificationManager($pdo);
+        foreach ($rows as $row) {
+            $dedupe = "leilão #{$row['prd_id']}";
+            $msg    = "O leilão favorito '{$row['prd_name']}' termina em menos de 1 hora!";
+            $notif->createOnce(
+                (int) $row['fav_usr_id'],
+                $msg,
+                'favorite_ending',
+                $dedupe
+            );
+        }
+    } catch (Exception $e) {
+        error_log("Erro no lazy cron de favoritos: " . $e->getMessage());
     }
 }
 

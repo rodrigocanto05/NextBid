@@ -9,6 +9,7 @@
         NB.loadCategoriesInto('filter-category');
         getFilters = NB.initFilterBar(apply);
         NB.NovoLeilao.init(loadAuctions);
+        NB.Favorites?.load();
 
         loadAuctions();
     });
@@ -27,7 +28,7 @@
 
     function apply() {
         const filtered = NB.filterAuctions(allAuctions, getFilters());
-        NB.renderGrid('leiloes-container', filtered);
+        NB.renderGrid('leiloes-container', filtered, { favoritable: true });
     }
 
 })();
