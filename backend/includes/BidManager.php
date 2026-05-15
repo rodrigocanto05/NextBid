@@ -128,6 +128,19 @@ class BidManager
                 );
             }
 
+            // Post a system message to the auction chat
+            try {
+                require_once __DIR__ . '/ChatManager.php';
+                $stmt = $this->pdo->prepare("SELECT usr_name FROM userss WHERE usr_id = ?");
+                $stmt->execute([$userId]);
+                $bidderName = (string) ($stmt->fetchColumn() ?: 'Alguém');
+                $chat = new ChatManager($this->pdo);
+                $chat->sendSystem(
+                    $productId,
+                    "💰 {$bidderName} licitou " . number_format($amount, 2, ',', '.') . "€"
+                );
+            } catch (Exception $e) { /* non-fatal */ }
+
             return [
                 'status'      => 'success',
                 'message'     => 'Licitação aceite!',

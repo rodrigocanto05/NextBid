@@ -34,6 +34,28 @@ NB.defaultAvatarUrl = function () {
     return '../'.repeat(depth + 1) + 'img/avatar-placeholder.png';
 };
 
+// Builds an avatar URL from a DB-relative path (e.g. "uploads/avatars/x.jpg").
+// Returns the placeholder when the path is empty.
+NB.avatarSrc = function (path) {
+    if (!path) return NB.defaultAvatarUrl();
+    const s = String(path).trim();
+    if (!s) return NB.defaultAvatarUrl();
+    if (/^https?:\/\//i.test(s)) return s;
+    if (s.startsWith('../') || s.startsWith('/')) return s;
+    return `${NB.BASE_URL}/${s.replace(/^\/+/, '')}`;
+};
+
+// Resolves the avatar for a localStorage user object. Accepts either
+// `user.avatar` (already-built absolute URL) or `user.photo` (DB path).
 NB.avatarUrl = function (user) {
-    return user?.avatar || NB.defaultAvatarUrl();
+    if (user?.avatar) return user.avatar;
+    if (user?.photo)  return NB.avatarSrc(user.photo);
+    return NB.defaultAvatarUrl();
+};
+
+// Inline onerror handler that swaps a broken avatar img to the placeholder.
+// Use in HTML strings: <img src="…" ${NB.avatarFallbackAttr()} />
+NB.avatarFallbackAttr = function () {
+    const ph = NB.defaultAvatarUrl().replace(/'/g, "\\'");
+    return `onerror="this.onerror=null;this.src='${ph}'"`;
 };

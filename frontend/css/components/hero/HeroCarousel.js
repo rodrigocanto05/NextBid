@@ -1,4 +1,4 @@
-﻿// Hero background carousel
+// Hero background carousel
 window.NB = window.NB || {};
 
 NB.HERO_IMAGES = [
@@ -12,9 +12,12 @@ NB.HERO_IMAGES = [
 NB.initHeroCarousel = function () {
     const bg   = document.getElementById('hero-bg');
     const dots = document.getElementById('hero-dots');
+    const prev = document.getElementById('hero-prev');
+    const next = document.getElementById('hero-next');
     if (!bg) return;
 
     let index = 0;
+    let timer = null;
 
     if (dots) {
         dots.innerHTML = NB.HERO_IMAGES.map((_, i) =>
@@ -22,8 +25,16 @@ NB.initHeroCarousel = function () {
         ).join('');
         dots.addEventListener('click', e => {
             const btn = e.target.closest('[data-index]');
-            if (btn) goTo(parseInt(btn.dataset.index));
+            if (btn) { goTo(parseInt(btn.dataset.index)); restartAuto(); }
         });
+    }
+
+    if (prev) prev.addEventListener('click', () => { step(-1); restartAuto(); });
+    if (next) next.addEventListener('click', () => { step(+1); restartAuto(); });
+
+    function step(delta) {
+        const n = NB.HERO_IMAGES.length;
+        goTo((index + delta + n) % n);
     }
 
     function goTo(i) {
@@ -33,6 +44,11 @@ NB.initHeroCarousel = function () {
             d.classList.toggle('hero__dot--active', j === i));
     }
 
+    function restartAuto() {
+        if (timer) clearInterval(timer);
+        timer = setInterval(() => step(+1), 5000);
+    }
+
     goTo(0);
-    setInterval(() => goTo((index + 1) % NB.HERO_IMAGES.length), 5000);
+    restartAuto();
 };

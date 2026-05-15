@@ -218,6 +218,69 @@
 .cards-loading { grid-column: 1 / -1; text-align: center; color: var(--text-muted); padding: 40px; }
 .cards-empty   { grid-column: 1 / -1; text-align: center; color: var(--text-muted); padding: 40px; }
 
+/* "See more" card — links to the full auctions page from the homepage grid */
+.auction-card--more {
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.06), rgba(212, 175, 55, 0.02));
+    border: 1px dashed var(--gold-border);
+    color: inherit;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 320px;
+    cursor: pointer;
+    transition: all var(--t-slow);
+}
+
+.auction-card--more:hover {
+    transform: translateY(-6px);
+    border-style: solid;
+    border-color: var(--gold);
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.14), rgba(212, 175, 55, 0.04));
+    box-shadow: var(--shadow-md);
+}
+
+.auction-card--more__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    padding: 32px;
+    text-align: center;
+}
+
+.auction-card--more__plus {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    border: 2px solid var(--gold-border);
+    color: var(--gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.4rem;
+    font-weight: 300;
+    line-height: 1;
+    transition: transform var(--t-fast), border-color var(--t-fast);
+}
+
+.auction-card--more:hover .auction-card--more__plus {
+    transform: rotate(90deg);
+    border-color: var(--gold);
+}
+
+.auction-card--more__label {
+    color: var(--gold);
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+}
+
+.auction-card--more__hint {
+    color: var(--text-muted);
+    font-size: 0.78rem;
+}
+
 .spinner {
     display: inline-block;
     width: 32px;

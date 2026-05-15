@@ -1,13 +1,14 @@
-// Auction detail page — real-time chat via Server-Sent Events (EventSource)
+// Auction detail page — chat via polling
 (function () {
     const BIDS_REFRESH_MS = 8000;
+    const CHAT_POLL_MS    = 2500;
 
     let productId   = 0;
     let auction     = null;
     let currentUser = null;
     let bidsTimer   = null;
-    let chatEs      = null;   // EventSource instance
-    let lastChatId  = 0;      // tracks newest message id for SSE reconnects
+    let chatTimer   = null;
+    let lastChatId  = 0;
     let chatMsgCount = 0;
 
     document.addEventListener('DOMContentLoaded', init);
@@ -21,13 +22,12 @@
 
         loadAuction();
         loadBids();
-        startChatSSE();
+        startChatPolling();
 
         bidsTimer = setInterval(loadBids, BIDS_REFRESH_MS);
 
         wireBidForm();
         wireChatForm();
-        wireChatDevForm();
         wireDelete();
         wireAddFunds();
         wireChatTextarea();
@@ -141,11 +141,18 @@
 
     function renderSeller() {
         const photo = document.getElementById('la-seller-photo');
-        photo.src = buildImgUrl(auction.seller_photo) || NB.defaultAvatarUrl();
+        photo.onerror = () => { photo.onerror = null; photo.src = NB.defaultAvatarUrl(); };
+        photo.src = NB.avatarSrc(auction.seller_photo);
         setText('la-seller-name', auction.seller_name || '—');
         const rating = auction.seller_rating ? Number(auction.seller_rating).toFixed(1) : '—';
         setText('la-seller-rating',  rating);
         setText('la-seller-reviews', auction.seller_reviews || 0);
+
+        // Link the whole card to the seller's public profile (read-only view).
+        const link = document.getElementById('la-seller-link');
+        if (link && auction.seller_id) {
+            link.href = `../Perfil.html?user_id=${encodeURIComponent(auction.seller_id)}`;
+        }
     }
 
     function startCountdown() {
@@ -214,7 +221,6 @@
 
         if (!amount || amount <= 0) { setFeedback(msgEl, 'Valor inválido.', 'var(--danger)'); return; }
 
-        // Client-side balance pre-check for fast UX (server still validates)
         const cachedBalance = Number(NB.getCurrentUser()?.wallet ?? 0);
         if (cachedBalance < amount) {
             renderInsufficientFunds(msgEl, cachedBalance, amount);
@@ -226,13 +232,13 @@
             if (res.status === 'success') {
                 setFeedback(msgEl, res.message || 'Licitação aceite!', 'var(--success)');
 
-                // Server returns the post-bid balance — patch local cache + visible counters in place.
                 if (typeof res.new_balance === 'number') {
                     syncBalance(res.new_balance);
                 }
 
                 await loadAuction();
                 await loadBids();
+                pollChat();
             } else if (res.code === 'insufficient_funds') {
                 renderInsufficientFunds(msgEl, Number(res.balance ?? 0), Number(res.required ?? amount));
             } else {
@@ -250,7 +256,6 @@
             delete u.token;
             localStorage.setItem('user', JSON.stringify(u));
         }
-        // Patch DOM counters in place — never re-render the navbar (would wipe listeners)
         const fmt = NB.formatCurrency(newBal);
         setText('la-user-balance',      fmt);
         setText('la-user-balance-stat', fmt);
@@ -334,41 +339,29 @@
     }
 
     // ─────────────────────────────────────────────────────────────
-    //  Chat — Server-Sent Events (real-time)
+    //  Chat — polling
     // ─────────────────────────────────────────────────────────────
 
-    function startChatSSE() {
-        closeChatSSE();
-
-        const url = `${NB.BASE_URL}/api/chat/stream.php?product_id=${productId}&last_id=${lastChatId}`;
-        chatEs = new EventSource(url);
-
-        chatEs.addEventListener('init', e => {
-            const payload = JSON.parse(e.data);
-            if (payload.messages && payload.messages.length) {
-                renderChatMessages(payload.messages, false);
-                lastChatId = payload.last_id || lastChatId;
-            }
-            renderChatUI();
-        });
-
-        chatEs.addEventListener('new', e => {
-            const payload = JSON.parse(e.data);
-            if (payload.messages && payload.messages.length) {
-                renderChatMessages(payload.messages, true);
-                lastChatId = payload.last_id || lastChatId;
-            }
-        });
-
-        chatEs.addEventListener('error', () => {
-            // EventSource reconnects automatically; update URL with latest lastChatId
-            closeChatSSE();
-            setTimeout(startChatSSE, 2000);
-        });
+    function startChatPolling() {
+        pollChat();
+        chatTimer = setInterval(pollChat, CHAT_POLL_MS);
     }
 
-    function closeChatSSE() {
-        if (chatEs) { chatEs.close(); chatEs = null; }
+    async function pollChat() {
+        try {
+            const url = `/api/chat/get.php?product_id=${productId}&after_id=${lastChatId}`;
+            const data = await NB.apiGet(url);
+            if (data.status !== 'success') return;
+            const msgs = data.messages || [];
+            if (msgs.length) {
+                const append = lastChatId > 0;
+                renderChatMessages(msgs, append);
+                lastChatId = Number(data.last_id || lastChatId);
+            } else if (lastChatId === 0) {
+                // First poll, no messages at all → ensure empty state
+                renderChatUI();
+            }
+        } catch { /* network blip — next tick will retry */ }
     }
 
     function renderChatMessages(msgs, append) {
@@ -380,29 +373,12 @@
             chatMsgCount = 0;
         }
 
-        // Remove empty placeholder if present
         if (empty && box.contains(empty)) box.removeChild(empty);
 
         const wasAtBottom = box.scrollHeight - box.scrollTop - box.clientHeight < 60;
 
         msgs.forEach(m => {
-            const isOwn = currentUser && Number(m.user_id) === Number(currentUser.id);
-            const div = document.createElement('div');
-            div.className = 'la-msg' + (isOwn ? ' la-msg--own' : '');
-
-            const avatarSrc = buildImgUrl(m.user_photo) || NB.defaultAvatarUrl();
-            div.innerHTML = `
-                <div class="la-msg__avatar">
-                    <img src="${NB.escHtml(avatarSrc)}" alt="${NB.escHtml(m.user_name)}" loading="lazy" />
-                </div>
-                <div class="la-msg__content">
-                    <p class="la-msg__name">${NB.escHtml(m.user_name)}</p>
-                    <div class="la-msg__bubble">
-                        <p class="la-msg__text">${NB.escHtml(m.cht_content)}</p>
-                    </div>
-                    <span class="la-msg__time">${formatTime(m.cht_created_at)}</span>
-                </div>`;
-            box.appendChild(div);
+            box.appendChild(buildMessageEl(m));
             chatMsgCount++;
         });
 
@@ -415,57 +391,49 @@
         renderChatUI();
     }
 
-    function renderChatUI() {
-        const form      = document.getElementById('la-chat-form');
-        const authMsg   = document.getElementById('la-chat-auth-msg');
-        const devPanel  = document.getElementById('la-chat-dev');
+    function buildMessageEl(m) {
+        const isSystem = Number(m.cht_is_system) === 1;
 
-        form.hidden     = !currentUser;
-        authMsg.hidden  = !!currentUser;
-        if (devPanel) devPanel.hidden = !!currentUser;
+        if (isSystem) {
+            const div = document.createElement('div');
+            div.className = 'la-msg la-msg--system';
+            div.innerHTML = `
+                <div class="la-msg__system-bubble">
+                    <span class="la-msg__system-text">${NB.escHtml(m.cht_content)}</span>
+                    <span class="la-msg__time">${formatTime(m.cht_created_at)}</span>
+                </div>`;
+            return div;
+        }
+
+        const isOwn = currentUser && Number(m.user_id) === Number(currentUser.id);
+        const div = document.createElement('div');
+        div.className = 'la-msg' + (isOwn ? ' la-msg--own' : '');
+
+        const avatarSrc = NB.avatarSrc(m.user_photo);
+        div.innerHTML = `
+            <div class="la-msg__avatar">
+                <img src="${NB.escHtml(avatarSrc)}" alt="${NB.escHtml(m.user_name)}" loading="lazy" ${NB.avatarFallbackAttr()} />
+            </div>
+            <div class="la-msg__content">
+                <p class="la-msg__name">${NB.escHtml(m.user_name)}</p>
+                <div class="la-msg__bubble">
+                    <p class="la-msg__text">${NB.escHtml(m.cht_content)}</p>
+                </div>
+                <span class="la-msg__time">${formatTime(m.cht_created_at)}</span>
+            </div>`;
+        return div;
+    }
+
+    function renderChatUI() {
+        const form    = document.getElementById('la-chat-form');
+        const authMsg = document.getElementById('la-chat-auth-msg');
+
+        form.hidden    = !currentUser;
+        authMsg.hidden = !!currentUser;
     }
 
     function wireChatForm() {
         document.getElementById('la-chat-form').addEventListener('submit', handleChatSubmit);
-    }
-
-    function wireChatDevForm() {
-        const devForm = document.getElementById('la-chat-dev-form');
-        if (!devForm) return;
-        devForm.addEventListener('submit', handleChatDevSubmit);
-    }
-
-    async function handleChatDevSubmit(e) {
-        e.preventDefault();
-        const input   = document.getElementById('la-chat-dev-input');
-        const msgEl   = document.getElementById('la-chat-dev-msg');
-        const content = input.value.trim();
-
-        if (!content) return;
-
-        msgEl.style.color = '';
-        msgEl.textContent = 'A enviar mensagem de teste…';
-
-        try {
-            const res = await NB.apiPost(
-                '/api/chat/send.php?debug=1',
-                { product_id: productId, content },
-                { auth: false }
-            );
-
-            if (res.status === 'success') {
-                input.value = '';
-                input.style.height = 'auto';
-                msgEl.style.color = 'var(--success)';
-                msgEl.textContent = 'Mensagem de teste enviada. Aguarda 2s para o SSE atualizar.';
-            } else {
-                msgEl.style.color = 'var(--danger)';
-                msgEl.textContent = res.message || 'Erro ao enviar mensagem de teste.';
-            }
-        } catch (err) {
-            msgEl.style.color = 'var(--danger)';
-            msgEl.textContent = 'Erro de rede ao enviar mensagem de teste.';
-        }
     }
 
     function wireChatTextarea() {
@@ -502,7 +470,7 @@
             if (res.status === 'success') {
                 input.value = '';
                 input.style.height = 'auto';
-                // SSE will pick up the new message automatically within ~2s
+                pollChat(); // immediate refresh
             } else {
                 msgEl.style.color = 'var(--danger)';
                 msgEl.textContent = res.message || 'Erro ao enviar.';
@@ -538,7 +506,7 @@
             if (res.status === 'success') {
                 setFeedback(msgEl, 'Leilão eliminado. A redirecionar…', 'var(--success)');
                 clearInterval(bidsTimer);
-                closeChatSSE();
+                clearInterval(chatTimer);
                 setTimeout(() => { location.href = 'LeiloesAtivos.html'; }, 1200);
             } else {
                 setFeedback(msgEl, res.message || 'Não foi possível eliminar.', 'var(--danger)');

@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/NotificationManager.php';
 require_once __DIR__ . '/TransactionManager.php';
+require_once __DIR__ . '/ChatManager.php';
 
 function executarLazyCron(PDO $pdo): void
 {
@@ -12,6 +13,7 @@ function executarLazyCronLeiloes(PDO $pdo): void
 {
     $notif = new NotificationManager($pdo);
     $tx    = new TransactionManager($pdo);
+    $chat  = new ChatManager($pdo);
 
     $stmt = $pdo->query("SELECT prd_id, prd_name, prd_usr_id FROM product WHERE prd_ends_at < NOW() AND prd_status = 'active'");
     $expiredAuctions = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -47,12 +49,23 @@ function executarLazyCronLeiloes(PDO $pdo): void
                     $notif->create($winnerId, "Parabéns! Ganhaste o leilão de $name por " . number_format($amount, 2) . "€!", 'auction_won');
                     $notif->create($sellerId, "O teu leilão de $name foi vendido por " . number_format($amount, 2) . "€!", 'auction_sold');
                     atribuirXPAleatorio($pdo, $winnerId, "Vitória no leilão #$id");
+
+                    // System chat message: winner announcement
+                    $winnerName = '';
+                    $stmtW = $pdo->prepare("SELECT usr_name FROM userss WHERE usr_id = ?");
+                    $stmtW->execute([$winnerId]);
+                    $winnerName = (string) ($stmtW->fetchColumn() ?: 'Vencedor');
+                    $chat->sendSystem(
+                        $id,
+                        "🏁 Leilão terminado! Vencedor: {$winnerName} por " . number_format($amount, 2, ',', '.') . "€"
+                    );
                 } else {
                     $notif->create($sellerId, "O leilão de $name terminou mas houve um erro a creditar o pagamento. Contacta o suporte.", 'auction_payment_failed');
                 }
             } else {
                 $pdo->prepare("UPDATE product SET prd_status = 'expired' WHERE prd_id = ?")->execute([$id]);
                 $pdo->commit();
+                $chat->sendSystem($id, "🏁 Leilão terminado sem licitações.");
             }
         } catch (Exception $e) {
             if ($pdo->inTransaction()) {

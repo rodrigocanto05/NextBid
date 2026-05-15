@@ -31,7 +31,19 @@ class AuctionManager {
             ':uid'   => $data['uid']
         ]);
 
-        return $res ? (int) $this->pdo->lastInsertId() : false;
+        if (!$res) return false;
+        $newId = (int) $this->pdo->lastInsertId();
+
+        try {
+            require_once __DIR__ . '/ChatManager.php';
+            $chat = new ChatManager($this->pdo);
+            $chat->sendSystem(
+                $newId,
+                "🎬 O leilão começou! Preço inicial: " . number_format((float) $data['price'], 2, ',', '.') . "€"
+            );
+        } catch (Exception $e) { /* non-fatal */ }
+
+        return $newId;
     }
 
     public function addImage(int $productId, string $path, bool $isPrimary = false): int|bool {

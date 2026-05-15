@@ -1,6 +1,11 @@
 // Profile page — uses shared NB helpers
+// Supports two modes:
+//   • own profile (default): full edit/wallet/logout panel
+//   • viewing another user (?user_id=N): read-only, stats-only view
 (function () {
     let profileData = null;
+    let viewMode    = 'own'; // 'own' | 'view'
+    let viewedId    = 0;
 
     document.addEventListener('DOMContentLoaded', init);
 
@@ -10,7 +15,17 @@
         const user = NB.requireAuth('../auth/Login.html');
         if (!user) return;
 
-        loadProfile(user.id);
+        const urlId = parseInt(new URLSearchParams(location.search).get('user_id') || '0', 10);
+        if (urlId > 0 && urlId !== Number(user.id)) {
+            viewMode = 'view';
+            viewedId = urlId;
+            applyViewModeChrome();
+            loadProfile(urlId);
+            return;
+        }
+
+        viewedId = Number(user.id);
+        loadProfile(viewedId);
         loadBids();
         initAvatarUploader();
         initTabs();
@@ -20,8 +35,57 @@
         initEditTrigger();
 
         if (NB.NovoLeilao && typeof NB.NovoLeilao.init === 'function') {
-            NB.NovoLeilao.init(() => loadProfile(user.id));
+            NB.NovoLeilao.init(() => loadProfile(viewedId));
         }
+    }
+
+    // ─────────────────────────────────────────────────────────────
+    //  View-mode chrome (hide everything that doesn't belong to a
+    //  stranger looking at someone else's public profile)
+    // ─────────────────────────────────────────────────────────────
+
+    function applyViewModeChrome() {
+        document.title = 'NextBid — Perfil';
+
+        hide('pf-avatar-file');
+        hide('pf-avatar-remove');
+        hide('pf-edit-trigger');
+        hide('pf-avatar-msg');
+
+        const photoLabel = document.querySelector('label[for="pf-avatar-file"]');
+        if (photoLabel) photoLabel.style.display = 'none';
+
+        // Wallet + tabs + settings panel + bids list + FAB — none of that
+        // is visible for other users. Only the hero + stats grid remain.
+        hideSelector('.pf-wallet');
+        hideSelector('.pf-tabs');
+        hideSelector('#pf-panel-bids');
+        hideSelector('#pf-panel-settings');
+        hideSelector('.fab-stack');
+        hideSelector('#modal-novo-leilao');
+
+        // Add a "back" hint at the top of the wrapper
+        const wrapper = document.querySelector('.pf-wrapper');
+        if (wrapper && !document.getElementById('pf-back-link')) {
+            const back = document.createElement('a');
+            back.id = 'pf-back-link';
+            back.className = 'la-back';
+            back.href = 'javascript:history.back()';
+            back.innerHTML = `
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <polyline points="15 18 9 12 15 6" />
+                </svg>
+                Voltar`;
+            wrapper.insertBefore(back, wrapper.firstChild);
+        }
+    }
+
+    function hide(id) {
+        const el = document.getElementById(id);
+        if (el) el.style.display = 'none';
+    }
+    function hideSelector(sel) {
+        document.querySelectorAll(sel).forEach(el => { el.style.display = 'none'; });
     }
 
     // ─────────────────────────────────────────────────────────────
@@ -34,7 +98,7 @@
             if (data.status !== 'success') return;
             profileData = data.data;
             renderProfile(profileData);
-            prefillForm(profileData);
+            if (viewMode === 'own') prefillForm(profileData);
         } catch (err) {
             console.error('Erro ao carregar perfil:', err);
         }
@@ -53,12 +117,15 @@
         const bal = Number(p.usr_balance ?? 0);
         setText('pf-balance', bal.toLocaleString('pt-PT', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
 
-        const stored = NB.getCurrentUser();
-        if (stored && Number(stored.wallet ?? -1) !== bal) {
-            stored.wallet = bal;
-            delete stored.token;
-            localStorage.setItem('user', JSON.stringify(stored));
-            if (typeof NB.renderNavbar === 'function') NB.renderNavbar();
+        // Only sync localStorage when looking at *our own* profile.
+        if (viewMode === 'own') {
+            const stored = NB.getCurrentUser();
+            if (stored && Number(stored.wallet ?? -1) !== bal) {
+                stored.wallet = bal;
+                delete stored.token;
+                localStorage.setItem('user', JSON.stringify(stored));
+                if (typeof NB.renderNavbar === 'function') NB.renderNavbar();
+            }
         }
 
         const rating = p.avg_rating != null ? Number(p.avg_rating).toFixed(1) + ' / 5' : '—';
@@ -92,13 +159,29 @@
     function renderAvatar(photoPath) {
         const img = document.getElementById('pf-avatar-img');
         if (!img) return;
+
+        // Always fall back to the static placeholder if the URL fails.
+        const placeholder = NB.defaultAvatarUrl();
+        img.onerror = () => {
+            img.onerror = null;
+            img.src = placeholder;
+        };
+
         if (photoPath) {
             const clean = String(photoPath).replace(/^\/+/, '');
             img.src = clean.startsWith('http') ? clean : `${NB.BASE_URL}/${clean}`;
-        } else {
-            const u = NB.getCurrentUser();
-            img.src = NB.avatarUrl(u);
+            return;
         }
+
+        // No photo for this user. When we're viewing *another* user we MUST
+        // show the placeholder — never the logged-in user's avatar.
+        if (viewMode === 'view') {
+            img.src = placeholder;
+            return;
+        }
+
+        const u = NB.getCurrentUser();
+        img.src = NB.avatarUrl(u);
     }
 
     function initAvatarUploader() {
@@ -125,10 +208,12 @@
                 const res = await NB.apiPost('/api/user/update_photo.php', fd, { auth: true });
                 if (res.status === 'success') {
                     setMsg(msgEl, 'Foto atualizada!', 'var(--success)');
-                    // Update avatar in localStorage so navbar refreshes
                     const stored = NB.getCurrentUser();
-                    if (stored && res.photo_url) {
-                        stored.avatar = `${NB.BASE_URL}/${res.photo_url.replace(/^\/+/, '')}`;
+                    // The API returns the saved path under `photo` (older code
+                    // expected `photo_url`, which silently dropped the update).
+                    const newPath = res.photo || res.photo_url;
+                    if (stored && newPath) {
+                        stored.avatar = `${NB.BASE_URL}/${String(newPath).replace(/^\/+/, '')}`;
                         localStorage.setItem('user', JSON.stringify(stored));
                     }
                     if (typeof NB.renderNavbar === 'function') NB.renderNavbar();
@@ -249,7 +334,6 @@
                 if (res.status === 'success') {
                     setMsg(msgEl, 'Perfil atualizado!', 'var(--success)');
                     setVal('pf-edit-password', '');
-                    // Sync localStorage
                     const stored = NB.getCurrentUser();
                     if (stored) {
                         if (name)  stored.name  = name;

@@ -121,7 +121,7 @@
             <!-- Seller info -->
             <div class="la-card">
               <p class="la-card__title">Vendedor</p>
-              <div class="la-seller">
+              <a id="la-seller-link" class="la-seller la-seller--link" href="#" title="Ver perfil do vendedor">
                 <div class="la-seller__photo">
                   <img id="la-seller-photo" alt="Foto do vendedor" />
                 </div>
@@ -132,7 +132,8 @@
                     (<span id="la-seller-reviews">0</span> avaliações)
                   </p>
                 </div>
-              </div>
+                <span class="la-seller__chevron" aria-hidden="true">›</span>
+              </a>
             </div>
 
             <!-- Description -->
@@ -253,24 +254,6 @@
                   </div>
                   <p class="la-chat__send-msg" id="la-chat-send-msg" aria-live="polite"></p>
                 </form>
-
-                <div id="la-chat-dev" class="la-chat__dev" hidden>
-                  <p class="la-chat__dev-label">Mensagem de teste (sem login)</p>
-                  <form id="la-chat-dev-form">
-                    <div class="la-chat__input-row">
-                      <textarea id="la-chat-dev-input" maxlength="500" rows="1" class="la-chat__textarea"
-                        placeholder="Escreve uma mensagem de teste…" required></textarea>
-                      <button type="submit" class="la-chat__send-btn" aria-label="Enviar mensagem de teste">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                          stroke-width="2.5">
-                          <line x1="22" y1="2" x2="11" y2="13" />
-                          <polygon points="22 2 15 22 11 13 2 9 22 2" />
-                        </svg>
-                      </button>
-                    </div>
-                    <p class="la-chat__send-msg" id="la-chat-dev-msg" aria-live="polite"></p>
-                  </form>
-                </div>
 
                 <p id="la-chat-auth-msg" class="la-chat__auth" hidden>
                   <a href="../../auth/Login.html">Inicia sessão</a> para participar no chat.

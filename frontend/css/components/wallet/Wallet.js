@@ -123,25 +123,31 @@ NB.openWalletModal = function () {
     document.getElementById('wallet-modal')?.classList.add('open');
 };
 
-// Refresh cached wallet from server and patch the visible balance elements
-// in place. We deliberately do NOT call renderNavbar here — that would wipe
-// the dropdown / logout button event listeners and create a render loop with
-// the renderNavbar → refreshWallet wiring.
+// Refresh cached user data (balance + photo) from the server and patch the
+// visible navbar/profile elements in place. We deliberately do NOT call
+// renderNavbar here — that would wipe the dropdown / logout button event
+// listeners and create a render loop with the renderNavbar → refreshWallet wiring.
 NB.refreshWallet = async function () {
     const user = NB.getCurrentUser();
-    if (!user?.token) return;
+    if (!user?.token || !user.id) return;
     try {
-        const data = await NB.apiGet('/api/transactions/balance.php');
-        if (data.status !== 'success') return;
+        const data = await NB.apiGet(`/api/user/profile.php?user_id=${encodeURIComponent(user.id)}`);
+        if (data.status !== 'success' || !data.data) return;
 
-        const newBal = Number(data.balance ?? 0);
-        if (newBal === Number(user.wallet ?? 0)) return; // no change
+        const p      = data.data;
+        const newBal = Number(p.usr_balance ?? 0);
+        const newPh  = p.usr_photo || '';
 
-        user.wallet = newBal;
-        delete user.token;
-        localStorage.setItem('user', JSON.stringify(user));
+        // Persist both to localStorage so future page loads have them up-to-date.
+        let changed = false;
+        if (Number(user.wallet ?? 0) !== newBal) { user.wallet = newBal; changed = true; }
+        if ((user.photo || '') !== newPh)        { user.photo  = newPh; changed = true; }
+        if (changed) {
+            delete user.token;
+            localStorage.setItem('user', JSON.stringify(user));
+        }
 
-        // Patch existing DOM nodes in place so listeners stay attached.
+        // Patch balance text in place
         const balEl = document.querySelector('.user-card__balance');
         if (balEl) balEl.textContent = `💳 ${newBal.toLocaleString('pt-PT')}€`;
 
@@ -151,10 +157,16 @@ NB.refreshWallet = async function () {
                 minimumFractionDigits: 2, maximumFractionDigits: 2
             });
         }
-
         const laBal = document.getElementById('la-user-balance');
         if (laBal) laBal.textContent = NB.formatCurrency(newBal);
         const laBalStat = document.getElementById('la-user-balance-stat');
         if (laBalStat) laBalStat.textContent = NB.formatCurrency(newBal);
+
+        // Patch navbar avatar in place
+        const navAvatar = document.querySelector('.user-card__avatar img');
+        if (navAvatar) {
+            const wantSrc = NB.avatarSrc(newPh);
+            if (navAvatar.src !== wantSrc) navAvatar.src = wantSrc;
+        }
     } catch (e) { /* offline — keep cached */ }
 };

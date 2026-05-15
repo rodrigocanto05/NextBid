@@ -169,6 +169,7 @@ create table chat_message (
     cht_prd_id      int not null,
     cht_usr_id      int not null,
     cht_content     text not null,
+    cht_is_system   tinyint(1) not null default 0,
     cht_created_at  datetime not null default current_timestamp,
     primary key (cht_id),
     index idx_chat_message_prd_id (cht_prd_id),

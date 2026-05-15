@@ -1,4 +1,4 @@
-﻿// Live auctions ticker bar
+// Live auctions ticker bar
 window.NB = window.NB || {};
 
 NB.initTicker = function () {
@@ -27,7 +27,11 @@ NB.initTicker = function () {
                     <span class="ticker__amount">${NB.formatCurrency(a.current_bid || a.prd_start_price)}</span>
                 </a>`;
             }).join('');
-            track.innerHTML = items + items; // duplicate for seamless scroll
+
+            // Repeat items until the track is at least 2× the viewport wide so
+            // the -50% scroll loop never exposes empty space at any zoom level.
+            track.innerHTML = items + items;
+            NB._padTickerToFit(track, items);
         })
         .catch(() => {
             track.innerHTML = `<span class="ticker__item ticker__item--static">
@@ -35,4 +39,25 @@ NB.initTicker = function () {
                 <span class="ticker__live">Offline</span>
             </span>`;
         });
+};
+
+NB._padTickerToFit = function (track, oneSetHtml) {
+    // Inserts copies *in pairs* so the total stays even — the -50% scroll
+    // animation only loops seamlessly when the two halves of the track match.
+    const target = () => Math.max(window.innerWidth * 2, 1200);
+    const grow = () => {
+        let safety = 12;
+        while (track.scrollWidth < target() && safety-- > 0) {
+            track.insertAdjacentHTML('beforeend', oneSetHtml + oneSetHtml);
+        }
+    };
+    grow();
+    if (!NB._tickerResizeBound) {
+        NB._tickerResizeBound = true;
+        let t = null;
+        window.addEventListener('resize', () => {
+            clearTimeout(t);
+            t = setTimeout(grow, 150);
+        });
+    }
 };

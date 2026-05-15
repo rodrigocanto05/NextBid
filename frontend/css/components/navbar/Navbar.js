@@ -38,7 +38,7 @@ NB._navbarUser = function (user) {
             <div class="dropdown-wrap">
                 <div class="user-card" id="nb-user-card">
                     <div class="user-card__avatar">
-                        <img src="${NB.escHtml(avatar)}" alt="${NB.escHtml(user.name)}" />
+                        <img src="${NB.escHtml(avatar)}" alt="${NB.escHtml(user.name)}" ${NB.avatarFallbackAttr()} />
                     </div>
                     <div class="user-card__info">
                         <div class="user-card__row">

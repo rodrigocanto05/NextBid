@@ -200,6 +200,34 @@
     gap: 14px;
 }
 
+.la-seller--link {
+    color: inherit;
+    text-decoration: none;
+    padding: 6px;
+    margin: -6px;
+    border-radius: var(--radius-md);
+    transition: background var(--t-fast);
+    position: relative;
+}
+
+.la-seller--link:hover {
+    background: var(--gold-faint);
+}
+
+.la-seller__chevron {
+    margin-left: auto;
+    color: var(--gold);
+    font-size: 1.4rem;
+    line-height: 1;
+    opacity: 0.6;
+    transition: transform var(--t-fast), opacity var(--t-fast);
+}
+
+.la-seller--link:hover .la-seller__chevron {
+    opacity: 1;
+    transform: translateX(2px);
+}
+
 .la-seller__photo {
     width: 46px;
     height: 46px;
@@ -589,6 +617,38 @@
 
 .la-msg--own .la-msg__time {
     text-align: right;
+}
+
+/* System message (auction lifecycle / bid events) */
+.la-msg--system {
+    justify-content: center;
+}
+
+.la-msg--system .la-msg__system-bubble {
+    background: rgba(212, 175, 55, 0.08);
+    border: 1px dashed var(--gold-border);
+    border-radius: var(--radius-full);
+    padding: 6px 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    max-width: 100%;
+}
+
+.la-msg--system .la-msg__system-text {
+    color: var(--gold);
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    white-space: normal;
+    word-break: break-word;
+}
+
+.la-msg--system .la-msg__time {
+    margin: 0;
+    color: var(--text-faint);
+    font-size: 0.66rem;
+    display: inline;
 }
 
 /* Chat footer */
