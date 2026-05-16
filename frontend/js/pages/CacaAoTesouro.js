@@ -17,11 +17,34 @@ NB.Caca = {
 // ---------- Init ----------
 document.addEventListener('DOMContentLoaded', () => {
     if (typeof NB.renderNavbar === 'function') NB.renderNavbar();
+
+    // Garantia: monta o sino de notificações mesmo se a sequência normal falhar.
+    // Cria o slot dentro do user-cluster se este não tiver sido criado pelo Navbar.js.
+    NB.Caca.ensureNotificationBell();
+
     NB.Caca.initMap();
     NB.Caca.locateUser();
     NB.Caca.wireCodeForm();
     NB.Caca.loadClaimed();
 });
+
+NB.Caca.ensureNotificationBell = function () {
+    const user = (NB.getCurrentUser && NB.getCurrentUser()) || null;
+    if (!user) return;
+    if (typeof NB.mountNotificationBell !== 'function') return;
+    if (document.getElementById('nb-bell')) return; // já montado
+
+    // Garante que o slot existe
+    let slot = document.getElementById('nb-bell-slot');
+    if (!slot) {
+        const cluster = document.querySelector('.user-cluster');
+        if (!cluster) return; // navbar ainda não renderizou — desistir silenciosamente
+        slot = document.createElement('div');
+        slot.id = 'nb-bell-slot';
+        cluster.insertBefore(slot, cluster.firstChild);
+    }
+    NB.mountNotificationBell();
+};
 
 // ---------- Mapa ----------
 NB.Caca.initMap = function () {

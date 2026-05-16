@@ -155,7 +155,7 @@ $products = $pdo->query("SELECT prd_id, prd_name FROM product WHERE prd_status =
 
         <div id="create-form" class="form-box hidden">
             <h3>Novo evento de caça ao tesouro</h3>
-            <form method="POST">
+            <form method="POST" id="event-form">
                 <input type="hidden" name="action" value="create">
 
                 <div class="form-grid">
@@ -181,14 +181,26 @@ $products = $pdo->query("SELECT prd_id, prd_name FROM product WHERE prd_status =
                     </div>
                 </div>
 
-                <div class="form-grid three" style="margin-top: 12px;">
+                <div class="form-grid" style="margin-top: 12px; grid-template-columns: 2fr 1fr;">
                     <div class="form-group">
-                        <label>Latitude *</label>
-                        <input type="number" step="0.0000001" min="-90" max="90" name="latitude" placeholder="38.7169" required>
+                        <label>Colar coordenadas do Google Maps</label>
+                        <input type="text" id="paste-coords" placeholder="Ex: 38.755231, -9.100041 (clica direito no mapa &rarr; copia)">
                     </div>
                     <div class="form-group">
-                        <label>Longitude *</label>
-                        <input type="number" step="0.0000001" min="-180" max="180" name="longitude" placeholder="-9.1399" required>
+                        <label>&nbsp;</label>
+                        <button type="button" id="btn-current-location" class="toggle-btn" style="margin: 0; padding: 10px;">📍 Usar minha localização</button>
+                    </div>
+                </div>
+                <div id="coords-feedback" style="font-size: 12px; color: #888; margin-top: 4px; min-height: 16px;"></div>
+
+                <div class="form-grid three" style="margin-top: 12px;">
+                    <div class="form-group">
+                        <label>Latitude * <span style="color:#888; text-transform:none; font-size:10px;">(formato decimal, ex: 38.7169)</span></label>
+                        <input type="number" step="0.0000001" min="-90" max="90" name="latitude" id="latitude" placeholder="38.7169" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Longitude * <span style="color:#888; text-transform:none; font-size:10px;">(formato decimal, ex: -9.1399)</span></label>
+                        <input type="number" step="0.0000001" min="-180" max="180" name="longitude" id="longitude" placeholder="-9.1399" required>
                     </div>
                     <div class="form-group">
                         <label>Raio (metros)</label>
@@ -265,5 +277,136 @@ $products = $pdo->query("SELECT prd_id, prd_name FROM product WHERE prd_status =
             </tbody>
         </table>
     </div>
+
+    <script>
+    (function () {
+        const pasteInput   = document.getElementById('paste-coords');
+        const latInput     = document.getElementById('latitude');
+        const lngInput     = document.getElementById('longitude');
+        const feedback     = document.getElementById('coords-feedback');
+        const locBtn       = document.getElementById('btn-current-location');
+        const form         = document.getElementById('event-form');
+
+        function showFeedback(msg, ok) {
+            feedback.textContent = msg;
+            feedback.style.color = ok ? '#28a745' : '#e74c3c';
+        }
+
+        function normalizeNumber(raw) {
+            if (raw === null || raw === undefined) return NaN;
+            let s = String(raw).trim();
+            if (s === '') return NaN;
+            const negative = s.startsWith('-');
+            if (negative) s = s.slice(1);
+            s = s.replace(',', '.');
+            if (!/^\d+(\.\d+)?$/.test(s)) return NaN;
+            return parseFloat((negative ? '-' : '') + s);
+        }
+
+        // Aceita "38.755231, -9.100041" ou "38.755231 -9.100041" ou com pt-PT vírgula decimal
+        function parsePastedCoords(text) {
+            if (!text) return null;
+            let s = text.trim();
+
+            // Tenta o caso simples: dois números separados por vírgula (pt internacional)
+            // Ex: "38.755231, -9.100041"
+            let m = s.match(/^(-?\d+\.\d+)\s*[,;]\s*(-?\d+\.\d+)$/);
+            if (m) return { lat: parseFloat(m[1]), lng: parseFloat(m[2]) };
+
+            // Caso pt-PT com vírgula decimal: "38,755231 -9,100041" ou "38,755231; -9,100041"
+            m = s.match(/^(-?\d+,\d+)\s*[;\s]\s*(-?\d+,\d+)$/);
+            if (m) return { lat: parseFloat(m[1].replace(',', '.')), lng: parseFloat(m[2].replace(',', '.')) };
+
+            // Caso com espaço a separar: "38.755231 -9.100041"
+            m = s.match(/^(-?\d+\.\d+)\s+(-?\d+\.\d+)$/);
+            if (m) return { lat: parseFloat(m[1]), lng: parseFloat(m[2]) };
+
+            return null;
+        }
+
+        function applyCoords(lat, lng) {
+            if (lat < -90 || lat > 90)   { showFeedback('Latitude fora do intervalo (-90 a 90).', false); return; }
+            if (lng < -180 || lng > 180) { showFeedback('Longitude fora do intervalo (-180 a 180).', false); return; }
+            latInput.value = lat.toFixed(7);
+            lngInput.value = lng.toFixed(7);
+            showFeedback('Coordenadas preenchidas: ' + lat.toFixed(6) + ', ' + lng.toFixed(6), true);
+        }
+
+        pasteInput.addEventListener('input', function () {
+            const text = pasteInput.value;
+            if (!text.trim()) { showFeedback('', true); return; }
+            const parsed = parsePastedCoords(text);
+            if (parsed) {
+                applyCoords(parsed.lat, parsed.lng);
+            } else {
+                showFeedback('Formato não reconhecido. Usa "38.755231, -9.100041".', false);
+            }
+        });
+
+        locBtn.addEventListener('click', function () {
+            if (!navigator.geolocation) {
+                showFeedback('O browser não suporta geolocalização.', false);
+                return;
+            }
+            locBtn.disabled = true;
+            locBtn.textContent = 'A obter localização...';
+            navigator.geolocation.getCurrentPosition(
+                function (pos) {
+                    applyCoords(pos.coords.latitude, pos.coords.longitude);
+                    locBtn.disabled = false;
+                    locBtn.textContent = '📍 Usar minha localização';
+                },
+                function (err) {
+                    showFeedback('Não foi possível obter localização: ' + err.message, false);
+                    locBtn.disabled = false;
+                    locBtn.textContent = '📍 Usar minha localização';
+                },
+                { enableHighAccuracy: true, timeout: 10000 }
+            );
+        });
+
+        // Deteção pré-submit: apanha o caso "esqueci-me do ponto decimal"
+        form.addEventListener('submit', function (e) {
+            const lat = parseFloat(latInput.value);
+            const lng = parseFloat(lngInput.value);
+
+            if (Number.isNaN(lat) || Number.isNaN(lng)) {
+                showFeedback('Preenche latitude e longitude.', false);
+                e.preventDefault();
+                return;
+            }
+
+            // Se o utilizador escreveu "-9099948" sem ponto, tentamos sugerir
+            function looksLikeMissingDecimal(val, maxAbs) {
+                return Math.abs(val) > maxAbs;
+            }
+
+            if (looksLikeMissingDecimal(lat, 90)) {
+                e.preventDefault();
+                const sugestao = (lat / Math.pow(10, String(Math.trunc(Math.abs(lat))).length - 2)).toFixed(7);
+                showFeedback('Latitude inválida (' + lat + '). Esqueceste o ponto decimal? Talvez quisesses dizer ' + sugestao + '.', false);
+                latInput.focus();
+                return;
+            }
+
+            if (looksLikeMissingDecimal(lng, 180)) {
+                e.preventDefault();
+                // Heurística: insere um ponto depois do primeiro ou dois primeiros dígitos
+                const abs = Math.abs(lng);
+                const digits = String(Math.trunc(abs));
+                const sign = lng < 0 ? '-' : '';
+                let sugestao;
+                if (digits.length >= 2) {
+                    sugestao = sign + digits.slice(0,1) + '.' + digits.slice(1);
+                } else {
+                    sugestao = sign + '0.' + digits;
+                }
+                showFeedback('Longitude inválida (' + lng + '). Esqueceste o ponto decimal? Talvez quisesses dizer ' + sugestao + '.', false);
+                lngInput.focus();
+                return;
+            }
+        });
+    })();
+    </script>
 </body>
 </html>
