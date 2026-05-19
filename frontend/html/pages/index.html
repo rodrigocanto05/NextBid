@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>NextBid — Leilões Premium</title>
-  <link rel="stylesheet" href="../../css/main.css?v=8" />
+  <link rel="stylesheet" href="../../css/main.css?v=9" />
 
 </head>
 
@@ -113,6 +113,68 @@
       </div>
     </section>
 
+    <!-- DISCOVER — Caça ao Tesouro & Criar Leilão -->
+    <section class="discover">
+      <div class="discover__header">
+        <h2 class="discover__title">Descobre Mais</h2>
+      </div>
+
+      <div class="discover__grid">
+        <a href="CaçaAoTesouro.html" class="discover-tile discover-tile--treasure" aria-label="Ir para Caça ao Tesouro">
+          <div class="discover-tile__bg" aria-hidden="true"></div>
+          <div class="discover-tile__overlay" aria-hidden="true"></div>
+          <div class="discover-tile__top">
+            <span class="discover-tile__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M6 3h12l4 6-10 13L2 9Z" />
+                <path d="M11 3 8 9l4 13 4-13-3-6" />
+                <path d="M2 9h20" />
+              </svg>
+            </span>
+            <span class="discover-tile__kicker">Aventura</span>
+          </div>
+          <div class="discover-tile__body">
+            <h3 class="discover-tile__title">Caça ao <span class="accent">Tesouro</span></h3>
+            <p class="discover-tile__desc">Descobre tesouros escondidos pela cidade, valida o código secreto e leva o prémio para casa. Mapas em tempo real, recompensas reais.</p>
+            <span class="discover-tile__cta">
+              Começar a caça
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12" />
+                <polyline points="12 5 19 12 12 19" />
+              </svg>
+            </span>
+          </div>
+        </a>
+
+        <a href="leiloes/LeiloesAtivos.html?action=novo#novo" id="discover-create-link" class="discover-tile discover-tile--create" aria-label="Criar novo leilão">
+          <div class="discover-tile__bg" aria-hidden="true"></div>
+          <div class="discover-tile__overlay" aria-hidden="true"></div>
+          <div class="discover-tile__top">
+            <span class="discover-tile__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m14 2 6 6-7 7-6-6Z" />
+                <path d="m8 9-6 6 6 6 6-6" />
+                <path d="m17 11 5 5" />
+                <path d="m2 21 5-5" />
+              </svg>
+            </span>
+            <span class="discover-tile__kicker">Vende</span>
+          </div>
+          <div class="discover-tile__body">
+            <h3 class="discover-tile__title">Cria o teu <span class="accent">Leilão</span></h3>
+            <p class="discover-tile__desc">Publica um produto em segundos, define o preço inicial e a duração. Recebe licitações em direto e maximiza o valor da tua peça.</p>
+            <span class="discover-tile__cta">
+              Publicar agora
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12" />
+                <polyline points="12 5 19 12 12 19" />
+              </svg>
+            </span>
+          </div>
+        </a>
+      </div>
+    </section>
+
     <!-- FEATURED AUCTIONS -->
     <section class="section">
       <h2 class="section__title">Leilões em Destaque</h2>
@@ -138,12 +200,12 @@
   <script src="../../css/components/notification-bell/NotificationBell.js?v=8"></script>
 
   <script src="../../css/components/navbar/Navbar.js?v=8"></script>
-  <script src="../../css/components/cronometro/Cronometro.js?v=8"></script>
+  <script src="../../css/components/cronometro/Cronometro.js?v=10"></script>
   <script src="../../css/components/hero/HeroCarousel.js?v=8"></script>
   <script src="../../css/components/ticker/Ticker.js?v=8"></script>
   <script src="../../css/components/auction-card/AuctionCard.js?v=8"></script>
   <script src="../../css/components/filter-bar/FilterBar.js?v=8"></script>
-  <script src="../../js/pages/Home.js?v=8"></script>
+  <script src="../../js/pages/Home.js?v=10"></script>
 </body>
 
 </html>

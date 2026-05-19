@@ -11,6 +11,11 @@
         NB.Favorites?.load();
         loadFeatured();
         refreshTimer = setInterval(loadFeatured, REFRESH_MS);
+
+        // Mark intent to open "Criar Leilão" modal on the destination page
+        document.getElementById('discover-create-link')?.addEventListener('click', () => {
+            try { sessionStorage.setItem('nb_open_novo', '1'); } catch (_) {}
+        });
     });
 
     function loadFeatured() {
