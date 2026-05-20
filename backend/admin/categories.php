@@ -53,6 +53,9 @@ $categories = $pdo->query("
 <head>
     <meta charset="UTF-8">
     <title>Categorias - NextBid Admin</title>
+    <link rel="icon" href="../../frontend/img/favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../frontend/img/favicon-32.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="../../frontend/img/favicon-192.png">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Segoe UI', Arial, sans-serif; background: #1a1a2e; color: white; }

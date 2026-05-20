@@ -31,6 +31,9 @@ $recentAuctions = $pdo->query("SELECT p.prd_name, p.prd_status, p.prd_start_pric
 <head>
     <meta charset="UTF-8">
     <title>Dashboard - NextBid Admin</title>
+    <link rel="icon" href="../../frontend/img/favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../frontend/img/favicon-32.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="../../frontend/img/favicon-192.png">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
