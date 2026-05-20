@@ -1,0 +1,20 @@
+# macOS
+.DS_Store
+
+# Editors
+.idea/
+.vscode/
+
+# Logs / env
+.env
+*.log
+
+# Dependencies
+/vendor/
+node_modules/
+
+# Uploads gerados em runtime (manter pasta, ignorar conteúdo)
+backend/uploads/avatars/*
+backend/uploads/products/*
+!backend/uploads/avatars/.gitkeep
+!backend/uploads/products/.gitkeep

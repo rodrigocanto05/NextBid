@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body>
     <div class="login-box">
-<img src="nextbid_logo.png" alt="NextBid" style="width: 200px; display: block; margin: 0 auto 25px; mix-blend-mode: lighten;">
+<img src="../../frontend/img/logo-NextBid.png" alt="NextBid" style="width: 200px; display: block; margin: 0 auto 25px; mix-blend-mode: lighten;">
         <?php if ($error): ?>
             <p class="error"><?= $error ?></p>
         <?php endif; ?>

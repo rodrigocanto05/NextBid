@@ -60,7 +60,7 @@ $users = $pdo->query("
 </head>
 <body>
     <div class="navbar">
-        <img src="nextbid_logo.png" alt="NextBid" class="logo" style="height: 70px; mix-blend-mode: lighten;">
+        <img src="../../frontend/img/logo-NextBid.png" alt="NextBid" class="logo" style="height: 70px; mix-blend-mode: lighten;">
         <div>
             <a href="dashboard.php">Dashboard</a>
             <a href="users.php" class="active">Utilizadores</a>
