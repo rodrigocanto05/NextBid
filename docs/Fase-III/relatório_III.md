@@ -175,24 +175,24 @@ Conforme os requisitos estatísticos da UC de Estatística, o painel de backoffi
 | **03** | Licitação Inválida por Valor | Utilizador tenta submeter lance com valor inferior ou igual ao atual. | Rejeição imediata no backend com retorno de código de erro JSON. | **Aprovado** |
 | **04** | Validação Espacial GPS | Submissão de coordenadas fora do raio limite do tesouro ativo. | Bloqueio do pedido pelo cálculo de Haversine; prémio não atribuído. | **Aprovado** |
 
-### 11.2 Resultados dos Testes de Usabilidade com Utilizadores Finais [cite: 25, 85]
+### 11.2 Resultados dos Testes de Usabilidade com Utilizadores Finais
 * **Taxa de Conclusão de Tarefas (Task Success Rate):** 92% dos utilizadores participantes concluíram com sucesso o fluxo completo sem apoio externo (Registo $\rightarrow$ Carregamento de Carteira $\rightarrow$ Colocação de Licitação).
 * **Resolução de Fricção Técnica:** Detetaram-se falhas de timeout em ligações móveis ao efetuar o upload de múltiplas imagens pesadas de alta resolução. A solução implementada passou pela introdução de uma rotina de compressão e redimensionamento client-side via JavaScript antes do envio para a API, reduzindo a taxa de erro neste módulo para 0%.
 
 ---
 
-## 12. Ligação com os Conceitos Teóricos Académicos (PBL) [cite: 15]
+## 12. Ligação com os Conceitos Teóricos Académicos
 
-* **Programação Web:** Estruturação de serviços baseados em arquitetura RESTful, consumo assíncrono de dados através de chamadas HTTP (Fetch API) e manuseamento de objetos JSON estruturados[cite: 42].
-* **Interfaces e Usabilidade:** Validação de taxonomia e menus através da técnica de *Tree Testing*, desenho de componentes com base num *Design System* atómico e redução de carga cognitiva na interface de licitação[cite: 42].
-* **Sistemas de Informação Geográfica (SIG):** Tratamento, conversão e manipulação de dados espaciais (coordenadas decimais de latitude e longitude) e mapeamento vetorial dinâmico em ambiente web[cite: 44].
-* **Algoritmos e Estruturas de Dados:** Implementação de mecanismos de pesquisa, ordenação de históricos de lances e otimização das regras de integridade concorrente no servidor[cite: 44].
+* **Programação Web:** Estruturação de serviços baseados em arquitetura RESTful, consumo assíncrono de dados através de chamadas HTTP (Fetch API) e manuseamento de objetos JSON estruturados.
+* **Interfaces e Usabilidade:** Validação de taxonomia e menus através da técnica de *Tree Testing*, desenho de componentes com base num *Design System* atómico e redução de carga cognitiva na interface de licitação.
+* **Sistemas de Informação Geográfica (SIG):** Tratamento, conversão e manipulação de dados espaciais (coordenadas decimais de latitude e longitude) e mapeamento vetorial dinâmico em ambiente web.
+* **Algoritmos e Estruturas de Dados:** Implementação de mecanismos de pesquisa, ordenação de históricos de licitações e otimização das regras de integridade concorrente no servidor.
 
 ---
 
 ## 13. Estado Final do Protótipo e Conclusão Geral
 
-O projeto **NextBid** conclui a sua fase final com todos os objetivos estratégicos e técnicos estabelecidos no briefing plenamente atingidos[cite: 89]. A criação de uma infraestrutura estável dividida de forma clara entre frontend e backend provou ser eficaz para assegurar a rapidez e robustez necessárias a um sistema transacional de leilões. 
+O projeto **NextBid** conclui a sua fase final com todos os objetivos estratégicos e técnicos estabelecidos no briefing plenamente atingidos. A criação de uma infraestrutura estável dividida de forma clara entre frontend e backend provou ser eficaz para assegurar a rapidez e robustez necessárias a um sistema transacional de leilões. 
 
 A introdução bem-sucedida do módulo de geolocalização e das componentes de recompensa por progressão diferencia o NextBid das plataformas tradicionais de comércio eletrónico, resultando num produto final otimizado, seguro e em total conformidade com os requisitos académicos formulados.
 
@@ -203,4 +203,7 @@ A introdução bem-sucedida do módulo de geolocalização e das componentes de 
 * DealDash. (2026). *The Online Auction Site with the Lowest Prices*. Obtido de https://www.dealdash.com
 * eBay. (2026). *Buy & Sell Electronics, Cars, Fashion, Collectibles & More*. Obtido de https://www.ebay.com
 * Mercado Livre. (2026). *Compra y Venta de Productos Online*. Obtido de https://www.mercadolibre.com
-* Nielsen Norman Group. (2026). *Tree Testing: Fast, Iterative Evaluation of Menu Labels and Categories*. Obtido de https://www.nngroup.com/articles/tree-testing/
+* JetBrains. (2026). *PhpStorm: The Lightning-Smart IDE for PHP Developers*. Obtido de https://www.jetbrains.com/phpstorm/
+* MAMP. (2026). *MAMP and MAMP Pro: Local Web Development Environment*. Obtido de https://www.mamp.info
+* MySQL. (2026). *MySQL 8.0 Reference Manual*. Oracle Corporation. Obtido de https://dev.mysql.com/doc/refman/8.0/en/
+* Microsoft. (2026). *Visual Studio Code: Code Editing. Redefined*. Obtido de https://code.visualstudio.com/
