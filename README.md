@@ -1,58 +1,50 @@
-# NextBid — Plataforma de Leilões
+# NextBid
 
-A **NextBid** é uma aplicação web inovadora dedicada à criação, gestão e participação em leilões online de forma dinâmica. Desenvolvida sob a metodologia *Project-Based Learning* no 4.º semestre da Licenciatura em Engenharia Informática no IADE - Universidade Europeia, a plataforma diferencia-se ao integrar mecânicas avançadas de gamificação e geolocalização em tempo real.
+Este repositório contém o projeto **NextBid**, desenvolvido no âmbito da Unidade Curricular de **Projeto** da Universidade Europeia / IADE.
 
----
-
-## Links Rápidos e Entregáveis
-
-* **Última Release Oficial (Fase III):** https://github.com/rodrigocanto05/NextBid/blob/main/docs/Fase-III/relatório_III.md
-* **UI/UX Assets & Design System (Figma):** https://www.figma.com/design/pgCvU0DvI50EcrGyFTnkmz/Design-System--Community-?node-id=4-6&t=SOEzBYig4gihzntO-1
-* **Documentação Completa da API (Swagger):** https://github.com/rodrigocanto05/NextBid/blob/main/docs/Fase-II/openapi-NextBid.yaml
----
-
-## Stack Tecnológico
-
- O nosso Website foi estruturada de forma modular, garantindo uma separação estrita de responsabilidades entre cliente e servidor:
-
-| Camada | Tecnologia | Função no Sistema |
-| :--- | :--- | :--- |
-| **Frontend** | HTML5 / CSS / Vanilla JS (ES6+) | Interface responsiva e consumo assíncrono de dados. |
-| **Mapas** | Leaflet.js | Renderização cartográfica vetorial do cliente. |
-| **Backend** | PHP | Processamento lógico de negócio, tokens e segurança. |
-| **Base de Dados** | MySQL | Persistência relacional normalizada em 3FN. |
-| **Servidor Local** | XAMPP / MAMP | Ambiente unificado de desenvolvimento local. |
+Este projeto consiste no desenvolvimento de uma plataforma web inovadora de leilões online que combina o modelo tradicional de licitação competitiva com recursos dinâmicos de gamificação e geolocalização. Através de uma interface interativa e dashboards intuitivos, os utilizadores podem criar, gerir e participar em leilões em tempo real, visualizando assim a localização dos produtos através de um mapa interativo. Além disso, a aplicação introduz uma mecânica exclusiva de "Caça ao Tesouro", onde produtos e recompensas são colocados no mapa para incentivar a exploração urbana e aumentar o envolvimento dos utilizadores, transformando o e-commerce tradicional numa experiência dinâmica e centrada no utilizador.
 
 ---
 
-## Estrutura do Repositório
+## Documentação
 
-O repositório está organizado de forma rigorosa, nós isolamos os módulos do sistema e mapeamos também os artefactos visuais de planeamento:
+Toda a documentação detalhada do projeto encontra‑se na pasta [docs](https://github.com/rodrigocanto05/NextBid/tree/main/docs), incluindo os materiais já concluídos. A pasta está organizada e estruturada com todos os elementos mencionados abaixo:
 
-```text
-NextBid/
-├── backend/
-│   ├── api/             # Endpoints RESTful (.php) divididos por módulos
-│   ├── config/          # Ficheiros de configuração e ligação PDO à BD
-│   ├── includes/        # Managers de lógica core (Auth, Auction, Gamification)
-│   ├── uploads/         # Diretoria física para armazenamento de imagens
-│   └── openapi.yaml     # Especificação OpenAPI 3.0 para o Swagger
-├── database/
-│   ├── Tables.sql      # Tabelas necessárias para criar a base de dados
-│   ├── queries.sql      # Scripts de teste e listagens estatísticas
-│   └── inserts.sql      # Script oficial para a criação física das tabelas
-├── docs/
-│   ├── Fase-I/          # Levantamento de requisitos e diagramas iniciais
-│   ├──  Fase-II/
-│       ├── Mockupsnextbid/  # Protótipos de alta fidelidade das interfaces
-│       └── wireframes/       # Esboços estruturais de baixa fidelidade (UX)
-│   └── Fase-III/
-├── frontend/
-│   ├── css/           # Estilos estruturais e classes do design system em código
-│   ├── html/          #documentos html para estrutura das páginas so site  
-│   ├── js/            # Controladores e Fetch API para consumo assíncrono
-│   └── img/           # Ecrãs e páginas do ecossistema do utilizador
-└── README.md          # Links rápidos e Documentação técnica de acolhimento do repositório
+* Descrição completa do projeto
+* Objetivos e motivação
+* Pesquisa de mercado e análise de concorrentes
+* Requisitos funcionais e não funcionais 
+* Modelo de domínio e Modelação do Sistema 
+* Mockups e protótipos de alta fidelidade 
+* Especificação da API RESTful 
+* Guiões de teste e relatórios de usabilidade
+* Planejamento, WBS e roadmap 
 
+---
+
+## Tecnologias Utilizadas para o Desenvolvimento do Projeto
+
+* **Frontend:** HTML5, CSS3, Vanilla JavaScript 
+* **Backend:** PHP 
+* **Base de Dados:** MySQL 
+* **Design & UI/UX:** Figma 
+* **Mapeamento & SIG:** Leaflet.js 
+* **Documentação da API:** Swagger 
+* **Ambiente Local:** MAMP
+
+---
+
+## Equipa
+
+* Daniel Paulo
+* Marco Fonseca
+* Rodrigo Canto
+* Rodrigo Daibert
+
+---
+
+## Objetivo Final
+
+O nosso objetivo final consiste em criar uma plataforma funcional, escalável, segura e altamente interativa, integrando tecnologias web modernas  para revolucionar o modelo tradicional de leilões online, apoiando a tomada de decisão através de dashboards de dados analíticos.
 
 
