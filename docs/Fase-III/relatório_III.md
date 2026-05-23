@@ -75,12 +75,11 @@
 * **RF-03 (Validação de Bids):** Verificação assíncrona que garante que cada lance submetido é estritamente superior ao valor atual somado ao incremento mínimo.
 * **RF-04 (Fecho Automático):** Encerramento autónomo do leilão quando o cronómetro atinge zero, elegendo o vencedor e atualizando os saldos afetados.
 * **RF-05 (Caça ao Tesouro):** Atribuição de prémios e pontos de experiência baseada na verificação de proximidade GPS.
+* **RF-06 (Segurança):** Criptografia de credenciais via algoritmo `BCRYPT`, prevenção contra SQL Injection através de `PDO Prepared Statements` e sanitização de inputs contra XSS.
 
 ### 4.2 Requisitos Não Funcionais (RNF)
-* **RNF-01 (Segurança):** Criptografia de credenciais via algoritmo `BCRYPT`, prevenção contra SQL Injection através de `PDO Prepared Statements` e sanitização de inputs contra XSS.
-* **RNF-02 (Performance):** Respostas de endpoints da API em formato JSON estruturado com tempos de latência inferiores a 200 milissegundos.
-* **RNF-03 (Compatibilidade):** Implementação do frontend em JavaScript Vanilla (ES6+), garantindo execução fluida em browsers modernos sem frameworks pesados de terceiros.
-
+* **RNF-01 (Seguir produto pela localização):** Queríamos implementar a funcionalidade de rastreio de produto por georeferenciação mas pela falta de tempo não conseguimos fazer, pórem é uma funcionalidade qeu pretendemos implementar no futuro
+* **RNF-02 (Flipcoin):** A implementação do flipcoin surgiu como uma funcionalidade core no nosso website porém logo na primeira fase percebemos que não consguimos implemntar por não ser aplicavél a leilões.
 ---
 
 ## 5. Arquitetura de Informação, User Journey e UI/UX
