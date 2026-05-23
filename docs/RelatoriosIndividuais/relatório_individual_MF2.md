@@ -1,12 +1,42 @@
-# Relatório Individual 
+# Relatório Individual – Fase II
 
-## Descrição das Atividades
+## Contributo Individual
 
-Ao longo desta semana, estive envolvido no desenvolvimento de várias componentes do projeto, com foco tanto na preparação dos materiais de apresentação final como em melhorias à plataforma.
+No desenvolvimento do projeto **NextBid**, o meu contributo centrou-se na componente de **frontend**, **wireframes**, **Web Design System**, apresentação.
 
-- Discussão e troca de ideias relativas ao vídeo do projeto
-- Desenvolvimento do poster  
-- Contribuição na continuação do desenvolvimento do frontend
-## Conclusão
+---
 
-O trabalho desenvolvido esta semana permitiu fazer progressos na preparação da apresentação do projeto, bem como melhorar e expandir as funcionalidades da plataforma ao nível do frontend.
+## Frontend
+
+Fui responsável pelo desenvolvimento da interface da aplicação.
+
+Implementei páginas CSs estruturadas para:
+- Visualização do Perfil
+- Detalhes do Leilão
+
+Creiei com coerência para seguir o segmento que queremos para a nossa aplicação.
+
+
+---
+
+## WireFrames 
+
+Desenvolvi todas as wireframes referentes ao nosso projeto. 
+
+---
+
+## Web Design System 
+
+Construí o nosso Web Design System referente ao nosso site.
+
+---
+
+## Apresentação
+
+Tratei também da apresentação para a nossa apresentação.
+
+---
+
+## Considerações finais 
+
+Nesta segunda fase trabalei enssialmente no que era necessário para a segunda entrega do projeto e desenvolvi uma parte do frontened.

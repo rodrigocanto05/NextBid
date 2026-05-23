@@ -1,47 +1,57 @@
-# Relatório Individual Semanal
+# Relatório Individual – Fase II
 
-## Descrição das Atividades
+## Contributo Individual
 
-Durante esta semana, dediquei-me à implementação de novas funcionalidades centrais da aplicação, ao refinamento do sistema de chat ao vivo e à execução de testes funcionais a várias áreas do projeto, com o objetivo de garantir a estabilidade e a integração das funcionalidades já existentes.
+No desenvolvimento do projeto **NextBid**, o meu contributo centrou-se maioritariamente na componente de **frontend** e na **integração do frontend com o backend**, garantindo que os dados fossem corretamente obtidos e apresentados na interface.
 
-## Trabalho Realizado
+---
 
-- Resolução de problemas no sistema de chat ao vivo dos leilões, com criação de scripts de debug e validação da ligação à base de dados
+## Frontend
 
-- Implementação do sistema de notificações, incluindo:
-  - Componente de sino de notificações na navbar (NotificationBell)
-  - Página dedicada de notificações (Notificacoes.html)
-  - Backend de gestão de notificações (NotificationManager)
-  - Correção da sincronização do ícone de notificações na navbar
+Fui responsável pelo desenvolvimento da interface da aplicação, com foco na apresentação clara e funcional dos dados ao utilizador.
 
-- Desenvolvimento da funcionalidade de Guardados/Favoritos:
-  - Componente FavoriteButton reutilizável nos cartões de leilão
-  - APIs de backend para adicionar, remover e listar favoritos (toggle, list, ids)
-  - Migração da base de dados para suportar a tabela de favoritos
-  - Integração do botão de favoritos nas páginas de leilões e detalhes
+Implementei páginas HTML estruturadas para:
+- Visualização de leilões
+- Interação com dados provenientes do servidor
+- Organização da informação de forma intuitiva
 
-- Resolução de problemas relacionados com o avatar do utilizador e padding em várias páginas
+Tive especial atenção à forma como os dados são apresentados, assegurando coerência entre a estrutura da interface e os fluxos principais do utilizador.
 
-- Tornar o chat ao vivo totalmente operacional, com melhorias no ChatManager, AuctionManager e BidManager
+---
 
-- Atualizações ao carrossel da página inicial (HeroCarousel) e ao Ticker de leilões
+## Integração Frontend ↔ Backend
 
-- Melhorias na página de Perfil e na exibição de leilões do utilizador (MeusLeiloes)
+Trabalhei diretamente na ligação entre o frontend e o backend, permitindo que a aplicação:
 
-- Ajustes no sistema de autenticação (Auth.js) e gestão da carteira (Wallet)
+- Faça pedidos ao servidor (HTTP requests)
+- Receba dados processados pelo backend
+- Apresente esses dados dinamicamente no HTML
 
-## Testes Realizados
+Esta integração valida o funcionamento do sistema ao nível de:
+- Obtenção de dados
+- Comunicação cliente-servidor
+- Atualização da interface com base nos dados recebidos
 
-- Testes funcionais à página Caça ao Tesouro, validando o fluxo de gamificação e a sua integração com o backend (gamification.php)
+---
 
-- Testes ao sistema de chat ao vivo, incluindo envio de mensagens, sincronização em tempo real e leitura correta de dados da base de dados
+## Validação do Sistema
 
-- Validação do sistema de notificações em diferentes cenários de utilização (criação, leitura e atualização do contador)
+O trabalho desenvolvido contribui para demonstrar que o sistema consegue:
 
-- Testes ao botão de favoritos em vários pontos da aplicação (página inicial, leilões ativos, meus leilões e detalhe de leilão)
+- Obter dados a partir do backend  
+- Processar e enviar esses dados  
+- Apresentá-los corretamente no frontend  
 
-- Verificação visual e funcional das correções de layout (avatar, padding, espaçamento) nas várias páginas afetadas
+Isto confirma o funcionamento do fluxo:
 
-## Conclusão
+Dados → Backend → Frontend (HTML)
 
-O trabalho desenvolvido nesta semana permitiu consolidar funcionalidades essenciais para a experiência do utilizador, como o sistema de notificações e de favoritos, bem como resolver problemas pendentes no chat ao vivo. Os testes realizados às várias componentes do projeto contribuíram para garantir uma maior estabilidade e coerência geral da aplicação.
+---
+
+## Considerações Finais
+
+O meu foco esteve na componente prática da aplicação, garantindo que a interface não é apenas visual, mas funcional e ligada ao sistema.
+
+A integração entre frontend e backend foi essencial para validar o comportamento real da aplicação, assegurando que os dados são corretamente refletidos na experiência do utilizador.\
+
+
