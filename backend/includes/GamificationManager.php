@@ -12,60 +12,6 @@ class GamificationManager
         $this->pdo = $pdo;
     }
 
-    public function createEvent(array $data): int|array
-    {
-        $required = ['name', 'prd_id', 'latitude', 'longitude', 'starts_at', 'ends_at'];
-        foreach ($required as $field) {
-            if (!isset($data[$field]) || $data[$field] === '') {
-                return ['status' => 'error', 'message' => "Campo '$field' obrigatório."];
-            }
-        }
-
-        $startsTs = strtotime($data['starts_at']);
-        $endsTs   = strtotime($data['ends_at']);
-        $revealTs = !empty($data['reveal_at']) ? strtotime($data['reveal_at']) : null;
-
-        if ($startsTs >= $endsTs) {
-            return ['status' => 'error', 'message' => 'Data de fim deve ser após a de início.'];
-        }
-
-        if ($revealTs !== null && ($revealTs < $startsTs || $revealTs > $endsTs)) {
-            return ['status' => 'error', 'message' => 'Data de revelação deve estar dentro do período do evento.'];
-        }
-
-        $stmt = $this->pdo->prepare("SELECT prd_id FROM product WHERE prd_id = ?");
-        $stmt->execute([$data['prd_id']]);
-        if (!$stmt->fetch()) {
-            return ['status' => 'error', 'message' => 'Produto não encontrado.'];
-        }
-
-        $initialStatus = $startsTs <= time() ? 'active' : 'scheduled';
-
-        $sql = "INSERT INTO gamification (
-                    gme_name, gme_description, gme_xp_reward, gme_prd_id,
-                    gme_latitude, gme_longitude, gme_radius, gme_verification_code,
-                    gme_status, gme_starts_at, gme_reveal_at, gme_ends_at
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
-        $stmt = $this->pdo->prepare($sql);
-        $ok = $stmt->execute([
-            $data['name'],
-            $data['description'] ?? null,
-            (int) ($data['xp_reward'] ?? 0),
-            (int) $data['prd_id'],
-            (float) $data['latitude'],
-            (float) $data['longitude'],
-            (int) ($data['radius'] ?? 30),
-            $data['verification_code'] ?? null,
-            $initialStatus,
-            date('Y-m-d H:i:s', $startsTs),
-            $revealTs ? date('Y-m-d H:i:s', $revealTs) : null,
-            date('Y-m-d H:i:s', $endsTs)
-        ]);
-
-        return $ok ? (int) $this->pdo->lastInsertId() : ['status' => 'error', 'message' => 'Erro ao criar evento.'];
-    }
-
     public function joinHunt(int $userId, int $pointId): array
     {
         $stmt = $this->pdo->prepare("SELECT gme_id, gme_ends_at FROM gamification WHERE gme_id = ? AND gme_status = 'active'");
@@ -137,78 +83,6 @@ class GamificationManager
             'radius' => $radius
         ]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
-
-    public function claimPoint(int $userId, int $pointId, float $userLat, float $userLng): array
-    {
-        $stmt = $this->pdo->prepare("SELECT * FROM gamification WHERE gme_id = ? AND gme_status = 'active'");
-        $stmt->execute([$pointId]);
-        $point = $stmt->fetch();
-
-        if (!$point) {
-            return ['status' => 'error', 'message' => 'Ponto de recompensa inválido ou já reclamado.'];
-        }
-
-        if ($point['gme_reveal_at'] && strtotime($point['gme_reveal_at']) > time()) {
-            return ['status' => 'error', 'message' => 'Localização ainda não revelada. Aguarda até ' . $point['gme_reveal_at'] . '.'];
-        }
-
-        if (strtotime($point['gme_ends_at']) < time()) {
-            return ['status' => 'error', 'message' => 'Esta caça ao tesouro já terminou.'];
-        }
-
-        $distanciaMetros = $this->calculateDistance($userLat, $userLng, $point['gme_latitude'], $point['gme_longitude']) * 1000;
-
-        if ($distanciaMetros > $point['gme_radius']) {
-            return [
-                'status'  => 'error',
-                'message' => 'Estás demasiado longe. Aproxima-te mais ' . round($distanciaMetros - $point['gme_radius']) . ' metros.'
-            ];
-        }
-
-        $stmt = $this->pdo->prepare("SELECT gcl_id, gcl_status FROM gamification_claim WHERE gcl_gme_id = ? AND gcl_usr_id = ?");
-        $stmt->execute([$pointId, $userId]);
-        $existing = $stmt->fetch();
-
-        if ($existing && $existing['gcl_status'] === 'winner') {
-            return ['status' => 'error', 'message' => 'Já reclamaste esta recompensa!'];
-        }
-
-        $this->pdo->beginTransaction();
-        try {
-            if ($existing) {
-                $this->pdo->prepare("UPDATE gamification_claim SET gcl_status = 'winner' WHERE gcl_id = ?")
-                    ->execute([$existing['gcl_id']]);
-            } else {
-                $this->pdo->prepare(
-                    "INSERT INTO gamification_claim (gcl_gme_id, gcl_usr_id, gcl_status) VALUES (?, ?, 'winner')"
-                )->execute([$pointId, $userId]);
-            }
-
-            $this->pdo->prepare(
-                "UPDATE gamification SET gme_status = 'claimed', gme_winner_usr_id = ? WHERE gme_id = ?"
-            )->execute([$userId, $pointId]);
-
-            $this->pdo->prepare("UPDATE userss SET usr_xp = usr_xp + ? WHERE usr_id = ?")
-                ->execute([$point['gme_xp_reward'], $userId]);
-
-            $this->pdo->prepare("INSERT INTO xp_logs (xpl_usr_id, xpl_amount, xpl_reason) VALUES (?, ?, ?)")
-                ->execute([$userId, $point['gme_xp_reward'], "Recompensa da Caça ao Tesouro #" . $pointId]);
-
-            $notif = new NotificationManager($this->pdo);
-            $notif->create($userId, "Ganhaste {$point['gme_xp_reward']} XP na caça ao tesouro!", 'gamification_won');
-
-            $this->pdo->commit();
-
-            return [
-                'status'   => 'success',
-                'message'  => 'Parabéns! Ganhaste ' . $point['gme_xp_reward'] . ' XP.',
-                'xp_ganho' => (int) $point['gme_xp_reward']
-            ];
-        } catch (Exception $e) {
-            $this->pdo->rollBack();
-            return ['status' => 'error', 'message' => 'Erro interno ao processar a recompensa.'];
-        }
     }
 
     public function claimPointWithCode(int $userId, int $pointId, float $userLat, float $userLng, string $inputCode): array

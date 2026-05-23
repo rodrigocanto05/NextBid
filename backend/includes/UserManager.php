@@ -119,21 +119,4 @@ class UserManager
             ->execute([$photoPath, $userId]);
     }
 
-    public function getXpHistory(int $userId, int $limit = 50): array
-    {
-        $stmt = $this->pdo->prepare(
-            "SELECT xpl_id, xpl_amount, xpl_reason, xpl_created_at
-             FROM xp_logs
-             WHERE xpl_usr_id = ?
-             ORDER BY xpl_created_at DESC
-             LIMIT $limit"
-        );
-        $stmt->execute([$userId]);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
-
-    public function cleanExpiredTokens(): int
-    {
-        return (int) $this->pdo->exec("DELETE FROM auth_tokens WHERE tok_expires_at < NOW()");
-    }
 }

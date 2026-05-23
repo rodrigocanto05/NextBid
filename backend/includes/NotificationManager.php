@@ -24,16 +24,6 @@ class NotificationManager {
         return $this->create($userId, $message, $type);
     }
 
-    public function getUnread(int $userId): array {
-        $sql = "SELECT not_id, not_type, not_message, not_read, not_created_at
-                FROM notifications 
-                WHERE not_usr_id = ? AND not_read = 0
-                ORDER BY not_created_at DESC";
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([$userId]);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
-
     public function getAll(int $userId, int $limit = 50): array {
         $sql = "SELECT not_id, not_type, not_message, not_read, not_created_at
                 FROM notifications 

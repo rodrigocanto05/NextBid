@@ -1,8 +1,4 @@
-// Countdown timer
-//   - On `.la-countdown` (auction detail panel) → render segmented gold tiles
-//     (Anos · Dias · Horas · Min · Seg) with per-tick pulse + urgent state.
-//   - Anywhere else (auction cards "Termina em" span) → fall back to compact text
-//     ("2a 45d", "13d 4h", "3h 20m", "45m 12s").
+// On `.la-countdown` element renders segmented tiles; everywhere else falls back to compact text.
 window.NB = window.NB || {};
 
 const DAYS_PER_YEAR = 365;
@@ -146,6 +142,3 @@ function _startSegmented(endTime, element) {
 
     tick();
 }
-
-// Back-compat global
-window.iniciarCronometro = NB.iniciarCronometro;

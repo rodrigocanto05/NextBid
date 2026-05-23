@@ -18,20 +18,6 @@ NB.initFilterBar = function (onFilter) {
     return getFilters;
 };
 
-NB.loadCategoriesInto = function (selectId) {
-    const sel = document.getElementById(selectId);
-    if (!sel) return Promise.resolve([]);
-    return NB.apiGet('/api/categories/list.php').then(data => {
-        (data.categories || []).forEach(c => {
-            const opt = document.createElement('option');
-            opt.value = c.cat_id;
-            opt.textContent = c.cat_name;
-            sel.appendChild(opt);
-        });
-        return data.categories || [];
-    });
-};
-
 NB.filterAuctions = function (list, filters) {
     return list.filter(a => {
         const matchQ   = !filters.q || (a.prd_name || '').toLowerCase().includes(filters.q);

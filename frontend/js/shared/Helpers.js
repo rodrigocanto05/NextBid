@@ -50,3 +50,17 @@ NB.truncate = function (str, n = 80) {
     str = String(str || '');
     return str.length > n ? str.slice(0, n) + '…' : str;
 };
+
+NB.loadCategoriesInto = function (selectId) {
+    const sel = document.getElementById(selectId);
+    if (!sel) return Promise.resolve([]);
+    return NB.apiGet('/api/categories/list.php').then(data => {
+        (data.categories || []).forEach(c => {
+            const opt = document.createElement('option');
+            opt.value = c.cat_id;
+            opt.textContent = c.cat_name;
+            sel.appendChild(opt);
+        });
+        return data.categories || [];
+    });
+};

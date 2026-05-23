@@ -1,5 +1,4 @@
-﻿// Photo upload (gallery + camera) with preview grid and 3-15 validation
-window.NB = window.NB || {};
+﻿window.NB = window.NB || {};
 NB.NovoLeilao = NB.NovoLeilao || {};
 
 NB.NovoLeilao._files = [];
@@ -56,5 +55,3 @@ function render() {
     }
     if (submit) submit.disabled = n < 3;
 }
-
-NB.NovoLeilao._renderUpload = render;

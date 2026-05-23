@@ -53,32 +53,4 @@ class ReviewManager
         }
     }
 
-    public function getForSeller(int $sellerId): array
-    {
-        $stmt = $this->pdo->prepare(
-            "SELECT r.rev_id, r.rev_rating, r.rev_created_at,
-                    u.usr_name AS reviewer_name,
-                    p.prd_name AS product_name
-             FROM review r
-             INNER JOIN userss u ON r.rev_usr_id = u.usr_id
-             INNER JOIN product p ON r.rev_prd_id = p.prd_id
-             WHERE r.rev_reviewed_usr_id = ?
-             ORDER BY r.rev_created_at DESC"
-        );
-        $stmt->execute([$sellerId]);
-        $reviews = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        $stmt = $this->pdo->prepare(
-            "SELECT AVG(rev_rating) AS avg_rating, COUNT(*) AS total
-             FROM review WHERE rev_reviewed_usr_id = ?"
-        );
-        $stmt->execute([$sellerId]);
-        $stats = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        return [
-            'reviews'     => $reviews,
-            'avg_rating'  => $stats['avg_rating'] ? round((float) $stats['avg_rating'], 2) : 0,
-            'total'       => (int) $stats['total']
-        ];
-    }
 }

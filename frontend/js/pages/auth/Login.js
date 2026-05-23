@@ -1,10 +1,3 @@
-const BASE_URL = (function () {
-    const { protocol, host, pathname } = window.location;
-    const idx = pathname.indexOf('/frontend/');
-    const root = idx >= 0 ? pathname.substring(0, idx) : '';
-    return `${protocol}//${host}${root}/backend`;
-})();
-
 document.getElementById('LoginPage').addEventListener('submit', async function (e) {
     e.preventDefault();
 
@@ -12,13 +5,7 @@ document.getElementById('LoginPage').addEventListener('submit', async function (
     const password = document.getElementById('password').value;
 
     try {
-        const res = await fetch(`${BASE_URL}/api/auth/login.php`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, password })
-        });
-
-        const data = await res.json();
+        const data = await NB.apiPost('/api/auth/login.php', { email, password });
 
         if (data.status === 'success') {
             localStorage.setItem('token', data.token);
@@ -33,12 +20,5 @@ document.getElementById('LoginPage').addEventListener('submit', async function (
 });
 
 function mostrarErro(msg) {
-    let el = document.getElementById('login-erro');
-    if (!el) {
-        el = document.createElement('p');
-        el.id = 'login-erro';
-        el.style.color = 'red';
-        document.getElementById('LoginPage').appendChild(el);
-    }
-    el.textContent = msg;
+    document.getElementById('login-erro').textContent = msg;
 }

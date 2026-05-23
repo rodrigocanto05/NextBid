@@ -39,7 +39,6 @@ $lat         = (float) ($_POST['latitude'] ?? 0);
 $lng         = (float) ($_POST['longitude'] ?? 0);
 $categoryId  = (int) ($_POST['categoryId'] ?? 0);
 $endsAt      = $_POST['ends_at'] ?? '';
-$size        = trim($_POST['size'] ?? '');
 $currency    = trim($_POST['currency'] ?? 'EUR');
 
 // If no explicit location, fall back to the seller's profile location (district),
@@ -144,10 +143,6 @@ foreach ($uploadedPaths as $idx => $fileName) {
 // ─── Add attributes (size, currency) ─────────────────────────────────────
 
 $attrMgr = new AttributeManager($pdo);
-
-if ($size !== '') {
-    $attrMgr->add($productId, 'size', $size);
-}
 
 $validCurrencies = ['EUR', 'USD', 'GBP', 'CHF'];
 if (in_array($currency, $validCurrencies)) {

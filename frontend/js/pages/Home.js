@@ -1,7 +1,5 @@
-﻿// Home / index page wire-up
-(function () {
+﻿(function () {
     const REFRESH_MS = 15000;
-    let refreshTimer = null;
 
     document.addEventListener('DOMContentLoaded', () => {
         NB.renderNavbar();
@@ -10,7 +8,7 @@
         NB.initTicker();
         NB.Favorites?.load();
         loadFeatured();
-        refreshTimer = setInterval(loadFeatured, REFRESH_MS);
+        setInterval(loadFeatured, REFRESH_MS);
 
         // Mark intent to open "Criar Leilão" modal on the destination page
         document.getElementById('discover-create-link')?.addEventListener('click', () => {
@@ -31,8 +29,6 @@
             });
     }
 
-    // Appends a "+" card linking to the full auctions page so users can jump
-    // straight from the homepage grid into LeiloesAtivos.
     function appendMoreCard() {
         const grid = document.getElementById('leiloes-container');
         if (!grid || grid.querySelector('.auction-card--more')) return;

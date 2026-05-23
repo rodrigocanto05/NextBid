@@ -1,11 +1,9 @@
-// Profile page — uses shared NB helpers
-// Supports two modes:
-//   • own profile (default): full edit/wallet/logout panel
-//   • viewing another user (?user_id=N): read-only, stats-only view
+// Two modes driven by ?user_id query param:
+//   own profile (default): full edit/wallet/logout panel
+//   viewing another user (?user_id=N): read-only, stats-only view
 (function () {
-    let profileData = null;
-    let viewMode    = 'own'; // 'own' | 'view'
-    let viewedId    = 0;
+    let viewMode = 'own'; // 'own' | 'view'
+    let viewedId = 0;
 
     document.addEventListener('DOMContentLoaded', init);
 
@@ -96,7 +94,7 @@
         try {
             const data = await NB.apiGet(`/api/user/profile.php?user_id=${userId}`);
             if (data.status !== 'success') return;
-            profileData = data.data;
+            const profileData = data.data;
             renderProfile(profileData);
             if (viewMode === 'own') prefillForm(profileData);
         } catch (err) {

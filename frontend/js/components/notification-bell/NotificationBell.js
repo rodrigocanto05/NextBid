@@ -118,8 +118,6 @@ NB.formatRelativeTime = function (isoLike) {
 NB.mountNotificationBell = function () {
     const slot = document.getElementById('nb-bell-slot');
     if (!slot) return;
-    const user = NB.getCurrentUser();
-    if (!user) { slot.innerHTML = ''; return; }
 
     slot.innerHTML = `
         <div class="dropdown-wrap" id="nb-bell-wrap">

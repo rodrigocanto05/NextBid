@@ -1,5 +1,10 @@
 <?php
 
+require_once __DIR__ . '/functions.php';
+require_once __DIR__ . '/NotificationManager.php';
+require_once __DIR__ . '/FavoriteManager.php';
+require_once __DIR__ . '/ChatManager.php';
+
 class BidManager
 {
     private PDO $pdo;
@@ -107,7 +112,6 @@ class BidManager
             $balanceUpd->execute([-$amount, $userId]);
             $debitLog->execute([$userId, $amount, "Licitação no leilão #$productId"]);
 
-            require_once __DIR__ . '/functions.php';
             atribuirXPAleatorio($this->pdo, $userId, "Licitação no produto #$productId");
 
             // Read final balance for the bidder so the frontend can update without a refetch
@@ -118,7 +122,6 @@ class BidManager
             $this->pdo->commit();
 
             // Notify the previous bidder (if it was a different user) AFTER commit
-            require_once __DIR__ . '/NotificationManager.php';
             $notif = new NotificationManager($this->pdo);
             if ($prevHighest && (int) $prevHighest['bid_usr_id'] !== $userId) {
                 $notif->create(
@@ -129,8 +132,7 @@ class BidManager
             }
 
             // Notify users who favorited this auction (skip the bidder and the
-            // previous highest — that one already got the outbid notification).
-            require_once __DIR__ . '/FavoriteManager.php';
+            // previous highest, that one already got the outbid notification).
             $favMgr     = new FavoriteManager($this->pdo);
             $watchers   = $favMgr->watchersOf($productId);
             $skipIds    = [$userId];
@@ -146,7 +148,6 @@ class BidManager
 
             // Post a system message to the auction chat
             try {
-                require_once __DIR__ . '/ChatManager.php';
                 $stmt = $this->pdo->prepare("SELECT usr_name FROM userss WHERE usr_id = ?");
                 $stmt->execute([$userId]);
                 $bidderName = (string) ($stmt->fetchColumn() ?: 'Alguém');
