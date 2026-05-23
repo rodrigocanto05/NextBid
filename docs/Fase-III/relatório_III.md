@@ -34,7 +34,7 @@
 | :--- | :---: | :---: | :---: | :---: | :---: |
 | **Fase I: Pesquisa & Requisitos** | 25% | 25% | 25% | 25% | **100%** |
 | **Fase II: Backend Core & Prototipagem** | 30% | 30% | 20% | 20% | **100%** |
-| **Fase III: Testes, TRabalhos diversos & Finalização** | 20% | 40% | 20% | 20% | **100%** |
+| **Fase III: Testes, Trabalhos diversos & Finalização** | 20% | 40% | 20% | 20% | **100%** |
 
 ---
 
