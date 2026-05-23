@@ -4,7 +4,7 @@ Este capítulo apresenta a estrutura final da base de dados do projeto **NextBid
 
 ---
 
-# 1.1 Modelo (MER)
+# 1.1 UML
 
 O modelo de dados do sistema **NextBid** organiza-se em torno da entidade **userss**, que representa todos os utilizadores registados na plataforma. A partir desta entidade central, estabelecem-se relações com os módulos de autenticação, leilões, licitações, transações, notificações, avaliações, interação direta (chat) e gamificação.
 
@@ -20,7 +20,44 @@ Por fim, a tabela **notifications** gere os alertas enviados aos utilizadores, e
 
 De forma geral, o modelo garante integridade referencial, normalização e suporte direto aos requisitos funcionais da aplicação, articulando autenticação, leilões, saldo, gamificação e reputação num sistema coerente e escalável.
 
-<img width="1000" height="500" alt="uml_nextbid" src="https://github.com/user-attachments/assets/e66fcd87-c55b-4b73-9f2e-6125f81fcc44" />
+<img width="5000" height="3500" alt="uml_nextbid" src="https://github.com/user-attachments/assets/e66fcd87-c55b-4b73-9f2e-6125f81fcc44" />
+
+### Relações e Multiplicidades do Modelo de Domínio
+
+O Modelo de Domínio acima ilustra as entidades conceptuais do sistema **NextBid** e as regras de negócio que as unem. As multiplicidades definem a obrigatoriedade e o limite das associações entre as classes:
+
+**1. Utilizadores, Autenticação e Sistema**
+* **User (1) — (0..*) AuthToken:** Um utilizador pode ter zero ou várias sessões ativas (tokens). Um token pertence sempre a exatamente um utilizador.
+* **User (1) — (0..*) XpLog:** Um utilizador pode ter zero ou vários registos de ganhos de experiência.
+* **User (1) — (0..*) Notification:** Um utilizador pode receber zero ou várias notificações.
+
+**2. Catálogo e Leilões**
+* **Category (1) — (0..*) Product:** Uma categoria pode conter zero ou vários produtos. Um produto pertence obrigatoriamente a uma única categoria.
+* **User (1) — (0..*) Product (Vendedor):** Um utilizador pode criar/vender zero ou vários produtos. Um produto é sempre publicado por um único utilizador.
+* **User (0..1) — (0..*) Product (Vencedor):** Um utilizador pode vencer zero ou vários leilões. Um produto pode ter um vencedor (1) ou, se ainda estiver ativo/expirado sem lances, não ter nenhum (0).
+
+**3. Detalhes do Produto (Relação de Composição ♦)**
+* **Product (1) ♦— (0..*) ProductAttribute:** Um produto é composto por zero ou vários atributos dinâmicos. A existência do atributo depende totalmente da existência do produto.
+* **Product (1) ♦— (0..*) ProductImage:** Um produto é composto por zero ou várias imagens. As imagens são destruídas se o produto for eliminado.
+
+**4. Licitações e Movimentos Financeiros**
+* **Product (1) — (0..*) Bid:** Um produto pode receber zero ou várias licitações.
+* **User (1) — (0..*) Bid:** Um utilizador pode fazer zero ou várias licitações em diversos leilões.
+* **User (1) — (0..*) Transaction:** Um utilizador pode ter zero ou vários movimentos na sua carteira (depósitos/débitos).
+
+**5. Gamificação (Caça ao Tesouro)**
+* **Product (1) — (0..*) Gamification:** Um produto físico pode estar associado a zero ou vários eventos de tesouro ao longo do tempo.
+* **Gamification (1) — (0..*) GamificationClaim:** Um evento de gamificação pode ter zero ou várias tentativas de reclamação por diferentes utilizadores.
+* **User (1) — (0..*) GamificationClaim:** Um utilizador pode fazer zero ou várias tentativas em diferentes tesouros.
+* **User (0..1) — (0..*) Gamification (Vencedor):** Um evento pode ter um vencedor, e um utilizador pode vencer vários eventos.
+
+**6. Interação e Social**
+* **User (1) — (0..*) ChatMessage:** Um utilizador envia zero ou várias mensagens.
+* **Product (1) — (0..*) ChatMessage:** Um leilão pode conter zero ou várias mensagens no seu chat.
+* **Product (1) — (0..*) Review:** Um produto pode ser alvo de avaliação no final do leilão.
+* **User (1) — (0..*) Review:** Um utilizador pode escrever várias avaliações (como comprador) e receber várias avaliações (como vendedor).
+* **User (1) — (0..*) ProductFavorite:** Um utilizador pode guardar zero ou vários leilões nos favoritos.
+* **Product (1) — (0..*) ProductFavorite:** Um leilão pode ser favoritado por zero ou vários utilizadores.
 
 ---
 
