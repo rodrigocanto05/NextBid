@@ -35,14 +35,9 @@ $recentAuctions = $pdo->query("SELECT p.prd_name, p.prd_status, p.prd_start_pric
     <link rel="icon" type="image/png" sizes="32x32" href="../../frontend/img/favicon-32.png">
     <link rel="icon" type="image/png" sizes="192x192" href="../../frontend/img/favicon-192.png">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+    <link rel="stylesheet" href="_admin.css">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', Arial, sans-serif; background: #1a1a2e; color: white; }
-        .navbar { background: #16213e; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #C9A84C; }
-        .navbar a { color: #ccc; text-decoration: none; margin-left: 20px; padding: 5px 10px; border-radius: 5px; transition: all 0.2s; }
-        .navbar a:hover, .navbar a.active { color: white; background: #0f3460; }
         .logo { height: 50px; mix-blend-mode: lighten; }
-        .container { padding: 30px; max-width: 1400px; margin: 0 auto; }
         .section-title { font-size: 13px; text-transform: uppercase; color: #C9A84C; letter-spacing: 2px; margin-bottom: 15px; margin-top: 30px; }
         .cards { display: grid; grid-template-columns: repeat(5, 1fr); gap: 15px; margin-bottom: 20px; }
         .card { background: #16213e; padding: 20px; border-radius: 10px; text-align: center; border: 1px solid #0f3460; }
@@ -53,15 +48,13 @@ $recentAuctions = $pdo->query("SELECT p.prd_name, p.prd_status, p.prd_start_pric
         .chart-box { background: #16213e; padding: 20px; border-radius: 10px; border: 1px solid #0f3460; }
         .chart-box h3 { margin-bottom: 15px; color: #aaa; font-size: 14px; }
         .full-width { grid-column: 1 / -1; }
-        table { width: 100%; border-collapse: collapse; }
-        th { background: #0f3460; padding: 12px; text-align: left; color: #aaa; font-size: 12px; text-transform: uppercase; }
-        td { padding: 12px; border-bottom: 1px solid #0f3460; font-size: 14px; }
+        table { background: transparent; border-radius: 0; overflow: visible; }
+        td { font-size: 14px; }
         .badge { padding: 3px 8px; border-radius: 12px; font-size: 11px; }
         .badge-active { background: #28a745; }
         .badge-sold { background: #C9A84C; color: #1a1a2e; }
         .badge-expired { background: #856404; }
         .badge-ended { background: #6c757d; }
-        .logout { background: #C9A84C; padding: 8px 15px; border-radius: 5px; color: #1a1a2e !important; font-weight: bold; }
     </style>
 </head>
 <body>

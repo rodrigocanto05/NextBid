@@ -47,7 +47,7 @@ NB.mountWalletModal = function () {
         delete user.token; // token lives in its own key
         localStorage.setItem('user', JSON.stringify(user));
 
-        if (typeof NB.renderNavbar === 'function') NB.renderNavbar();
+        NB.renderNavbar();
 
         const pfBal = document.getElementById('pf-balance');
         if (pfBal) {

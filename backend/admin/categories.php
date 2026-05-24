@@ -5,41 +5,32 @@ if (!isset($_SESSION['admin'])) {
     exit;
 }
 require_once '../config/db.php';
+require_once '../includes/CategoryManager.php';
 
-$msg = '';
+$catMgr = new CategoryManager($pdo);
+$msg    = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
-    if ($_POST['action'] === 'create' && !empty(trim($_POST['name']))) {
-        try {
-            $pdo->prepare("INSERT INTO category (cat_name) VALUES (?)")->execute([trim($_POST['name'])]);
-            $msg = 'Categoria criada.';
-        } catch (PDOException $e) {
-            $msg = 'Erro: já existe uma categoria com esse nome.';
-        }
+    if ($_POST['action'] === 'create') {
+        $res = $catMgr->create($_POST['name'] ?? '');
+        $msg = $res['message'] ?? ($res['status'] === 'success' ? 'Categoria criada.' : 'Erro ao criar.');
     }
-    if ($_POST['action'] === 'update' && !empty(trim($_POST['name']))) {
-        try {
-            $pdo->prepare("UPDATE category SET cat_name = ? WHERE cat_id = ?")->execute([trim($_POST['name']), (int)$_POST['cat_id']]);
-            $msg = 'Categoria atualizada.';
-        } catch (PDOException $e) {
-            $msg = 'Erro ao atualizar.';
-        }
+    if ($_POST['action'] === 'update') {
+        $res = $catMgr->update((int)($_POST['cat_id'] ?? 0), $_POST['name'] ?? '');
+        $msg = $res['message'] ?? '';
     }
 }
 
 if (isset($_GET['delete'])) {
-    $catId = (int)$_GET['delete'];
-    $count = $pdo->prepare("SELECT COUNT(*) FROM product WHERE prd_cat_id = ?");
-    $count->execute([$catId]);
-    if ((int)$count->fetchColumn() > 0) {
-        $msg = 'Não podes apagar: há produtos nesta categoria.';
-    } else {
-        $pdo->prepare("DELETE FROM category WHERE cat_id = ?")->execute([$catId]);
+    $res = $catMgr->delete((int)$_GET['delete']);
+    if ($res['status'] === 'success') {
         header('Location: categories.php');
         exit;
     }
+    $msg = $res['message'];
 }
 
+// admin page needs product counts (Manager.getAll only returns active_count)
 $categories = $pdo->query("
     SELECT c.cat_id, c.cat_name,
            (SELECT COUNT(*) FROM product WHERE prd_cat_id = c.cat_id) as total_products,
@@ -56,26 +47,14 @@ $categories = $pdo->query("
     <link rel="icon" href="../../frontend/img/favicon.ico" sizes="any">
     <link rel="icon" type="image/png" sizes="32x32" href="../../frontend/img/favicon-32.png">
     <link rel="icon" type="image/png" sizes="192x192" href="../../frontend/img/favicon-192.png">
+    <link rel="stylesheet" href="_admin.css">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', Arial, sans-serif; background: #1a1a2e; color: white; }
-        .navbar { background: #16213e; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #C9A84C; }
-        .navbar a { color: #ccc; text-decoration: none; margin-left: 20px; padding: 5px 10px; border-radius: 5px; transition: all 0.2s; }
-        .navbar a:hover, .navbar a.active { color: white; background: #0f3460; }
-        .container { padding: 30px; max-width: 1000px; margin: 0 auto; }
-        h2 { margin-bottom: 20px; color: #aaa; }
+        .container { max-width: 1000px; }
         .form-box { background: #16213e; padding: 20px; border-radius: 10px; margin-bottom: 20px; display: flex; gap: 10px; align-items: center; }
         .form-box input { padding: 10px; border: 1px solid #0f3460; background: #0f3460; color: white; border-radius: 5px; flex: 1; }
         .form-box button { padding: 10px 20px; background: #C9A84C; color: #1a1a2e; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
-        table { width: 100%; border-collapse: collapse; background: #16213e; border-radius: 10px; overflow: hidden; }
-        th { background: #0f3460; padding: 12px; text-align: left; color: #aaa; font-size: 12px; text-transform: uppercase; }
-        td { padding: 12px; border-bottom: 1px solid #0f3460; }
-        tr:hover { background: #0f3460; }
-        .btn { padding: 5px 10px; border-radius: 5px; text-decoration: none; font-size: 12px; margin-right: 3px; }
-        .btn-danger { background: #e74c3c; color: white; }
-        .btn-info { background: #533483; color: white; cursor: pointer; border: none; }
+        .btn-info { cursor: pointer; border: none; }
         .msg { background: #0f3460; padding: 10px 20px; border-radius: 5px; margin-bottom: 15px; color: #C9A84C; }
-        .logout { background: #C9A84C; padding: 8px 15px; border-radius: 5px; color: #1a1a2e !important; font-weight: bold; }
     </style>
 </head>
 <body>

@@ -32,38 +32,6 @@ class TransactionManager
         }
     }
 
-    public function debit(int $userId, float $amount, string $description = 'Débito'): array
-    {
-        if ($amount <= 0) {
-            return ['status' => 'error', 'message' => 'Valor inválido.'];
-        }
-
-        $this->pdo->beginTransaction();
-        try {
-            $stmt = $this->pdo->prepare("SELECT usr_balance FROM userss WHERE usr_id = ? FOR UPDATE");
-            $stmt->execute([$userId]);
-            $balance = (float) $stmt->fetchColumn();
-
-            if ($balance < $amount) {
-                $this->pdo->rollBack();
-                return ['status' => 'error', 'message' => 'Saldo insuficiente.', 'balance' => $balance];
-            }
-
-            $this->pdo->prepare("UPDATE userss SET usr_balance = usr_balance - ? WHERE usr_id = ?")
-                ->execute([$amount, $userId]);
-
-            $this->pdo->prepare(
-                "INSERT INTO transactions (tra_usr_id, tra_type, tra_amount, tra_description) VALUES (?, 'debit', ?, ?)"
-            )->execute([$userId, $amount, $description]);
-
-            $this->pdo->commit();
-            return ['status' => 'success', 'message' => 'Débito realizado.', 'amount' => $amount];
-        } catch (Exception $e) {
-            $this->pdo->rollBack();
-            return ['status' => 'error', 'message' => 'Erro no débito.'];
-        }
-    }
-
     public function getBalance(int $userId): float
     {
         $stmt = $this->pdo->prepare("SELECT usr_balance FROM userss WHERE usr_id = ?");

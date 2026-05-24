@@ -5,69 +5,45 @@ if (!isset($_SESSION['admin'])) {
     exit;
 }
 require_once '../config/db.php';
+require_once '../includes/GamificationManager.php';
 
-$msg = '';
+$gameMgr = new GamificationManager($pdo);
+$msg     = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'create') {
-    $name     = trim($_POST['name'] ?? '');
-    $desc     = trim($_POST['description'] ?? '');
-    $prdId    = (int) ($_POST['prd_id'] ?? 0);
-    $xp       = (int) ($_POST['xp_reward'] ?? 0);
-    $lat      = (float) ($_POST['latitude'] ?? 0);
-    $lng      = (float) ($_POST['longitude'] ?? 0);
-    $radius   = (int) ($_POST['radius'] ?? 30);
-    $code     = trim($_POST['verification_code'] ?? '');
-    $startsAt = $_POST['starts_at'] ?? '';
-    $revealAt = trim($_POST['reveal_at'] ?? '');
-    $endsAt   = $_POST['ends_at'] ?? '';
-
-    if ($name === '' || $prdId <= 0 || $lat == 0 || $lng == 0 || $startsAt === '' || $endsAt === '') {
-        $msg = 'Preenche todos os campos obrigatórios.';
-    } elseif ($lat < -90 || $lat > 90) {
+    // Frontend-only sanity checks (Manager covers required fields + date range + product existence)
+    $lat = (float) ($_POST['latitude'] ?? 0);
+    $lng = (float) ($_POST['longitude'] ?? 0);
+    if ($lat < -90 || $lat > 90) {
         $msg = 'Latitude inválida (deve estar entre -90 e 90).';
     } elseif ($lng < -180 || $lng > 180) {
         $msg = 'Longitude inválida (deve estar entre -180 e 180).';
     } else {
-        $startsTs = strtotime($startsAt);
-        $endsTs   = strtotime($endsAt);
-
-        if ($startsTs >= $endsTs) {
-            $msg = 'Data de fim deve ser após a de início.';
-        } else {
-            $initialStatus = $startsTs <= time() ? 'active' : 'scheduled';
-
-            try {
-                $stmt = $pdo->prepare("INSERT INTO gamification (
-                    gme_name, gme_description, gme_xp_reward, gme_prd_id,
-                    gme_latitude, gme_longitude, gme_radius, gme_verification_code,
-                    gme_status, gme_starts_at, gme_reveal_at, gme_ends_at
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-
-                $stmt->execute([
-                    $name, $desc ?: null, $xp, $prdId,
-                    $lat, $lng, $radius, $code ?: null,
-                    $initialStatus,
-                    date('Y-m-d H:i:s', $startsTs),
-                    $revealAt ? date('Y-m-d H:i:s', strtotime($revealAt)) : null,
-                    date('Y-m-d H:i:s', $endsTs)
-                ]);
-
-                $msg = 'Evento criado com sucesso!';
-            } catch (PDOException $e) {
-                $msg = 'Erro ao criar: ' . $e->getMessage();
-            }
-        }
+        $res = $gameMgr->createEvent([
+            'name'              => trim($_POST['name'] ?? ''),
+            'description'       => trim($_POST['description'] ?? '') ?: null,
+            'prd_id'            => (int) ($_POST['prd_id'] ?? 0),
+            'xp_reward'         => (int) ($_POST['xp_reward'] ?? 0),
+            'latitude'          => $lat,
+            'longitude'         => $lng,
+            'radius'            => (int) ($_POST['radius'] ?? 30),
+            'verification_code' => trim($_POST['verification_code'] ?? '') ?: null,
+            'starts_at'         => $_POST['starts_at'] ?? '',
+            'reveal_at'         => trim($_POST['reveal_at'] ?? '') ?: null,
+            'ends_at'           => $_POST['ends_at'] ?? '',
+        ]);
+        $msg = is_int($res) ? 'Evento criado com sucesso!' : ($res['message'] ?? 'Erro ao criar.');
     }
 }
 
 if (isset($_GET['delete'])) {
-    $pdo->prepare("DELETE FROM gamification WHERE gme_id = ?")->execute([(int)$_GET['delete']]);
+    $gameMgr->adminDelete((int)$_GET['delete']);
     header('Location: gamification.php');
     exit;
 }
 
 if (isset($_GET['expire'])) {
-    $pdo->prepare("UPDATE gamification SET gme_status = 'expired' WHERE gme_id = ?")->execute([(int)$_GET['expire']]);
+    $gameMgr->adminSetStatus((int)$_GET['expire'], 'expired');
     header('Location: gamification.php');
     exit;
 }
@@ -91,14 +67,8 @@ $products = $pdo->query("SELECT prd_id, prd_name FROM product WHERE prd_status =
     <link rel="icon" href="../../frontend/img/favicon.ico" sizes="any">
     <link rel="icon" type="image/png" sizes="32x32" href="../../frontend/img/favicon-32.png">
     <link rel="icon" type="image/png" sizes="192x192" href="../../frontend/img/favicon-192.png">
+    <link rel="stylesheet" href="_admin.css">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', Arial, sans-serif; background: #1a1a2e; color: white; }
-        .navbar { background: #16213e; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #C9A84C; }
-        .navbar a { color: #ccc; text-decoration: none; margin-left: 20px; padding: 5px 10px; border-radius: 5px; transition: all 0.2s; }
-        .navbar a:hover, .navbar a.active { color: white; background: #0f3460; }
-        .container { padding: 30px; max-width: 1400px; margin: 0 auto; }
-        h2 { margin-bottom: 20px; color: #aaa; }
         h3 { margin-bottom: 15px; color: #C9A84C; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; }
         .form-box { background: #16213e; padding: 25px; border-radius: 10px; margin-bottom: 25px; border: 1px solid #0f3460; }
         .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
@@ -115,19 +85,12 @@ $products = $pdo->query("SELECT prd_id, prd_name FROM product WHERE prd_status =
         .toggle-btn { background: none; border: 1px solid #C9A84C; color: #C9A84C; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-size: 13px; margin-bottom: 15px; }
         .toggle-btn:hover { background: #C9A84C; color: #1a1a2e; }
         .hidden { display: none; }
-        table { width: 100%; border-collapse: collapse; background: #16213e; border-radius: 10px; overflow: hidden; }
-        th { background: #0f3460; padding: 12px; text-align: left; color: #aaa; font-size: 12px; text-transform: uppercase; }
-        td { padding: 12px; border-bottom: 1px solid #0f3460; font-size: 13px; }
-        tr:hover { background: #0f3460; }
         .badge { padding: 3px 8px; border-radius: 12px; font-size: 11px; }
         .badge-active { background: #28a745; }
         .badge-scheduled { background: #3498db; }
         .badge-claimed { background: #C9A84C; color: #1a1a2e; }
         .badge-expired { background: #856404; }
-        .btn { padding: 5px 10px; border-radius: 5px; text-decoration: none; font-size: 12px; margin-right: 3px; }
-        .btn-danger { background: #e74c3c; color: white; }
         .btn-warning { background: #856404; color: white; }
-        .logout { background: #C9A84C; padding: 8px 15px; border-radius: 5px; color: #1a1a2e !important; font-weight: bold; }
         .winner { color: #C9A84C; font-weight: bold; }
         .msg { padding: 12px 20px; border-radius: 5px; margin-bottom: 15px; font-size: 14px; }
         .msg-success { background: #28a745; color: white; }

@@ -46,11 +46,6 @@ NB.apiPost = async function (path, body, opts = {}) {
     return res.json();
 };
 
-NB.truncate = function (str, n = 80) {
-    str = String(str || '');
-    return str.length > n ? str.slice(0, n) + '…' : str;
-};
-
 NB.loadCategoriesInto = function (selectId) {
     const sel = document.getElementById(selectId);
     if (!sel) return Promise.resolve([]);
@@ -63,4 +58,31 @@ NB.loadCategoriesInto = function (selectId) {
         });
         return data.categories || [];
     });
+};
+
+NB.iconForNotifType = function (type) {
+    switch (type) {
+        case 'bid_outbid':              return '⚠';
+        case 'auction_won':             return '🏆';
+        case 'auction_sold':            return '💰';
+        case 'auction_payment_failed':  return '✕';
+        case 'favorite_bid':            return '🔔';
+        case 'favorite_ending':         return '⏰';
+        default:                        return '✦';
+    }
+};
+
+NB.formatRelativeTime = function (isoLike) {
+    if (!isoLike) return '';
+    const t = new Date(String(isoLike).replace(' ', 'T')).getTime();
+    if (Number.isNaN(t)) return '';
+    const diff = Math.max(0, Date.now() - t);
+    const min  = Math.floor(diff / 60000);
+    if (min < 1)    return 'agora mesmo';
+    if (min < 60)   return `há ${min} min`;
+    const h = Math.floor(min / 60);
+    if (h < 24)     return `há ${h}h`;
+    const d = Math.floor(h / 24);
+    if (d < 7)      return `há ${d}d`;
+    return new Date(t).toLocaleDateString('pt-PT');
 };

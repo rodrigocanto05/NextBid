@@ -5,20 +5,22 @@ if (!isset($_SESSION['admin'])) {
     exit;
 }
 require_once '../config/db.php';
+require_once '../includes/UserManager.php';
+
+$userMgr = new UserManager($pdo);
 
 if (isset($_GET['delete'])) {
-    $pdo->prepare("DELETE FROM userss WHERE usr_id = ?")->execute([(int)$_GET['delete']]);
+    $userMgr->adminDelete((int)$_GET['delete']);
     header('Location: users.php');
     exit;
 }
 
 if (isset($_GET['toggle_role'])) {
-    $id = (int)$_GET['toggle_role'];
-    $stmt = $pdo->prepare("SELECT usr_role FROM userss WHERE usr_id = ?");
-    $stmt->execute([$id]);
-    $role = $stmt->fetchColumn();
-    $newRole = $role === 'admin' ? 'normaluser' : 'admin';
-    $pdo->prepare("UPDATE userss SET usr_role = ? WHERE usr_id = ?")->execute([$newRole, $id]);
+    $id   = (int)$_GET['toggle_role'];
+    $cur  = $pdo->prepare("SELECT usr_role FROM userss WHERE usr_id = ?");
+    $cur->execute([$id]);
+    $role = $cur->fetchColumn();
+    $userMgr->setRole($id, $role === 'admin' ? 'normaluser' : 'admin');
     header('Location: users.php');
     exit;
 }
@@ -40,24 +42,10 @@ $users = $pdo->query("
     <link rel="icon" href="../../frontend/img/favicon.ico" sizes="any">
     <link rel="icon" type="image/png" sizes="32x32" href="../../frontend/img/favicon-32.png">
     <link rel="icon" type="image/png" sizes="192x192" href="../../frontend/img/favicon-192.png">
+    <link rel="stylesheet" href="_admin.css">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', Arial, sans-serif; background: #1a1a2e; color: white; }
-        .navbar { background: #16213e; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #C9A84C; }
-        .navbar a { color: #ccc; text-decoration: none; margin-left: 20px; padding: 5px 10px; border-radius: 5px; transition: all 0.2s; }
-        .navbar a:hover, .navbar a.active { color: white; background: #0f3460; }
-        .container { padding: 30px; max-width: 1400px; margin: 0 auto; }
-        h2 { margin-bottom: 20px; color: #aaa; }
-        table { width: 100%; border-collapse: collapse; background: #16213e; border-radius: 10px; overflow: hidden; }
-        th { background: #0f3460; padding: 12px; text-align: left; color: #aaa; font-size: 12px; text-transform: uppercase; }
-        td { padding: 12px; border-bottom: 1px solid #0f3460; font-size: 13px; }
-        tr:hover { background: #0f3460; }
         .badge-admin { background: #C9A84C; color: #1a1a2e; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: bold; }
         .badge-user { background: transparent; border: 1px solid #666; padding: 3px 10px; border-radius: 20px; font-size: 11px; color: #aaa; }
-        .btn { padding: 5px 10px; border-radius: 5px; text-decoration: none; font-size: 12px; margin-right: 3px; }
-        .btn-danger { background: #e74c3c; color: white; }
-        .btn-info { background: #533483; color: white; }
-        .logout { background: #C9A84C; padding: 8px 15px; border-radius: 5px; color: #1a1a2e !important; font-weight: bold; }
         .balance { color: #28a745; }
     </style>
 </head>

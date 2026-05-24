@@ -1,5 +1,8 @@
 <?php
 
+require_once __DIR__ . '/ChatManager.php';
+require_once __DIR__ . '/AttributeManager.php';
+
 class AuctionManager {
 
     private PDO $pdo;
@@ -35,7 +38,6 @@ class AuctionManager {
         $newId = (int) $this->pdo->lastInsertId();
 
         try {
-            require_once __DIR__ . '/ChatManager.php';
             $chat = new ChatManager($this->pdo);
             $chat->sendSystem(
                 $newId,
@@ -173,17 +175,9 @@ class AuctionManager {
         }
 
         $product['images']     = $this->getImages($productId);
-        $product['attributes'] = $this->getAttributes($productId);
+        $product['attributes'] = (new AttributeManager($this->pdo))->getForProduct($productId);
 
         return $product;
-    }
-
-    private function getAttributes(int $productId): array {
-        $stmt = $this->pdo->prepare(
-            "SELECT atr_id, atr_name, atr_value FROM product_attribute WHERE atr_prd_id = ? ORDER BY atr_name"
-        );
-        $stmt->execute([$productId]);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function getBySellerId(int $sellerId, ?string $status = null): array {
@@ -225,6 +219,19 @@ class AuctionManager {
         );
         $stmt->execute([$winnerId]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    // Admin-only: hard delete with no ownership/bids checks
+    public function adminDelete(int $productId): bool {
+        return $this->pdo->prepare("DELETE FROM product WHERE prd_id = ?")->execute([$productId]);
+    }
+
+    // Admin-only: set status to any value (bypasses business rules)
+    public function adminSetStatus(int $productId, string $status): bool {
+        $allowed = ['active', 'ended', 'sold', 'expired', 'cancelled', 'pending'];
+        if (!in_array($status, $allowed, true)) return false;
+        return $this->pdo->prepare("UPDATE product SET prd_status = ? WHERE prd_id = ?")
+            ->execute([$status, $productId]);
     }
 
     public function cancelAuction(int $productId, int $userId): array {

@@ -20,14 +20,6 @@ class CategoryManager
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getById(int $categoryId): ?array
-    {
-        $stmt = $this->pdo->prepare("SELECT cat_id, cat_name FROM category WHERE cat_id = ?");
-        $stmt->execute([$categoryId]);
-        $cat = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $cat ?: null;
-    }
-
     public function create(string $name): array
     {
         $name = trim($name);

@@ -12,6 +12,75 @@ class GamificationManager
         $this->pdo = $pdo;
     }
 
+    // Admin-only: create a new gamification event.
+    // Validates fields, date range, reveal_at window, and product existence.
+    public function createEvent(array $data): int|array
+    {
+        $required = ['name', 'prd_id', 'latitude', 'longitude', 'starts_at', 'ends_at'];
+        foreach ($required as $field) {
+            if (!isset($data[$field]) || $data[$field] === '') {
+                return ['status' => 'error', 'message' => "Campo '$field' obrigatório."];
+            }
+        }
+
+        $startsTs = strtotime($data['starts_at']);
+        $endsTs   = strtotime($data['ends_at']);
+        $revealTs = !empty($data['reveal_at']) ? strtotime($data['reveal_at']) : null;
+
+        if ($startsTs >= $endsTs) {
+            return ['status' => 'error', 'message' => 'Data de fim deve ser após a de início.'];
+        }
+
+        if ($revealTs !== null && ($revealTs < $startsTs || $revealTs > $endsTs)) {
+            return ['status' => 'error', 'message' => 'Data de revelação deve estar dentro do período do evento.'];
+        }
+
+        $stmt = $this->pdo->prepare("SELECT prd_id FROM product WHERE prd_id = ?");
+        $stmt->execute([$data['prd_id']]);
+        if (!$stmt->fetch()) {
+            return ['status' => 'error', 'message' => 'Produto não encontrado.'];
+        }
+
+        $initialStatus = $startsTs <= time() ? 'active' : 'scheduled';
+
+        $sql = "INSERT INTO gamification (
+                    gme_name, gme_description, gme_xp_reward, gme_prd_id,
+                    gme_latitude, gme_longitude, gme_radius, gme_verification_code,
+                    gme_status, gme_starts_at, gme_reveal_at, gme_ends_at
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        $stmt = $this->pdo->prepare($sql);
+        $ok = $stmt->execute([
+            $data['name'],
+            $data['description'] ?? null,
+            (int) ($data['xp_reward'] ?? 0),
+            (int) $data['prd_id'],
+            (float) $data['latitude'],
+            (float) $data['longitude'],
+            (int) ($data['radius'] ?? 30),
+            $data['verification_code'] ?? null,
+            $initialStatus,
+            date('Y-m-d H:i:s', $startsTs),
+            $revealTs ? date('Y-m-d H:i:s', $revealTs) : null,
+            date('Y-m-d H:i:s', $endsTs)
+        ]);
+
+        return $ok ? (int) $this->pdo->lastInsertId() : ['status' => 'error', 'message' => 'Erro ao criar evento.'];
+    }
+
+    public function adminDelete(int $eventId): bool
+    {
+        return $this->pdo->prepare("DELETE FROM gamification WHERE gme_id = ?")->execute([$eventId]);
+    }
+
+    public function adminSetStatus(int $eventId, string $status): bool
+    {
+        $allowed = ['active', 'scheduled', 'claimed', 'expired'];
+        if (!in_array($status, $allowed, true)) return false;
+        return $this->pdo->prepare("UPDATE gamification SET gme_status = ? WHERE gme_id = ?")
+            ->execute([$status, $eventId]);
+    }
+
     public function joinHunt(int $userId, int $pointId): array
     {
         $stmt = $this->pdo->prepare("SELECT gme_id, gme_ends_at FROM gamification WHERE gme_id = ? AND gme_status = 'active'");

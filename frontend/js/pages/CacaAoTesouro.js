@@ -16,7 +16,7 @@ NB.Caca = {
 
 // ---------- Init ----------
 document.addEventListener('DOMContentLoaded', () => {
-    if (typeof NB.renderNavbar === 'function') NB.renderNavbar();
+    NB.renderNavbar();
     NB.Caca.initMap();
     NB.Caca.locateUser();
     NB.Caca.wireCodeForm();

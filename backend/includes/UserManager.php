@@ -119,4 +119,17 @@ class UserManager
             ->execute([$photoPath, $userId]);
     }
 
+    // Admin-only: hard delete (relies on DB cascade for FK cleanup)
+    public function adminDelete(int $userId): bool
+    {
+        return $this->pdo->prepare("DELETE FROM userss WHERE usr_id = ?")->execute([$userId]);
+    }
+
+    // Admin-only: assign role ('admin' or 'normaluser')
+    public function setRole(int $userId, string $role): bool
+    {
+        if (!in_array($role, ['admin', 'normaluser'], true)) return false;
+        return $this->pdo->prepare("UPDATE userss SET usr_role = ? WHERE usr_id = ?")
+            ->execute([$role, $userId]);
+    }
 }

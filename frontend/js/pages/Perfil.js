@@ -122,7 +122,7 @@
                 stored.wallet = bal;
                 delete stored.token;
                 localStorage.setItem('user', JSON.stringify(stored));
-                if (typeof NB.renderNavbar === 'function') NB.renderNavbar();
+                NB.renderNavbar();
             }
         }
 
@@ -214,7 +214,7 @@
                         stored.avatar = `${NB.BASE_URL}/${String(newPath).replace(/^\/+/, '')}`;
                         localStorage.setItem('user', JSON.stringify(stored));
                     }
-                    if (typeof NB.renderNavbar === 'function') NB.renderNavbar();
+                    NB.renderNavbar();
                     loadProfile(user.id);
                 } else {
                     setMsg(msgEl, res.message || 'Erro ao atualizar foto.', 'var(--danger)');
@@ -231,7 +231,7 @@
                 delete stored.avatar;
                 localStorage.setItem('user', JSON.stringify(stored));
             }
-            if (typeof NB.renderNavbar === 'function') NB.renderNavbar();
+            NB.renderNavbar();
             renderAvatar(null);
             setMsg(msgEl, 'Foto removida.', 'var(--text-muted)');
         });
