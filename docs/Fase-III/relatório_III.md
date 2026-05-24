@@ -92,8 +92,6 @@ Para consolidar o posicionamento do NextBid, realizou-se um estudo comparativo f
 
 ### 4.1 Análise Comparativa de Concorrentes
 
-### 4.1 Análise Comparativa de Concorrentes
-
 | Plataforma | Vetores de Convergência (Semelhanças) | Vetores de Divergência (Diferenças do NextBid) |
 | :--- | :--- | :--- |
 | **eBay** | • Modelo global de licitações concorrentes.<br>• Suporte a catálogos massivos de produtos heterogéneos. | • Interface puramente transacional.<br>• Ausência absoluta de gamificação (XP, roletas ou níveis).<br>• Inexistência de dinâmicas baseadas em proximidade espacial via GPS. |
