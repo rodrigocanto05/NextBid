@@ -147,7 +147,7 @@ As jornadas sintetizam os passos críticos, pontos de contacto, estados emociona
 #### Cenário B: Fluxo de Publicação e Venda (Ana Martins)
 * **Objetivo:** Criar um leilão de forma simples, acompanhar a concorrência e liquidar o produto.
 
-| Etapa | Ações do Utilizador  | Pontos de Contacto  | Emoção [ | Oportunidade de Design |
+| Etapa | Ações do Utilizador  | Pontos de Contacto  | Emoção | Oportunidade de Design |
 | :--- | :--- | :--- | :---: | :--- |
 | **Atrair** | Procura canais com maior visibilidade para escoar um item parado. | Pesquisa de mercado e comparadores. | 😐 | Reforçar o SEO para captar vendedores independentes. |
 | **Entrar** | Cria conta e explora intuitivamente o painel de utilizador. | Dashboard principal de perfil. | 🙂 | Desenvolver um onboarding interativo para novas contas. |
