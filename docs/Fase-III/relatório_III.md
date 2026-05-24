@@ -199,12 +199,14 @@ A conceptualização das regras de negócio e limites operacionais da plataforma
 ### 7.1 Diagrama de Casos de Uso
 O mapeamento abaixo delimita com precisão o nível de acesso de cada utilizador (Utilizador Autenticado e Administrador do Sistema) e as respetivas relações de inclusão e extensão das funcionalidades principais:
 
-![Diagrama de Casos de Uso NextBid](casos_de_uso_nextbid.png)
+<img width="388" height="1056" alt="casos_de_uso_nextbid" src="https://github.com/user-attachments/assets/f13b64b1-7769-402a-a523-a9c15d966428" />
+
 
 ### 7.2 Diagrama UML de Classes e Domínio
 A modelação lógica orientada a objetos que serviu de fundação direta para a criação estrutural e física das tabelas relacionais do MySQL encontra-se representada na imagem abaixo:
 
-![Diagrama UML NextBid](uml_nextbid.png)
+<img width="2950" height="1498" alt="uml_nextbid" src="https://github.com/user-attachments/assets/9d49c02f-fa1d-457e-a3c3-e450d9bd2728" />
+
 
 ---
 
@@ -354,10 +356,6 @@ A integração bem-sucedida da camada geográfica através do *Leaflet.js* e o a
 
 ## 15. Referências Bibliográficas
 
----
-
-## 15. Referências Bibliográficas
-
 * DealDash. (2026). *The Online Auction Site with the Lowest Prices*. Obtido de https://www.dealdash.com
 * eBay. (2026). *Buy & Sell Electronics, Cars, Fashion, Collectibles & More*. Obtido de https://www.ebay.com
 * ESRI. (2026). *What is GIS? Geographic Information System Mapping Technology*. Obtido de https://www.esri.com
@@ -368,4 +366,3 @@ A integração bem-sucedida da camada geográfica através do *Leaflet.js* e o a
 * MySQL. (2026). *MySQL 8.0 Reference Manual*. Oracle Corporation. Obtido de https://dev.mysql.com/doc/refman/8.0/en/
 * Nielsen Norman Group. (2026). *Usability & UX Guidelines for Digital Interfaces*. Obtido de https://www.nngroup.com
 * PHP Documentation. (2026). *PHP Hypertext Preprocessor Manual*. Obtido de https://www.php.net/manual/en/
-* W3C. (2026). *Web Accessibility Initiative (WAI): Strategies, guidelines, resources to make the Web accessible*. Obtido de https://www.w3.org/WAI
