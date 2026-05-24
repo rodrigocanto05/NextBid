@@ -96,6 +96,10 @@ class UserManager
             $stmt->execute([$userId]);
             $user['active_auctions'] = (int) $stmt->fetchColumn();
 
+            $stmt = $this->pdo->prepare("SELECT COUNT(*) FROM product WHERE prd_usr_id = ?");
+            $stmt->execute([$userId]);
+            $user['total_published'] = (int) $stmt->fetchColumn();
+
             $stmt = $this->pdo->prepare("SELECT COUNT(*) FROM bid WHERE bid_usr_id = ?");
             $stmt->execute([$userId]);
             $user['total_bids'] = (int) $stmt->fetchColumn();
@@ -104,10 +108,22 @@ class UserManager
             $stmt->execute([$userId]);
             $user['total_sold'] = (int) $stmt->fetchColumn();
 
+            $stmt = $this->pdo->prepare("SELECT COUNT(*) FROM product WHERE prd_winner_usr_id = ?");
+            $stmt->execute([$userId]);
+            $user['total_won'] = (int) $stmt->fetchColumn();
+
+            $stmt = $this->pdo->prepare("SELECT COUNT(DISTINCT bid_prd_id) FROM bid WHERE bid_usr_id = ?");
+            $stmt->execute([$userId]);
+            $user['total_participated'] = (int) $stmt->fetchColumn();
+
             $stmt = $this->pdo->prepare("SELECT AVG(rev_rating) FROM review WHERE rev_reviewed_usr_id = ?");
             $stmt->execute([$userId]);
             $avg = $stmt->fetchColumn();
             $user['avg_rating'] = $avg ? round((float) $avg, 2) : null;
+
+            $stmt = $this->pdo->prepare("SELECT COUNT(*) FROM review WHERE rev_reviewed_usr_id = ?");
+            $stmt->execute([$userId]);
+            $user['total_reviews'] = (int) $stmt->fetchColumn();
         }
 
         return $user;
@@ -117,6 +133,17 @@ class UserManager
     {
         return $this->pdo->prepare("UPDATE userss SET usr_photo = ? WHERE usr_id = ?")
             ->execute([$photoPath, $userId]);
+    }
+
+    // Returns the previous photo path (so caller can unlink from disk), or '' if none.
+    public function removePhoto(int $userId): string
+    {
+        $stmt = $this->pdo->prepare("SELECT usr_photo FROM userss WHERE usr_id = ?");
+        $stmt->execute([$userId]);
+        $old = (string) ($stmt->fetchColumn() ?: '');
+
+        $this->pdo->prepare("UPDATE userss SET usr_photo = NULL WHERE usr_id = ?")->execute([$userId]);
+        return $old;
     }
 
     // Admin-only: hard delete (relies on DB cascade for FK cleanup)

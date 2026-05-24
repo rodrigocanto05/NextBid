@@ -16,10 +16,11 @@ $reviewerId = $user['id'];
 $body      = json_decode(file_get_contents('php://input'), true) ?? $_POST;
 $productId = (int) ($body['product_id'] ?? 0);
 $rating    = (int) ($body['rating'] ?? 0);
+$comment   = (string) ($body['comment'] ?? '');
 
 if ($productId <= 0 || $rating <= 0) {
     exit(json_encode(['status' => 'error', 'message' => 'Dados inválidos.']));
 }
 
 $revMgr = new ReviewManager($pdo);
-echo json_encode($revMgr->create($reviewerId, $productId, $rating));
+echo json_encode($revMgr->create($reviewerId, $productId, $rating, $comment));

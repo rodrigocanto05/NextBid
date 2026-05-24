@@ -31,6 +31,7 @@
         wireDelete();
         wireAddFunds();
         wireChatTextarea();
+        wireRateModal();
         renderChatUI();
     }
 
@@ -499,6 +500,98 @@
         const section = document.getElementById('la-owner-actions');
         const isOwner = currentUser && Number(auction.seller_id) === Number(currentUser.id);
         section.hidden = !isOwner;
+
+        configureRateSection();
+    }
+
+    async function configureRateSection() {
+        const section = document.getElementById('la-rate-section');
+        if (!section || !currentUser) return;
+
+        const isWinner   = Number(auction.prd_winner_usr_id) === Number(currentUser.id);
+        const isFinished = ['sold', 'ended'].includes(auction.prd_status);
+        if (!isWinner || !isFinished) { section.hidden = true; return; }
+
+        section.hidden = false;
+
+        // Check if already reviewed (look in seller's reviews for one from this user)
+        try {
+            const res = await NB.apiGet(`/api/reviews/get_for_seller.php?seller_id=${auction.seller_id}`);
+            const reviews = (res?.reviews) || [];
+            const mine = reviews.find(r =>
+                Number(r.reviewer_id) === Number(currentUser.id) &&
+                Number(r.product_id)  === Number(auction.prd_id)
+            );
+            const openBtn = document.getElementById('la-rate-open');
+            const status  = document.getElementById('la-rate-status');
+            if (mine) {
+                if (openBtn) openBtn.disabled = true;
+                if (status) {
+                    const stars = '★'.repeat(mine.rev_rating) + '☆'.repeat(5 - mine.rev_rating);
+                    status.innerHTML = `Já avaliaste: <strong>${stars}</strong>`;
+                }
+            }
+        } catch { /* ignore — let user attempt and backend rejects */ }
+    }
+
+    function wireRateModal() {
+        const openBtn   = document.getElementById('la-rate-open');
+        const modal     = document.getElementById('la-rate-modal');
+        const closeBtn  = document.getElementById('la-rate-close');
+        const cancelBtn = document.getElementById('la-rate-cancel');
+        const submitBtn = document.getElementById('la-rate-submit');
+        const stars     = document.querySelectorAll('.la-rate-star');
+        const commentEl = document.getElementById('la-rate-comment');
+        const msgEl     = document.getElementById('la-rate-msg');
+        if (!modal) return;
+
+        let chosen = 0;
+
+        const close = () => {
+            modal.classList.remove('open');
+            chosen = 0;
+            stars.forEach(s => s.classList.remove('is-on'));
+            if (commentEl) commentEl.value = '';
+            if (msgEl) msgEl.textContent = '';
+            if (submitBtn) submitBtn.disabled = true;
+        };
+
+        openBtn?.addEventListener('click', () => modal.classList.add('open'));
+        closeBtn?.addEventListener('click', close);
+        cancelBtn?.addEventListener('click', close);
+        modal.addEventListener('click', e => { if (e.target === modal) close(); });
+
+        stars.forEach(s => {
+            s.addEventListener('click', () => {
+                chosen = Number(s.dataset.star);
+                stars.forEach(x => x.classList.toggle('is-on', Number(x.dataset.star) <= chosen));
+                if (submitBtn) submitBtn.disabled = chosen < 1;
+            });
+        });
+
+        submitBtn?.addEventListener('click', async () => {
+            if (chosen < 1 || chosen > 5) return;
+            submitBtn.disabled = true;
+            setFeedback(msgEl, 'A enviar…', 'var(--text-muted)');
+            try {
+                const res = await NB.apiPost('/api/reviews/create.php', {
+                    product_id: productId,
+                    rating: chosen,
+                    comment: (commentEl?.value || '').trim()
+                }, { auth: true });
+
+                if (res.status === 'success') {
+                    setFeedback(msgEl, 'Avaliação registada.', 'var(--success)');
+                    setTimeout(() => { close(); configureRateSection(); }, 900);
+                } else {
+                    setFeedback(msgEl, res.message || 'Erro ao enviar.', 'var(--danger)');
+                    submitBtn.disabled = false;
+                }
+            } catch {
+                setFeedback(msgEl, 'Erro de rede.', 'var(--danger)');
+                submitBtn.disabled = false;
+            }
+        });
     }
 
     function wireDelete() {

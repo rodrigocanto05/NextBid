@@ -8,7 +8,7 @@
   <link rel="icon" href="../../img/favicon.ico" sizes="any" />
   <link rel="icon" type="image/png" sizes="32x32" href="../../img/favicon-32.png" />
   <link rel="icon" type="image/png" sizes="192x192" href="../../img/favicon-192.png" />
-  <link rel="stylesheet" href="../../css/main.css?v=8" />
+  <link rel="stylesheet" href="../../css/main.css?v=11" />
 
 </head>
 
@@ -164,11 +164,19 @@
       <div class="pf-stats">
         <div class="pf-stat">
           <svg class="pf-stat__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" />
-            <line x1="7" y1="7" x2="7.01" y2="7" />
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
           </svg>
-          <strong id="pf-vendidos">0</strong>
-          <p>Total vendido</p>
+          <strong id="pf-rating-num">—</strong>
+          <p>Média avaliações <small id="pf-rating-count" style="color:var(--text-faint)"></small></p>
+        </div>
+        <div class="pf-stat">
+          <svg class="pf-stat__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="2" y="3" width="20" height="14" rx="2" />
+            <line x1="8" y1="21" x2="16" y2="21" />
+            <line x1="12" y1="17" x2="12" y2="21" />
+          </svg>
+          <strong id="pf-published">0</strong>
+          <p>Leilões publicados</p>
         </div>
         <div class="pf-stat">
           <svg class="pf-stat__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -179,20 +187,23 @@
         </div>
         <div class="pf-stat">
           <svg class="pf-stat__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <rect x="2" y="3" width="20" height="14" rx="2" />
-            <line x1="8" y1="21" x2="16" y2="21" />
-            <line x1="12" y1="17" x2="12" y2="21" />
+            <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/>
+            <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/>
+            <path d="M4 22h16"/>
+            <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/>
+            <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/>
+            <path d="M18 2H6v7a6 6 0 0 0 12 0V2z"/>
           </svg>
-          <strong id="pf-leiloes">0</strong>
-          <p>Leilões ativos</p>
+          <strong id="pf-won">0</strong>
+          <p>Leilões ganhos</p>
         </div>
         <div class="pf-stat">
           <svg class="pf-stat__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-            <circle cx="12" cy="7" r="4" />
+            <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" />
+            <line x1="7" y1="7" x2="7.01" y2="7" />
           </svg>
-          <strong id="pf-id">—</strong>
-          <p>ID de utilizador</p>
+          <strong id="pf-participated">0</strong>
+          <p>Participou</p>
         </div>
       </div>
 
@@ -258,6 +269,17 @@
           </svg>
           Terminar sessão
         </button>
+      </section>
+
+      <!-- ── Reviews recebidas (sempre visível, último para own; logo apos stats para view) ── -->
+      <section class="pf-panel" id="pf-panel-reviews">
+        <h2 class="pf-panel__title">
+          Avaliações recebidas
+          <small id="pf-reviews-meta" style="color:var(--text-faint);font-weight:400;font-size:0.85em"></small>
+        </h2>
+        <p class="pf-panel__loading" id="pf-reviews-loading">A carregar…</p>
+        <p class="pf-panel__empty" id="pf-reviews-empty" hidden>Ainda não recebeu nenhuma avaliação.</p>
+        <ul class="pf-reviews-list" id="pf-reviews-list"></ul>
       </section>
 
     </div>

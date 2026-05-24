@@ -8,13 +8,31 @@
         NB.initTicker();
         NB.Favorites?.load();
         loadFeatured();
+        loadStats();
         setInterval(loadFeatured, REFRESH_MS);
+        setInterval(loadStats, REFRESH_MS);
 
         // Mark intent to open "Criar Leilão" modal on the destination page
         document.getElementById('discover-create-link')?.addEventListener('click', () => {
             try { sessionStorage.setItem('nb_open_novo', '1'); } catch (_) {}
         });
     });
+
+    function loadStats() {
+        NB.apiGet('/api/stats/home.php').then(res => {
+            if (res.status !== 'success') return;
+            const d = res.data;
+            setStat('stat-active-auctions', d.active_auctions);
+            setStat('stat-total-bids',      d.total_bids);
+            setStat('stat-sold-auctions',   d.sold_auctions);
+            setStat('stat-total-users',     d.total_users);
+        }).catch(() => {});
+    }
+
+    function setStat(id, value) {
+        const el = document.getElementById(id);
+        if (el) el.textContent = Number(value).toLocaleString('pt-PT');
+    }
 
     function loadFeatured() {
         NB.apiGet('/api/auctions/get_active.php')

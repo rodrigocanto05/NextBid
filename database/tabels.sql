@@ -157,6 +157,7 @@ create table review (
     rev_reviewed_usr_id  int not null,
     rev_prd_id           int not null,
     rev_rating           tinyint not null,
+    rev_comment          text,
     rev_created_at       datetime not null default current_timestamp,
     primary key (rev_id),
     unique key uq_review_per_product (rev_usr_id, rev_prd_id),
