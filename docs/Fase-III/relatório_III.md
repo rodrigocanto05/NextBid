@@ -208,6 +208,11 @@ A modelação lógica orientada a objetos que serviu de fundação direta para a
 <img width="2950" height="1498" alt="uml_nextbid" src="https://github.com/user-attachments/assets/9d49c02f-fa1d-457e-a3c3-e450d9bd2728" />
 
 
+### 7.3 Testes de usuabilidade
+Todos os testes de usuabilidade realizados para a construção daquilo que se entende como NextBid estão contidos neste PDF aqui a baixo:
+
+https://github.com/rodrigocanto05/NextBid/blob/main/docs/Fase-III/NextBid-Interface-Usabilidades-Fase-III.pdf
+
 ---
 
 ## 8. Plano de Trabalho, Project Charter e WBS
